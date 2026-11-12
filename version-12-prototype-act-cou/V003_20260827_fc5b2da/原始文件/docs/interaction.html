@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>门店全员活动分享 - 评审导航</title><style>*{box-sizing:border-box}body{margin:0;color:#334454;background:#f4f7fa;font:14px/1.7 Arial,"Microsoft YaHei",sans-serif}.top{height:48px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;color:#fff;background:#1d3048}.top a{color:#fff;text-decoration:none}.wrap{max-width:1180px;margin:24px auto;padding:0 20px 50px}.hero,.card{background:#fff;border:1px solid #e1e7ed}.hero{padding:24px 28px;border-top:3px solid #2f80c5}.hero h1{margin:0 0 6px;font-size:23px}.hero p{margin:0;color:#74808c}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.card{padding:20px}.card h2{margin:0 0 12px;padding-left:9px;border-left:3px solid #2f80c5;font-size:17px}.card ol{margin:0;padding-left:22px}.card a{color:#2f80c5}.rule{margin-top:16px;padding:14px 18px;background:#fff9e9;border:1px solid #efe0b4}@media(max-width:800px){.grid{grid-template-columns:1fr}}</style></head>
+<body>
+  <header class="top"><strong>门店全员活动分享｜评审导航</strong><a href="../index.html">返回评审入口</a></header>
+  <main class="wrap">
+    <section class="hero"><h1>建议评审顺序</h1><p>本轮先评审后台海报默认规则，再查看员工端读取效果和客户/卡券7天到期Tag；P1既有角色、权限、报表与客户扫码流程只做回归。</p></section>
+    <div class="grid">
+      <section class="card"><h2>第一组：11月后台增量</h2><ol><li><a href="../backend/index.html#sa-poster-settings">分享海报规则配置</a>：默认背景、标题、副标题、二维码引导语。</li><li>验证3:4建议、上传背景、预览、恢复和保存反馈。</li><li>确认配置粒度、模板数量、发布/生效机制和正式图片限制均标“待确认”。</li><li>普通/组合活动允许分享角色、员工权限和报表角色维度本轮不改。</li></ol></section>
+      <section class="card"><h2>第二组：11月员工端增量</h2><ol><li><a href="../mobile/index.html#sa-poster-editor">海报规则读取</a>：默认值来自后台已生效规则，原流程不变。</li><li><a href="../mobile/index.html#sa-customer-list">客户列表Tag</a>：按客户显示“即将到期N张”。</li><li><a href="../mobile/index.html#sa-coupon-list">卡券列表Tag</a>：按券模板显示命中数量。</li><li><a href="../mobile/index.html#sa-customer-detail">券实例Tag</a>：逐券展示Tag和到期日。</li></ol></section>
+      <section class="card"><h2>第三组：Tag判定边界</h2><ol><li>参考日到到期日为0至7个自然日时命中。</li><li>已核销、已过期、已失效、已作废及缺少到期日不展示。</li><li>同一客户多张券暂按数量聚合，正式排序、分页和聚合方式待确认。</li><li>本期只做前端Tag，不触发任何通知或发券动作。</li></ol></section>
+      <section class="card"><h2>P1既有：Mermaid与后台授权</h2><ol><li><a href="sequence.html">Mermaid业务时序图</a>：从创建活动到客户再次分享。</li><li><a href="../backend/index.html#activity-create">普通活动创建</a>：适用门店、允许分享角色、准入表达。</li><li><a href="../backend/index.html#combo-manage">组合活动列表</a>：父级门店/角色与子活动。</li><li><a href="../backend/index.html#sa-placement-manage">活动分享配置</a>：只维护投放对象和状态。</li></ol></section>
+      <section class="card"><h2>P1既有：员工与客户执行</h2><ol><li><a href="../mobile/index.html#sa-select">员工选择活动</a>：既有角色和唯一门店过滤。</li><li><a href="../mobile/index.html#sa-qr-list">我的二维码</a>：本人记录、详情和再次保存。</li><li><a href="../mobile/index.html#activity-aggregation-unbound">未绑车聚合页</a>：组合活动卡券整体隐藏。</li><li><a href="../mobile/index.html#activity-aggregation">已绑车聚合页</a>：多子活动命中全部展示。</li></ol></section>
+      <section class="card"><h2>P1既有：客户级追踪</h2><ol><li><a href="../backend/index.html#coupon-customer">后台客户维度</a>：按来源账号 + oneID聚合上线后券实例。</li><li><a href="../backend/index.html#coupon-claim">券实例明细</a>：参与记录、组合子执行与券实例关联。</li><li><a href="../mobile/index.html#sa-customer-list">员工客户列表</a>：本人客户查询与状态汇总。</li><li><a href="../mobile/index.html#sa-customer-detail">客户详情与再次分享</a>：逐券查看后回到普通分享流程。</li></ol></section>
+    </div>
+    <div class="rule">11月范围隔离：未实现Push、短信、服务助手消息通知/待办、自动补券或定向发券；客户数据边界及P1既有流程保持，所有新增数据均为Mock。</div>
+  </main>
+</body>
+</html>

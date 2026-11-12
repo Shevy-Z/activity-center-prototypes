@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><script data-handoff-offline="20261021">(function(){var root=new URL("../",location.href),data={"backend/config/nav.json": "{\n  \"defaultPage\": \"activity-overview\",\n  \"menu\": [\n    {\"id\":\"workspace\",\"label\":\"工作台\",\"passive\":true},\n    {\"id\":\"activity-center\",\"label\":\"活动中心\",\"children\":[\n      {\"id\":\"activity-manage\",\"label\":\"保客活动创建\",\"route\":\"activity-manage\"},\n      {\"id\":\"combo-manage\",\"label\":\"组合活动列表\",\"route\":\"combo-manage\"},\n      {\"id\":\"activity-mutex\",\"label\":\"保客活动互斥关系\",\"route\":\"activity-mutex\"},\n      {\"id\":\"sa-placement-manage\",\"label\":\"活动分享配置\",\"route\":\"sa-placement-manage\"},\n      {\"id\":\"activity-overview\",\"label\":\"员工分享活动报表\",\"route\":\"activity-overview\"}\n    ]},\n    {\"id\":\"coupon-center\",\"label\":\"卡券中心\",\"children\":[\n      {\"id\":\"coupon-overview\",\"label\":\"员工分享卡券报表\",\"route\":\"coupon-overview\"}\n    ]}\n  ]\n}\n"},original=window.fetch;window.fetch=function(input,opts){var u=new URL(typeof input==='string'?input:input.url,location.href);u.search='';u.hash='';for(var k in data){if(u.href===new URL(k,root).href){return Promise.resolve(new Response(data[k],{status:200,headers:{'Content-Type':'application/json'}}));}}return original.call(window,input,opts);};})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Mermaid 业务时序图｜门店全员活动分享</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;color:#314153;background:#f3f6f9;font:14px/1.65 Arial,"Microsoft YaHei",sans-serif}
+    .top{min-height:56px;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;color:#fff;background:#1d3048;box-shadow:0 3px 10px rgba(20,45,70,.18)}
+    .top strong{font-size:16px}.top nav{display:flex;flex-wrap:wrap;gap:18px}.top a{color:#dce9f5;text-decoration:none;font-size:13px}.top a:hover{color:#fff}
+    .wrap{max-width:1600px;margin:22px auto 52px;padding:0 22px}
+    .heading{margin-bottom:12px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px}.heading h1{margin:0;color:#203247;font-size:24px}.heading p{margin:5px 0 0;color:#71808d;font-size:13px}
+    .actions{display:flex;gap:8px;flex-shrink:0}.btn{min-height:36px;padding:0 14px;color:#2f6f9e;background:#fff;border:1px solid #cfdce7;cursor:pointer;font:inherit}.btn:hover{color:#235f8c;border-color:#7fb2d8;background:#f5faff}.btn.primary{color:#fff;background:#2f80c5;border-color:#2f80c5}.btn.primary:hover{background:#2672b2}
+    .diagram-shell{overflow:auto;background:#fff;border:1px solid #dce5ed;box-shadow:0 5px 18px rgba(32,58,80,.06)}.diagram{min-width:1380px;padding:24px 18px 30px;text-align:center}.diagram svg{display:block;margin:0 auto;max-width:none!important;height:auto}
+    .loading{padding:80px 20px;color:#7d8b97}.error{margin:24px;padding:15px;color:#8b2d2d;background:#fff3f3;border:1px solid #efcaca;text-align:left}
+    details{margin-top:14px;background:#fff;border:1px solid #dce5ed}summary{padding:12px 15px;color:#2e668f;cursor:pointer;font-weight:bold;user-select:none}pre{max-height:520px;margin:0;padding:18px;overflow:auto;color:#d8e6f3;background:#162637;border-top:1px solid #dce5ed;font:12px/1.65 Menlo,Monaco,Consolas,"Courier New",monospace;white-space:pre}
+    .foot{margin-top:12px;color:#7a8995;font-size:12px}
+    @media(max-width:760px){.top{padding:10px 15px;align-items:flex-start;flex-direction:column}.top nav{gap:12px}.wrap{margin-top:14px;padding:0 10px}.heading{align-items:flex-start;flex-direction:column}.heading h1{font-size:21px}.actions{width:100%}.btn{flex:1}.diagram{padding-top:16px}.diagram-shell{margin:0 -10px;border-left:0;border-right:0}}
+    @media print{.top,.actions,details,.foot{display:none}.wrap{max-width:none;margin:0;padding:0}.diagram-shell{overflow:visible;border:0;box-shadow:none}.diagram{transform:scale(.7);transform-origin:top left;width:142%;padding:0}}
+  </style>
+</head>
+<body>
+  <header class="top"><strong>门店全员活动分享｜Mermaid 业务时序图</strong><nav><a href="../index.html">返回评审入口</a><a href="interaction.html">评审导航</a></nav></header>
+  <main class="wrap">
+    <section class="heading"><div><h1>从创建活动，到客户领券、核销与再次分享</h1><p>页面仅保留 Mermaid 时序图；正式接口、事务、数据表及异常补偿仍需研发评审。</p></div><div class="actions"><button class="btn" id="toggle-source" type="button">查看源码</button><button class="btn primary" id="copy-source" type="button">复制 Mermaid 源码</button></div></section>
+    <section class="diagram-shell" aria-label="Mermaid 完整业务时序图"><div id="diagram" class="diagram"><div class="loading">正在生成 Mermaid 时序图…</div></div></section>
+    <details id="source-panel"><summary>Mermaid 源码</summary><pre><code id="source-view"></code></pre></details>
+    <p class="foot">全部业务数据与 ID 均为 Mock。页面使用随原型保存的 Mermaid 11.12.1，可通过 file:// 直接打开。</p>
+  </main>
+
+  <script type="text/plain" id="mermaid-source">sequenceDiagram
+    autonumber
+    participant OP as 运营人员
+    participant AC as 活动中心 / 报表后台
+    participant EMP as 服务助手 / 分享员工
+    participant USER as 微信 / 用户端
+    participant ID as oneID / 车辆准入
+    participant CC as 卡券中心
+
+    rect rgb(237, 246, 253)
+        Note over OP,CC: A. 活动创建与分享授权
+        CC-->>AC: 提供可关联的卡券模板与权益
+        OP->>AC: 创建普通活动或组合活动
+        Note over OP,AC: 配置基本信息、领券方式、卡券/权益、准入表达与校验节点、互斥、适用门店、允许分享角色
+        alt 普通活动
+            OP->>AC: 配置一个活动及其发券或抽奖规则
+        else 组合活动
+            OP->>AC: 配置父级统一信息及多个人群子活动
+            Note over OP,AC: 用户端始终展示一张组合活动大卡片；子活动可关联不同卡券
+        end
+        OP->>AC: 启用活动并锁定关键配置
+        OP->>AC: 在活动分享配置中启用投放对象
+        Note over OP,AC: 后台统一推券活动不进入员工可分享池
+    end
+
+    rect rgb(245, 249, 252)
+        Note over OP,CC: B. 员工选择活动并生成二维码 / 海报
+        EMP->>AC: 携带当前账号、唯一门店、全部有效角色及主角色进入分享
+        AC->>AC: 校验账号有效、活动生效、投放启用、门店匹配及任一角色命中
+        AC-->>EMP: 返回当前账号可分享活动池
+        EMP->>AC: 查看活动详情并选择一个或多个活动
+        EMP->>AC: 选择固定有效时长或长期有效至活动结束
+        AC->>AC: 生成 sceneId 并冻结来源账号、门店、角色快照和活动集合
+        EMP->>EMP: 编辑分享文案、选择系统海报或上传自定义海报
+        EMP->>USER: 生成二维码 / 海报并唤起微信分享
+        Note over EMP,USER: 客户公开内容仅展示门店和员工姓名，不展示角色或二维码有效期
+    end
+
+    rect rgb(255, 249, 235)
+        Note over OP,CC: C. 用户扫码、准入判断与一键参与
+        USER->>AC: 扫码进入活动聚合页
+        AC->>AC: 校验二维码状态并读取 sceneId 冻结活动集合
+        AC->>ID: 查询 oneID、手机号、绑车、默认 VIN 及认证关系
+        ID-->>AC: 返回当前用户和默认 VIN 上下文
+        alt 当前没有 VIN
+            AC-->>USER: 展示组合活动大卡片，卡券内容整体隐藏并提示去绑车
+            Note over USER,ID: 绑车或认证完成后不自动回跳，用户需重新扫码
+        else 当前存在默认 VIN
+            AC->>AC: 按当前 VIN 匹配组合活动的全部满足子活动
+            AC-->>USER: 在原组合卡片内展示全部命中子活动的卡券和权益
+            Note over AC,USER: 多个子活动同时满足则全部执行，不设优先级和顺序
+        end
+        loop 对冻结集合内每个普通活动 / 组合活动
+            AC->>AC: 校验已参与、互斥、准入等级及活动可用性
+        end
+        AC-->>USER: 可参与项默认勾选；不可参与项继续展示但置灰
+        USER->>AC: 点击页面底部唯一的“一键参与”
+        AC->>ID: 执行前再次校验身份、VIN、准入与认证关系
+        ID-->>AC: 返回实时校验结果
+        loop 对每个已勾选且可参与的活动
+            alt 领券活动
+                AC->>AC: 执行领券活动
+            else 抽奖活动
+                AC->>AC: 自动完成抽奖，不要求用户二次点击
+            end
+        end
+    end
+
+    rect rgb(238, 249, 244)
+        Note over OP,CC: D. 成功参与、最后触点与发券落账
+        AC->>AC: 仅在活动成功执行时锁定最后一次成功触点
+        Note over AC,EMP: 此前仅扫码但未成功执行，不改变来源归属
+        alt 普通活动成功
+            AC->>AC: 发券前创建普通活动 participationRecordId
+        else 组合活动成功
+            AC->>AC: 按“组合活动ID + VIN”创建一条父参与记录
+            loop 每个命中的子活动
+                AC->>AC: 创建 childExecutionId
+            end
+        end
+        AC->>CC: 携带参与记录 / 子执行关系请求发券
+        CC->>CC: 为每张券创建 couponInstanceId
+        CC-->>AC: 回传券实例及发放结果
+        AC-->>USER: 统一反馈全部领券、抽奖和不可参与结果
+    end
+
+    rect rgb(246, 242, 252)
+        Note over OP,CC: E. 卡券核销、过期与客户维度追踪
+        USER->>CC: 到店使用卡券
+        CC->>CC: 使用即核销，券实例更新为“已核销”
+        opt 超过有效期仍未核销
+            CC->>CC: 券实例更新为“已过期”
+        end
+        Note over AC,CC: 真正“已失效”的券实例不进入客户列表、详情或统计
+        CC-->>AC: 同步券实例状态及来源参与关系
+        EMP->>AC: 查询本人来源客户及上线后券实例
+        AC-->>EMP: 返回脱敏客户、来源活动 / 子活动、券实例和核销状态
+        OP->>AC: 按员工、门店、区域或总部权限查询客户与券实例
+        AC-->>OP: 普通活动按参与记录下钻；组合活动按子活动拆分统计和导出
+    end
+
+    rect rgb(255, 243, 240)
+        Note over OP,CC: F. 员工人工判断并再次分享
+        EMP->>AC: 从客户详情发起活动分享
+        Note over EMP,AC: 系统不判定“长期未核销”，不配置阈值、冷却期、频控或自动待办
+        AC->>AC: 校验当前账号、门店和角色权限
+        AC-->>EMP: 返回当前允许分享的普通 / 组合活动池
+        EMP->>AC: 重新选择一个或多个活动、有效期和海报
+        AC->>AC: 生成新的非定向 sceneId，不绑定当前客户或原券
+        EMP->>USER: 唤起微信并由员工自行选择联系人
+        USER->>AC: 实际扫码用户打开新二维码
+        AC->>ID: 按实际扫码用户重新查询身份和默认 VIN
+        ID-->>AC: 返回实时用户 / 车辆上下文
+        AC->>AC: 沿用普通分享的准入、互斥、唯一性和执行前复核
+        alt 实际扫码用户可以参与
+            AC->>CC: 产生新的参与记录并发放新的券实例
+            Note over AC,CC: 原券保持原状态，新旧券可并存，也可继续形成下一轮人工分享
+        else 实际扫码用户不可参与
+            AC-->>USER: 提示“活动暂不可参与”，不自动替换其他活动
+        end
+        Note over EMP,CC: 不建立“原券 → 新二维码 → 新券”的特殊追溯链路
+    end</script>
+  <script src="assets/mermaid.min.js"></script>
+  <script>
+    (function(){
+      const source=document.getElementById('mermaid-source').textContent.trim();
+      const diagram=document.getElementById('diagram');
+      const sourceView=document.getElementById('source-view');
+      const sourcePanel=document.getElementById('source-panel');
+      const copyButton=document.getElementById('copy-source');
+      sourceView.textContent=source;
+      document.getElementById('toggle-source').addEventListener('click',function(){sourcePanel.open=!sourcePanel.open;this.textContent=sourcePanel.open?'收起源码':'查看源码';if(sourcePanel.open){sourcePanel.scrollIntoView({behavior:'smooth',block:'start'});}});
+      copyButton.addEventListener('click',async function(){let copied=false;try{await navigator.clipboard.writeText(source);copied=true;}catch(error){const area=document.createElement('textarea');area.value=source;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();try{copied=document.execCommand('copy');}catch(ignore){}document.body.removeChild(area);}this.textContent=copied?'已复制':'请在源码区手动复制';setTimeout(()=>{this.textContent='复制 Mermaid 源码';},1800);});
+      async function render(){
+        if(!window.mermaid){throw new Error('Mermaid 运行库未加载');}
+        mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:'base',themeVariables:{fontFamily:'Arial, Microsoft YaHei, sans-serif',primaryColor:'#edf6fd',primaryTextColor:'#203247',primaryBorderColor:'#6fa8d2',lineColor:'#61788d',secondaryColor:'#f7fafc',tertiaryColor:'#fff9eb',actorBkg:'#1f4e73',actorBorder:'#1f4e73',actorTextColor:'#ffffff',signalColor:'#536b7d',signalTextColor:'#314153',noteBkgColor:'#fffdf4',noteBorderColor:'#d9c98a'},sequence:{useMaxWidth:false,wrap:true,diagramMarginX:36,diagramMarginY:18,actorMargin:42,width:168,height:60,boxMargin:10,messageMargin:30,noteMargin:12}});
+        const rendered=await mermaid.render('full-business-sequence',source);diagram.innerHTML=rendered.svg;if(rendered.bindFunctions){rendered.bindFunctions(diagram);}
+      }
+      render().catch(function(error){diagram.innerHTML='<div class="error"><strong>Mermaid 时序图生成失败。</strong><br>请展开下方源码查看完整内容。<br><small>'+String(error.message||error)+'</small></div>';sourcePanel.open=true;});
+    })();
+  </script>
+</body>
+</html>

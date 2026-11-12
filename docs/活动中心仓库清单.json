@@ -1,0 +1,44 @@
+{
+  "snapshot_date": "2026-10-21",
+  "curated_p0": {
+    "name": "P0-活动中心原型中心",
+    "source_repo": "version-11-prototype",
+    "source_version": "V006_20260821_41055c4",
+    "source_commit": "41055c447d948f2ab32b01b1bbdef45e696c1a4f",
+    "module_count": 9,
+    "sequence_count": 8,
+    "modules": [
+      "p0-05",
+      "p0-06-01",
+      "p0-06-02",
+      "p0-08",
+      "p0-09",
+      "p0-10",
+      "p0-11",
+      "p0-12",
+      "p0-13"
+    ],
+    "note": "R03、R04 原仓库为活动与卡券混合包；活动模块提取后，混合仓库及其 bundle 已移出当前源文件夹。"
+  },
+  "repositories": [
+    {
+      "id": "R05",
+      "repo": "version-12-prototype-act-cou",
+      "purpose": "员工分享、海报与客户追踪",
+      "versions": 3,
+      "head": "fc5b2daf6eae948a2d126a67ac6ea7e2096b6ae6"
+    },
+    {
+      "id": "R07",
+      "repo": "combo-activity-tiered-claim-prototype",
+      "purpose": "组合活动分级领取与保客活动准入",
+      "versions": 8,
+      "head": "5170372363c8465180b14d3e7213a0c36f6e4058"
+    }
+  ],
+  "legacy": {
+    "name": "DFN活动中心-售后",
+    "page_count": 111,
+    "path": "03_历史原型基线/活动中心"
+  }
+}

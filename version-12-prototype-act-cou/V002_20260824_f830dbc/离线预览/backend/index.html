@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><script data-handoff-offline="20261021">(function(){var root=new URL("../",location.href),data={"backend/config/nav.json": "{\n  \"defaultPage\": \"activity-overview\",\n  \"menu\": [\n    {\"id\":\"workspace\",\"label\":\"工作台\",\"passive\":true},\n    {\"id\":\"activity-center\",\"label\":\"活动中心\",\"children\":[\n      {\"id\":\"activity-manage\",\"label\":\"保客活动创建\",\"route\":\"activity-manage\"},\n      {\"id\":\"combo-manage\",\"label\":\"组合活动列表\",\"route\":\"combo-manage\"},\n      {\"id\":\"activity-mutex\",\"label\":\"保客活动互斥关系\",\"route\":\"activity-mutex\"},\n      {\"id\":\"sa-placement-manage\",\"label\":\"活动分享配置\",\"route\":\"sa-placement-manage\"},\n      {\"id\":\"activity-overview\",\"label\":\"员工分享活动报表\",\"route\":\"activity-overview\"}\n    ]},\n    {\"id\":\"coupon-center\",\"label\":\"卡券中心\",\"children\":[\n      {\"id\":\"coupon-overview\",\"label\":\"员工分享卡券报表\",\"route\":\"coupon-overview\"}\n    ]}\n  ]\n}\n"},original=window.fetch;window.fetch=function(input,opts){var u=new URL(typeof input==='string'?input:input.url,location.href);u.search='';u.hash='';for(var k in data){if(u.href===new URL(k,root).href){return Promise.resolve(new Response(data[k],{status:200,headers:{'Content-Type':'application/json'}}));}}return original.call(window,input,opts);};})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>门店全员活动分享后台原型｜原版继承</title>
+  <link rel="stylesheet" href="assets/css/global.css?v=20260821-5">
+  <link rel="stylesheet" href="assets/css/app.css?v=20260821-5">
+  <link rel="stylesheet" href="annotations/annotation.css?v=20260821-5">
+</head>
+<body class="sit-ui">
+  <div class="prototype-shell">
+    <header class="top-bar">
+      <div class="top-left-tools">
+        <button class="header-text-button" id="menuModeToggle" type="button">菜单模式切换</button>
+      </div>
+      <div class="top-actions">
+        <label class="global-search"><input type="search" placeholder="菜单查询" aria-label="菜单查询"></label>
+        <button class="header-text-button" type="button">导出记录</button>
+        <button class="header-text-button" type="button">通知 <span class="top-count">0</span></button>
+        <button class="header-text-button" type="button">帮助</button>
+        <button class="top-action" id="globalSpecButton" type="button">功能说明</button>
+        <span class="admin-name">超级管理员</span>
+      </div>
+    </header>
+    <div class="app-layout">
+      <nav id="main-nav" class="app-sidebar" aria-label="主导航"></nav>
+      <main id="app" class="app-main" tabindex="-1">
+        <div class="loading-card">正在加载原型…</div>
+      </main>
+    </div>
+  </div>
+
+  <aside id="detailDrawer" class="detail-drawer" aria-hidden="true"></aside>
+  <aside id="specDrawer" class="spec-drawer" aria-hidden="true"></aside>
+  <div id="drawerMask" class="drawer-mask" hidden></div>
+  <div id="businessModalMask" class="business-modal-mask" hidden></div>
+  <section id="businessModal" class="business-modal" aria-hidden="true" role="dialog" aria-modal="true"></section>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="mock/data.js?v=20260821-5"></script>
+  <script src="js/common.js?v=20260821-5"></script>
+  <script src="js/activity-config.js?v=20260821-5"></script>
+  <script src="js/app.js?v=20260821-5"></script>
+  <script src="config/nav.inline.js?v=20260821-5"></script>
+  <script src="js/nav.js?v=20260821-5"></script>
+  <script>
+    window.AnnotationConfig = {
+      projectId: "employee-inherited-backend-20260820",
+      dataVersion: "20260821-5",
+      page: function () { return window.getCurrentPage ? window.getCurrentPage() : "activity-overview"; }
+    };
+  </script>
+  <script src="annotations/annotations.js?v=20260821-5"></script>
+  <script src="annotations/annotation-runtime.js?v=20260821-5"></script>
+</body>
+</html>

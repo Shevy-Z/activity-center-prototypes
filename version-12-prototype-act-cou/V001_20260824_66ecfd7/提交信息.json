@@ -1,0 +1,33 @@
+{
+  "sha": "66ecfd7d5cf0da576acc99e36bd1b5bcc9f66141",
+  "parents": [],
+  "author_time": "2026-08-24T08:38:59+08:00",
+  "time": "2026-08-24T08:38:59+08:00",
+  "subject": "Initialize 门店全员活动分享 P1 prototype",
+  "message": "Initialize 门店全员活动分享 P1 prototype",
+  "changed": "A\tindex.html\n",
+  "stat": "1 file changed, 25 insertions(+)",
+  "files": [
+    "index.html"
+  ],
+  "html": [
+    "index.html"
+  ],
+  "version": "V001",
+  "folder": "V001_20260824_66ecfd7",
+  "repo": "version-12-prototype-act-cou",
+  "rid": "R05",
+  "domain": "卡券中心 活动中心",
+  "title": "先建立员工分享评审首页",
+  "kind": "入口初始化",
+  "changes": [
+    "首次提交只有index.html评审首页，列出后台、员工端、用户聚合页、报表和时序入口。",
+    "首页已有链接，但对应后台、移动端和文档资源尚未上传，因此此提交不能完整浏览所列功能。"
+  ],
+  "review": "保留首页原貌；完整演示应打开后续f830dbc或最新fc5b2da，不补造缺失页面。",
+  "entry": "index.html",
+  "offline": false,
+  "offline_changes": [],
+  "path": "02_GitHub原型/version-12-prototype-act-cou/V001_20260824_66ecfd7",
+  "preview_path": "02_GitHub原型/version-12-prototype-act-cou/V001_20260824_66ecfd7/原始文件/index.html"
+}

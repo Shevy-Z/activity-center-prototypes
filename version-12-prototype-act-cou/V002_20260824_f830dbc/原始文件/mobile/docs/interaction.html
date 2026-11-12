@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>门店员工活动分享移动端 - 功能说明</title>
+  <style>*{box-sizing:border-box}body{margin:0;color:#334455;background:#f4f7fa;font:14px/1.7 Arial,"Microsoft YaHei",sans-serif}.top{height:48px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;color:#fff;background:#24679d}.top a{color:#fff;text-decoration:none}.wrap{max-width:1120px;margin:24px auto;padding:0 20px 50px}.hero,.card{background:#fff;border:1px solid #e1e7ed}.hero{padding:26px 30px;border-top:3px solid #2f80c5}.hero h1{margin:0 0 7px;font-size:24px}.hero p{margin:0;color:#74808c}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.card{padding:20px 22px}.card.full{grid-column:1/-1}.card h2{margin:0 0 12px;padding-left:10px;border-left:3px solid #2f80c5;font-size:17px}.card ul{margin:0;padding-left:22px}table{width:100%;border-collapse:collapse}th,td{padding:10px 12px;border:1px solid #e3e8ed;text-align:left;vertical-align:top}th{background:#f6f8fa}@media(max-width:800px){.grid{grid-template-columns:1fr}.card.full{grid-column:auto}}</style>
+</head>
+<body>
+  <header class="top"><strong>门店员工活动分享移动端</strong><a href="../index.html">返回移动端原型</a></header>
+  <main class="wrap">
+    <section class="hero"><h1>功能说明</h1><p>继续从原服务助手移动端进入，复用原 SA 活动选择、二维码、海报、本人数据与用户聚合页。</p></section>
+    <div class="grid">
+      <section class="card"><h2>员工侧</h2><ul><li>按账号、唯一门店、活动投放和任一命中角色过滤可分享活动。</li><li>无任何授权角色时，服务助手首页不展示活动分享入口；原型另提供无权限态评审页。</li><li>“我的二维码 / 我的分享数据”作为身份卡下方同级快捷入口，不再挤占标题栏。</li><li>选择活动数量不设业务上限；生成前选择固定时长或长期有效。</li><li>二维码冻结员工、账号、全部角色、主角色、命中角色、门店和活动集合。</li><li>“我的二维码”仅展示当前账号，可再次保存原码或原码海报，不支持手动作废。</li></ul></section>
+      <section class="card"><h2>海报与本人报表</h2><ul><li>员工可编辑标题、副标题和扫码引导语，也可上传 JPG/PNG 自定义底图。</li><li>系统统一叠加二维码、门店与员工姓名；员工头像可隐藏，员工角色和二维码有效期不进入客户海报。</li><li>“我的分享数据”仅看当前账号，无导出、无排名。</li><li>活动、卡券和客户数据均按最终来源员工账号隔离；组合活动按子活动拆开。</li><li>卡券只展示已核销/核销率。</li></ul></section>
+      <section class="card full"><h2>关键交互</h2><table><thead><tr><th>场景</th><th>页面反馈</th><th>规则</th></tr></thead><tbody><tr><td>选择活动</td><td>普通活动和组合活动均为可选对象，角色或门店未命中时不展示。</td><td>空允许分享角色表示无人可分享。</td></tr><tr><td>生成二维码</td><td>先选有效时长，再展示二维码与冻结快照。</td><td>每次生成唯一 sceneId；长期有效至所选活动最晚结束。</td></tr><tr><td>我的二维码</td><td>查看有效/过期记录及冻结活动。</td><td>再次保存保持原 sceneId；本期无手动作废。</td></tr><tr><td>二维码详情</td><td>默认展示完整客户海报，可原位切换纯二维码，并列出保存的三段海报文案。</td><td>两种效果共用同一 sceneId 与冻结快照；客户海报不展示内部 ID。</td></tr><tr><td>制作海报</td><td>系统模板/上传底图、文案编辑、头像开关、保存与分享。</td><td>对客户不展示工号、手机号或账号 ID。</td></tr><tr><td>用户未绑车</td><td>组合活动只显示一张大活动卡片，卡券区域整体隐藏。</td><td>无 VIN 不判断人群包；绑车后不回跳。</td></tr><tr><td>用户已绑车</td><td>原卡片内显示当前 VIN 命中的全部卡券。</td><td>多子活动命中全部执行；组合参与键为组合活动 ID + VIN。</td></tr><tr><td>一键参与</td><td>一次执行全部勾选活动，抽奖自动完成并只反馈结果。</td><td>互斥同组仅可选一个；最后触点在成功执行时确认。</td></tr><tr><td>查看客户</td><td>按脱敏手机号、客户编号或 VIN 查询本人来源客户，进入详情逐张看券。</td><td>只纳入上线后且最终归属当前账号的券实例。</td></tr><tr><td>发起活动分享</td><td>客户详情底部进入既有选择活动页。</td><td>新二维码不绑定当前客户，可转发；实际领取归属实际参与客户。</td></tr></tbody></table></section>
+      <section class="card full"><h2>P1 客户追踪增量</h2><ul><li>入口：我的分享数据 → 客户 → 客户列表 → 客户详情 → 发起活动分享。</li><li>客户详情展示券实例、来源普通/组合活动、命中子活动、VIN、领取时间和核销状态。</li><li>客户卡券使用“已过期”；已过期券保留追踪，真正已失效的券实例不进入客户列表或详情。</li><li>再次分享不读取或保存微信好友，不设置“长期未核销”阈值，也不限制员工发起频次。</li><li>停用账号不可新建分享；门店管理人员可查看授权汇总，但不能代替来源员工生成二维码。</li><li><a href="../../docs/sequence.html">查看从创建活动到再次分享的完整业务时序图</a>。</li></ul></section>
+      <section class="card"><h2>用户公开信息</h2><ul><li>仅展示“由{门店}·{员工姓名}分享”和活动数量。</li><li>不展示员工角色、二维码有效时长或截止时间，也不展示员工工号、手机号、账号 ID。</li><li>二维码已过期或已失效时仍反馈结果状态，但不展开具体有效期。</li><li>用户活动列表隐藏号码级、绑车级、认证级分区与标签。</li><li>用户仍可查看二维码内全部活动，准入不足项置灰并提供绑车/认证入口。</li></ul></section>
+      <section class="card"><h2>演示说明</h2><ul><li>全部数据为 Mock。</li><li>SA 路由名和渠道枚举为兼容保留，不代表页面仍仅支持 SA。</li><li>可直接双击 index.html 通过 file 协议打开。</li><li>版本：2026-08-21 / 原版继承 P1 评审稿。</li></ul></section>
+    </div>
+  </main>
+</body>
+</html>

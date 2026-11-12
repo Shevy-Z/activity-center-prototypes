@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="206px" height="130px" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="1504" y1="462" x2="1504" y2="592" id="LinearGradient9">
+      <stop id="Stop10" stop-color="#7f7f7f" offset="0" />
+      <stop id="Stop11" stop-color="#f2f2f2" offset="0" />
+      <stop id="Stop12" stop-color="#e4e4e4" offset="1" />
+      <stop id="Stop13" stop-color="#7f7f7f" offset="1" />
+    </linearGradient>
+  </defs>
+  <g transform="matrix(1 0 0 1 -1401 -462 )">
+    <path d="M 1606.5 488  C 1606.5 488  1606.5 566  1606.5 566  C 1606.5 580.489320388349  1560.57076923077 591.5  1504 591.5  C 1447.42923076923 591.5  1401.5 580.489320388349  1401.5 566  C 1401.5 566  1401.5 488  1401.5 488  C 1401.5 473.510679611651  1447.42923076923 462.5  1504 462.5  C 1560.57076923077 462.5  1606.5 473.510679611651  1606.5 488  Z " fill-rule="nonzero" fill="url(#LinearGradient9)" stroke="none" />
+    <path d="M 1401.5 488.3  C 1401.5 473.852  1446.6 462.5  1504 462.5  C 1561.4 462.5  1606.5 473.852  1606.5 488.3  C 1606.5 488.3  1606.5 565.7  1606.5 565.7  C 1606.5 580.148  1561.4 591.5  1504 591.5  C 1446.6 591.5  1401.5 580.148  1401.5 565.7  C 1401.5 565.7  1401.5 488.3  1401.5 488.3  Z " stroke-width="1" stroke="#797979" fill="none" />
+    <path d="M 1606.5 488  C 1606.5 502.28  1561.4 513.5  1504 513.5  C 1446.6 513.5  1401.5 502.28  1401.5 488  " stroke-width="1" stroke="#797979" fill="none" />
+  </g>
+</svg>

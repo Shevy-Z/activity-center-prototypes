@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>门店全员活动分享后台原型 - 功能说明</title>
+  <style>*{box-sizing:border-box}body{margin:0;color:#344454;background:#f4f7fa;font:14px/1.7 Arial,"Microsoft YaHei",sans-serif}.top{height:48px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;color:#fff;background:#1d3048}.top a{color:#fff;text-decoration:none}.wrap{max-width:1180px;margin:24px auto;padding:0 20px 50px}.hero,.card{background:#fff;border:1px solid #e2e8ee}.hero{padding:26px 30px;border-top:3px solid #2f80c5}.hero h1{margin:0 0 7px;color:#203245;font-size:24px}.hero p{margin:0;color:#74808c}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.card{padding:20px 22px}.card.full{grid-column:1/-1}.card h2{margin:0 0 14px;padding-left:10px;color:#294763;border-left:3px solid #2f80c5;font-size:17px}.card ul{margin:8px 0 0;padding-left:22px}.tag{display:inline-block;margin:0 6px 6px 0;padding:2px 8px;color:#2f70aa;background:#edf6fd;border:1px solid #cee4f6}table{width:100%;border-collapse:collapse}th,td{padding:10px 12px;border:1px solid #e3e8ed;text-align:left;vertical-align:top}th{background:#f6f8fa}.note{padding:10px 12px;color:#715d2f;background:#fff9e9;border:1px solid #f1e2b2}@media(max-width:800px){.grid{grid-template-columns:1fr}.card.full{grid-column:auto}}</style>
+</head>
+<body>
+  <header class="top"><strong>门店全员活动分享后台原型</strong><a href="../index.html">返回后台原型</a></header>
+  <main class="wrap">
+    <section class="hero"><h1>功能说明</h1><p>本版本完整继承原 SA 后台 UI 与交互，只在复制品上升级为活动授权角色内的门店员工均可分享。</p></section>
+    <div class="grid">
+      <section class="card"><h2>页面范围</h2><span class="tag">普通活动</span><span class="tag">组合活动</span><span class="tag">活动分享配置</span><span class="tag">二维码参数</span><span class="tag">分享海报规则</span><span class="tag">员工分享活动报表</span><span class="tag">员工分享卡券报表</span><span class="tag">客户维度</span><span class="tag">券实例明细</span><ul><li>普通活动在适用门店附近配置允许分享角色。</li><li>组合活动在父级配置适用门店与允许分享角色，子活动不重复配置。</li><li>活动分享配置只维护投放对象和状态，门店与角色只读继承。</li><li>历史 SA 数据并入员工报表，旧 SA 报表菜单不再保留。</li></ul></section>
+      <section class="card"><h2>权限与冻结</h2><ul><li>员工需同时满足在职、账号有效、唯一门店命中和任一有效角色命中。</li><li>允许分享角色为空表示无人可分享。</li><li>活动生效后门店与角色锁定；复制活动时角色清空且不复制投放配置。</li><li>sceneId 冻结账号、员工、全部有效角色、主角色、实际命中角色、门店、活动范围与有效期。</li><li>既有码不因调店、离职或角色变化自动回写，本期也不提供手动作废。</li></ul></section>
+      <section class="card full"><h2>关键交互与报表口径</h2><table><thead><tr><th>页面</th><th>关键能力</th><th>规则</th></tr></thead><tbody><tr><td>普通活动创建/编辑/详情</td><td>配置适用门店与允许分享角色</td><td>准入等级继续读取原准入表达，不创建第二套员工活动级别。</td></tr><tr><td>组合活动创建/编辑/详情</td><td>父级统一配置门店和角色；查看子活动、卡券、权益</td><td>用户侧一张大卡片；同一 VIN 多子活动命中全部执行。</td></tr><tr><td>活动分享配置</td><td>选择普通活动或组合活动并维护投放状态</td><td>没有允许分享角色时不可生效；后台统一推券活动不进入候选池。</td></tr><tr><td>二维码参数</td><td>5分钟至1天固定时长、长期有效、默认值</td><td>长期有效截止到冻结活动最晚结束时间；参数变更只影响新码。</td></tr><tr><td>员工分享活动报表</td><td>员工模糊查询；最多选择20个普通/组合/组合子活动查询对象</td><td>组合活动按子活动拆行；员工筛选无结果数上限。</td></tr><tr><td>员工分享卡券报表</td><td>来源员工、主角色、门店、领取与核销明细</td><td>只使用“已核销/核销率”，不使用“已使用/使用率”。</td></tr><tr><td>客户维度</td><td>按来源账号 + oneID 聚合客户及上线后券实例</td><td>可进入客户详情逐张核对来源活动、组合子活动、VIN 和核销状态。</td></tr><tr><td>券实例明细</td><td>券实例关联参与记录；组合活动同时关联父参与与子执行</td><td>一个参与记录可关联多张券实例；只纳入功能上线后数据。</td></tr></tbody></table></section>
+      <section class="card full"><h2>P1 客户追踪增量</h2><ul><li>活动参与记录在发券前生成稳定 participationRecordId，卡券实例保存 sourceParticipationRecordId。</li><li>组合活动按父组合参与记录和命中子活动执行记录分别留痕，报表仍按子活动拆行。</li><li>客户数按 oneID 去重，券数按券实例计数；后台数据范围继续受员工、门店、区域和总部权限控制。</li><li>客户卡券使用“已过期”状态；已过期券保留追踪，真正已失效的券实例不进入客户列表、详情或统计。</li><li>再次分享只复用普通活动分享入口，不绑定目标客户，也不建立原券到新券的特殊链路。</li><li><a href="../../docs/sequence.html">查看从创建活动到再次分享的完整业务时序图</a>。</li></ul></section>
+      <section class="card full"><h2>11月增量：分享海报规则配置</h2><table><thead><tr><th>区域</th><th>交互</th><th>边界</th></tr></thead><tbody><tr><td>默认模板 / 背景图</td><td>使用系统模板或上传背景图，建议3:4。</td><td>正式格式、尺寸、大小和审核限制待确认。</td></tr><tr><td>默认文案</td><td>维护标题、副标题和二维码引导语，输入后刷新右侧预览。</td><td>员工读取后仍可在既有页面编辑。</td></tr><tr><td>海报效果预览</td><td>组合默认背景、三段文案、示例二维码、门店和员工姓名。</td><td>示例信息只用于排版，不代表生成真实二维码。</td></tr><tr><td>恢复 / 保存</td><td>恢复当前已生效值；保存给出原型反馈。</td><td>全局/活动粒度、模板数量、发布/生效机制待确认。</td></tr></tbody></table><p class="note">004本轮只改本页面；普通/组合活动允许分享角色、员工权限、门店/角色过滤和报表角色维度不变。</p></section>
+      <section class="card"><h2>数据权限与脱敏</h2><ul><li>普通员工只看当前账号；门店、区域、总部按授权范围查看。</li><li>手机号、oneID、VIN继续脱敏；导出继承当前权限与脱敏。</li><li>历史 SA 无账号 ID 时显示“--”，并标记“历史SA数据”。</li><li>渠道枚举仍沿用“SA动态二维码”。</li></ul></section>
+      <section class="card"><h2>演示说明</h2><ul><li>全部数据为 Mock，不代表接口字段已定稿。</li><li>原型使用 Hash 路由，可直接双击 index.html 通过 file 协议访问。</li><li>原 SA/P0 原型只读，本目录为独立复制品。</li></ul><p class="note">版本：2026-08-27 / 11月海报规则增量评审稿</p></section>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <link rel="icon" href="data:,">
+  <title>门店员工动态二维码</title>
+  <link rel="stylesheet" href="assets/css/global.css?v=20260827-1">
+  <link rel="stylesheet" href="assets/css/app.css?v=20260827-1">
+  <link rel="stylesheet" href="annotations/annotation.css?v=20260827-1">
+</head>
+<body>
+  <div class="prototype-canvas">
+    <main id="app" class="mobile-prototype" aria-live="polite">
+      <div class="initial-loading">页面加载中…</div>
+    </main>
+  </div>
+  <div id="sheetRoot"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="mock/data.js?v=20260827-1"></script>
+  <script src="js/common.js?v=20260827-1"></script>
+  <script src="js/app.js?v=20260827-1"></script>
+  <script>
+    window.AnnotationConfig = {
+      projectId: "employee-inherited-mobile-20260820",
+      dataVersion: "20260827-1",
+      page: function () { return window.getCurrentPage ? window.getCurrentPage() : "sa-select"; }
+    };
+  </script>
+  <script src="annotations/annotations.js?v=20260827-1"></script>
+  <script src="annotations/annotation-runtime.js?v=20260827-1"></script>
+</body>
+</html>

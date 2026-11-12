@@ -1,0 +1,184 @@
+commit 28a7e3ecccd6f57934300e764ba3b2d00d645c0c
+Author:     huanghaofa <270182009@qq.com>
+AuthorDate: Thu Sep 10 14:04:51 2026 +0800
+Commit:     huanghaofa <270182009@qq.com>
+CommitDate: Thu Sep 10 14:04:51 2026 +0800
+
+    Publish annotated combination activity prototype
+
+diff --git a/combo-activity/annotations.js b/combo-activity/annotations.js
+new file mode 100644
+index 0000000..3ebaf3c
+--- /dev/null
++++ b/combo-activity/annotations.js
+@@ -0,0 +1,49 @@
++(function(){
++  'use strict';
++  var d=window.StateBoardData;
++  d.version='20260907-005-rule-notes';
++  d.initialView={x:60,y:130,width:4910,height:4100,maxScale:.65};
++  var sections={
++    'policy-group':[80,160,850,2250],login:[1100,160,850,740],
++    lottery:[2200,160,2330,1450],results:[1100,1850,3850,2370]
++  };
++  d.sections.forEach(function(s){var r=sections[s.id];s.x=r[0];s.y=r[1];s.width=r[2];s.height=r[3];});
++  var positions={'policy':[170,350],'combo-upcoming':[170,1730],'combo-ended':[170,2070],'login-dialog':[1190,360],'lottery-ready':[2290,410],'lottery-won':[3030,410],'lottery-lost':[3770,410],'number-partial':[1190,2100],'bound-folded':[1930,2100],'verified-expanded':[2670,2100],'all-locked':[3410,2100],'audience-none':[4150,2100]};
++  d.nodes.forEach(function(n){n.x=positions[n.id][0];n.y=positions[n.id][1];});
++  var routes={
++    E01:{points:[[125,542.5846],[125,1863.6923]],labelX:125,labelY:1665.526},
++    E02:{points:[[125,632.4574],[125,2203.6923]],labelX:83,labelY:1418.075},
++    E03:{points:[[535,516.9067],[535,315],[1130,315],[1130,490]],labelX:910,labelY:315},
++    E04:{points:[[1370,890],[1010,890],[1010,1630],[535,1630],[535,670.9744]],labelX:1010,labelY:1330},
++    E05:{points:[[535,799.3641],[535,1540],[2180,1540],[2180,744.3179]],labelX:1700,labelY:1540},
++    E06:{points:[[535,1197.3723],[535,1780],[1562,1780]],labelX:1280,labelY:1780},
++    E07:{points:[[2675,702.5282],[2985,702.5282]],labelX:2830,labelY:702.5282},
++    E08:{points:[[2460,340],[3940,340]],labelX:3600,labelY:340},
++    E09:{points:[[3200,1620],[3140.5,1620]],labelX:3200,labelY:1680},
++    E10:{points:[[3940,1700],[4218.5,1700]],labelX:4180,labelY:1760},
++    E11:{points:[[3132,295],[2392,295]],labelX:2780,labelY:295},
++    E12:{points:[[4480,995.0564],[4480,1470],[2460,1470]],labelX:3600,labelY:1470},
++    E13:{points:[[1040,2063.3],[1040,1680],[535,1680],[535,1505.5077]],labelX:1040,labelY:1930}
++  };
++  d.edges.forEach(function(e){var r=routes[e.id];Object.assign(e,r);e.points=r.points.map(function(p){return{x:p[0],y:p[1]};});});
++  var raw=[
++    ['R01','政策页只展示配置内容','展示配置图片和链接，无券卡/车牌；参与按钮非吸底。','F02、F03','已确认','',560,350,'policy'],
++    ['R02','组合活动时间是整页门禁','进入及点击均校验组合时间，未开始/结束不发券、不抽奖。','F04、F05','已确认需求与原型重验','Q03：时间来源、边界与在途请求',560,630,'policy'],
++    ['R17','这些旁注只用于评审','旁注只供评审，不进入用户页面。浅黄标待确认，编号与PRD一致。','F36','用户新增需求','',560,1030,'policy'],
++    ['R03','未登录先登录','未登录先登录，取消不参与，成功后继续资格校验。','F06','已确认','Q08：登录及跨端返回',1580,360,'login-dialog'],
++    ['R04','一次取得参与身份','一次参与取得OneID及VIN等级；异常不降级、不发券。','F07、F33','原型细节待确认','Q01、Q10：无 VIN / 多 VIN、接口合同',1580,630,'login-dialog'],
++    ['R05','各子活动独立校验','人群、VIN等级及子活动时间逐个匹配，不取全组最高等级拦截。','F01、F08、F09','已确认','Q02、Q04：人群对象及条件优先级',1150,1020,'login-dialog'],
++    ['R06','先发符合条件的普通券','符合条件的普通券先发，等级不满足不阻断其他子活动。','F10、F34','已确认；异常待确认','Q06：技术失败、重试与补偿',1500,1020,'login-dialog'],
++    ['R07','重复参与仍可补领','重验新资格，不重复发旧券，不用组合已参与拦截升级补领。','F11','产品目标；机制待确认','Q05：防重、次数及并发机制',1850,1020,'login-dialog'],
++    ['R08','抽奖不只判断首次点击','每次参与检查符合条件且未参加的抽奖；中奖才发实际奖券。','F12、F13、F14','已确认；记录时点待确认','Q07：记已参加时点、多抽奖顺序与异常恢复',2660,850,'lottery-ready'],
++    ['R09','只展示真正获得的券','已领区仅实际中奖和非抽奖已获券；预览券不计数量，零领取不写本次成功。','F15、F16','已确认；数量口径待确认','Q09、Q11：锁级奖品预览及数量口径',1560,2100,'number-partial'],
++    ['R10','中奖活动排在前面','中奖抽奖活动优先，其余按配置顺序；活动仅保留名称。','F17、F22','已确认','',1560,2440,'number-partial'],
++    ['R11','两层折叠彼此独立','首个已领活动展示，其余折叠；单活动大于3券可独立展开。','F18、F19','已确认','',2300,2100,'bound-folded'],
++    ['R12','没有手动激活步骤','已领可用券无需再次激活，隐藏有效期与状态小字；只有过期券。','F20、F21','已确认','Q11：历史券及其他券状态范围',2300,2370,'bound-folded'],
++    ['R13','认证在前，绑车在后','认证在绑车前；仅解锁等级条件，不保证抽奖必中。配置券图保持原貌，提示按钮在图外。','F23、F24、F25、F26','已确认','Q02、Q09：人群及未解锁奖品预览',1560,2730,'number-partial'],
++    ['R14','零领取不提示领取成功','等级不足仍展示结果；人群不符不作升级承诺；未开始保留倒计时。','F27、F28、F29','已确认与原型空态','Q03、Q04：时间边界与多条件优先级',3780,2100,'all-locked'],
++    ['R15','升级回来需要再点参与','升级成功返回政策页，手动再次参与重验，不自动发券。','F32','当前原型表达','Q08：绑车 / 认证跨端回流',3040,2100,'verified-expanded'],
++    ['R16','更多优惠券在内容末尾','查看更多优惠券在自然内容末尾去领券中心；隐藏返回活动按钮。','F30、F31','已确认','Q08：领券中心实际跳转地址',2300,2690,'bound-folded']
++  ];
++  d.annotations=raw.map(function(r){return{id:r[0],title:r[1],text:r[2],functions:r[3],status:r[4],pending:r[5],x:r[6],y:r[7],width:310,nodeId:r[8]};});
++})();
+diff --git a/combo-activity/app.js b/combo-activity/app.js
+index 5c8819b..789d9b0 100644
+--- a/combo-activity/app.js
++++ b/combo-activity/app.js
+@@ -21,6 +21,8 @@
+   data.sections.forEach(function(section){sectionMap.set(section.id,section);var box=el('section','board-section');box.dataset.sectionId=section.id;box.style.cssText='left:'+section.x+'px;top:'+section.y+'px;width:'+section.width+'px;height:'+section.height+'px';var caption=el('div','section-caption');caption.append(el('h2','',section.title),el('p','',section.subtitle||''));box.append(caption);sectionHost.append(box);var button=el('button','',section.shortTitle||section.title);button.dataset.sectionId=section.id;button.addEventListener('click',function(){focusSection(section.id);});nav.append(button);});
+   nodeMap.forEach(function(n){var card=el('article','state-node '+n.type+(n.emphasis?' emphasis':''));card.dataset.nodeId=n.id;card.style.cssText='left:'+n.x+'px;top:'+n.y+'px;width:'+n.width+'px;height:'+n.height+'px';card.setAttribute('aria-label',n.title);if(n.type==='screen'||n.type==='dialog'){var header=el('div','node-header');header.append(el('div','node-code',pageGroup(n)),el('h3','',n.title),el('p','',n.description||''));card.append(header);if(n.type==='dialog'){var surface=el('div','dialog-surface');surface.append(el('p','dialog-message','您尚未登录，请登录后参与活动'));var actions=el('div','dialog-actions');actions.append(el('span','dialog-action secondary','取消'),el('span','dialog-action primary','去登录'));surface.append(actions);card.append(surface);}else{var m=manifest[n.screenId];if(m){var img=el('img');img.src=m.src;img.alt=n.title;img.draggable=false;img.width=m.width;img.height=m.height;img.decoding='async';card.append(img);}else{card.append(el('div','image-missing','该页面截图待补充'));}}}else if(n.type==='decision'){var diamond=sEl('svg',{class:'decision-shape',viewBox:'0 0 '+n.width+' '+n.height,'aria-hidden':'true'});diamond.append(sEl('polygon',{points:(n.width/2)+',0 '+n.width+','+(n.height/2)+' '+(n.width/2)+','+n.height+' 0,'+(n.height/2)}));var copy=el('div','decision-content');copy.append(el('h3','',n.title),el('p','',n.description||''));card.append(diamond,copy);}else{card.append(el('h3','',n.title),el('p','',n.description||''));}nodesHost.append(card);n.element=card;});
+   function anchor(n,side,ratio){ratio=typeof ratio==='number'?ratio:.5;var r=rectOf(n);if(side==='left')return{x:r.x,y:r.y+r.height*ratio};if(side==='top')return{x:r.x+r.width*ratio,y:r.y};if(side==='bottom')return{x:r.x+r.width*ratio,y:r.y+r.height};return{x:r.x+r.width,y:r.y+r.height*ratio};}
++  var annotations=data.annotations||[],annotationHost=document.getElementById('annotations');
++  annotations.forEach(function(a){var card=el('aside','rule-card');card.dataset.ruleId=a.id;card.dataset.nodeId=a.nodeId;card.style.cssText='left:'+a.x+'px;top:'+a.y+'px;width:'+a.width+'px';var heading=el('div','rule-heading');heading.append(el('span','rule-id',a.id),el('span','rule-status',a.status));card.append(heading,el('h3','',a.title),el('p','rule-text',a.text),el('p','rule-functions','功能清单 '+a.functions));if(a.pending)card.append(el('p','rule-pending','待确认 · '+a.pending));annotationHost.append(card);a.element=card;});
+   function route(edge){var from=getNode(edge.from)||sectionMap.get(edge.from),to=getNode(edge.to)||sectionMap.get(edge.to);if(!from||!to)return null;var fs=edge.fromSide||'right',ts=edge.toSide||'left',a=anchor(from,fs,edge.fromRatio),b=anchor(to,ts,edge.toRatio);if(edge.points&&edge.points.length)return[a].concat(edge.points,[b]);var points=[a];if((fs==='left'||fs==='right')&&(ts==='left'||ts==='right')){var mx=(a.x+b.x)/2;points.push({x:mx,y:a.y},{x:mx,y:b.y});}else if((fs==='top'||fs==='bottom')&&(ts==='top'||ts==='bottom')){var my=(a.y+b.y)/2;points.push({x:a.x,y:my},{x:b.x,y:my});}else if(fs==='left'||fs==='right'){points.push({x:b.x,y:a.y});}else{points.push({x:a.x,y:b.y});}points.push(b);return points;}
+   function midpoint(points){var best={length:-1,x:0,y:0};for(var i=1;i<points.length;i++){var a=points[i-1],b=points[i],len=Math.hypot(b.x-a.x,b.y-a.y);if(len>best.length)best={length:len,x:(a.x+b.x)/2,y:(a.y+b.y)/2};}return best;}
+   var defs=sEl('defs');['flow','detail','return'].forEach(function(kind){var marker=sEl('marker',{id:'arrow-'+kind,viewBox:'0 0 12 12',refX:10,refY:6,markerWidth:9,markerHeight:9,orient:'auto',markerUnits:'userSpaceOnUse'});marker.append(sEl('path',{d:'M 1 1 L 11 6 L 1 11 Z',fill:kind==='return'?'#a85b4e':kind==='detail'?'#7c8793':'#5c6673'}));defs.append(marker);});svg.append(defs);
+@@ -32,13 +34,27 @@
+   function fitRect(rect,maxScale){var w=viewport.clientWidth,h=viewport.clientHeight,pad=Math.min(60,w*.06),scale=clamp(Math.min((w-2*pad)/rect.width,(h-2*pad-38)/rect.height,maxScale||1),MIN,MAX);setCamera((w-rect.width*scale)/2-rect.x*scale,(h-38-rect.height*scale)/2-rect.y*scale,scale);}
+   function selectNode(id){if(selected&&getNode(selected))getNode(selected).element.classList.remove('selected');selected=id;var n=getNode(id);if(n)n.element.classList.add('selected');}
+   function setActiveSection(id){activeSection=id;nav.querySelectorAll('button').forEach(function(b){b.classList.toggle('active',b.dataset.sectionId===id);});}
+-  function focusNode(id,options){var n=getNode(id);if(!n)return false;selectNode(id);setActiveSection(n.sectionId);options=options||{};if(options.full)fitRect(rectOf(n),1);else{var w=viewport.clientWidth,h=viewport.clientHeight,scale=Math.min(options.scale||1,(w-56)/n.width);scale=clamp(scale,MIN,MAX);setCamera((w-n.width*scale)/2-n.x*scale,30-n.y*scale,scale);}closeList();return true;}
++  function focusNode(id,options){var n=getNode(id);if(!n)return false;selectNode(id);setActiveSection(n.sectionId);options=options||{};if(options.full)fitRect(rectOf(n),1);else{var beside=annotations.filter(function(a){return a.nodeId===id&&a.x>=n.x+n.width&&a.x<n.x+n.width+100&&a.y<n.y+750;});var viewWidth=beside.length?Math.max.apply(null,beside.map(function(a){return a.x+a.width-n.x;})):n.width;var w=viewport.clientWidth,h=viewport.clientHeight,scale=Math.min(options.scale||1,(w-40)/viewWidth);scale=clamp(scale,MIN,MAX);setCamera((w-viewWidth*scale)/2-n.x*scale,30-n.y*scale,scale);}closeList();return true;}
++  function focusRule(id){var a=annotations.find(function(item){return item.id===id;});if(!a)return false;selectNode(a.nodeId);fitRect({x:a.x,y:a.y,width:a.width,height:a.element.offsetHeight},1.4);closeList();return true;}
+   function focusSection(id){var section=sectionMap.get(id);if(!section)return false;selectNode(null);setActiveSection(id);fitRect(section,.72);closeList();return true;}
+   function fitAll(){selectNode(null);setActiveSection(null);fitRect(bounds,.65);closeList();}
+   function zoomAt(scale,x,y){scale=clamp(scale,MIN,MAX);var wx=(x-camera.x)/camera.scale,wy=(y-camera.y)/camera.scale;setCamera(x-wx*scale,y-wy*scale,scale);}
+   function centerZoom(factor){zoomAt(camera.scale*factor,viewport.clientWidth/2,viewport.clientHeight/2);}
+   function point(event){var r=viewport.getBoundingClientRect();return{x:event.clientX-r.left,y:event.clientY-r.top};}
+-  viewport.addEventListener('wheel',function(event){event.preventDefault();var p=point(event);zoomAt(camera.scale*Math.exp(-event.deltaY*.0015),p.x,p.y);},{passive:false});
++  viewport.addEventListener('wheel',function(event){
++    event.preventDefault();
++    // Normalize line/page wheel units; camera translation is in viewport pixels.
++    var mode=event.deltaMode,dx=event.deltaX,dy=event.deltaY;
++    if(mode===1){var line=parseFloat(getComputedStyle(viewport).lineHeight)||16;dx*=line;dy*=line;}
++    else if(mode===2){dx*=viewport.clientWidth;dy*=viewport.clientHeight;}
++    if(event.ctrlKey||event.metaKey){
++      if(dy!==0){var p=point(event);zoomAt(camera.scale*Math.exp(-dy*.0015),p.x,p.y);}
++    }else{
++      // Some mice report Shift+wheel as deltaY; native deltaX must not swap twice.
++      if(event.shiftKey&&dx===0){dx=dy;dy=0;}
++      setCamera(camera.x-dx,camera.y-dy,camera.scale);
++    }
++  },{passive:false});
+   function gestureStart(){var ps=Array.from(pointers.values());if(ps.length===1)gesture={type:'pan',p:ps[0],x:camera.x,y:camera.y};else if(ps.length>=2){var a=ps[0],b=ps[1];gesture={type:'pinch',distance:Math.hypot(a.x-b.x,a.y-b.y),scale:camera.scale,mid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2},x:camera.x,y:camera.y};}else gesture=null;}
+   viewport.addEventListener('pointerdown',function(event){if(event.button!==0&&event.pointerType==='mouse')return;pointers.set(event.pointerId,point(event));viewport.setPointerCapture(event.pointerId);viewport.classList.add('dragging');gestureStart();event.preventDefault();});
+   viewport.addEventListener('pointermove',function(event){if(!pointers.has(event.pointerId))return;pointers.set(event.pointerId,point(event));var ps=Array.from(pointers.values());if(!gesture)return;if(gesture.type==='pan'&&ps.length===1){setCamera(gesture.x+ps[0].x-gesture.p.x,gesture.y+ps[0].y-gesture.p.y,camera.scale);}else if(gesture.type==='pinch'&&ps.length>=2){var a=ps[0],b=ps[1],scale=clamp(gesture.scale*Math.hypot(a.x-b.x,a.y-b.y)/Math.max(gesture.distance,1),MIN,MAX),mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};setCamera(mid.x-(gesture.mid.x-gesture.x)/gesture.scale*scale,mid.y-(gesture.mid.y-gesture.y)/gesture.scale*scale,scale);}});
+@@ -48,11 +64,11 @@
+   function closeList(){list.hidden=true;document.getElementById('list-toggle').setAttribute('aria-expanded','false');}
+   function openList(){list.hidden=false;document.getElementById('list-toggle').setAttribute('aria-expanded','true');search.focus();}
+   document.getElementById('list-toggle').addEventListener('click',function(){if(list.hidden)openList();else closeList();});document.getElementById('list-close').addEventListener('click',closeList);
+-  function renderList(){var q=search.value.trim().toLowerCase(),host=document.getElementById('search-results');host.replaceChildren();var found=0;data.sections.forEach(function(section){var group=data.nodes.filter(function(n){return n.sectionId===section.id&&(n.type==='screen'||n.type==='dialog')&&(!q||[n.title,n.description,pageGroup(n)].join(' ').toLowerCase().indexOf(q)>=0);});if(!group.length)return;host.append(el('div','result-group-label',section.title));group.forEach(function(n){found++;var button=el('button','result-item',n.title);button.append(el('small','',pageGroup(n)));button.addEventListener('click',function(){focusNode(n.id);});host.append(button);});});if(!found)host.append(el('div','no-results','没有匹配的页面'));}
++  function renderList(){var q=search.value.trim().toLowerCase(),host=document.getElementById('search-results');host.replaceChildren();var found=0;data.sections.forEach(function(section){var group=data.nodes.filter(function(n){return n.sectionId===section.id&&(n.type==='screen'||n.type==='dialog')&&(!q||[n.title,n.description,pageGroup(n)].join(' ').toLowerCase().indexOf(q)>=0);});if(!group.length)return;host.append(el('div','result-group-label',section.title));group.forEach(function(n){found++;var button=el('button','result-item',n.title);button.append(el('small','',pageGroup(n)));button.addEventListener('click',function(){focusNode(n.id);});host.append(button);});});var rules=annotations.filter(function(a){return !q||[a.id,a.title,a.text,a.functions,a.pending].join(' ').toLowerCase().indexOf(q)>=0;});if(rules.length){host.append(el('div','result-group-label','规则旁注 · 与 PRD 同编号'));rules.forEach(function(a){found++;var button=el('button','result-item rule-result',a.id+' · '+a.title);button.addEventListener('click',function(){focusRule(a.id);});host.append(button);});}if(!found)host.append(el('div','no-results','没有匹配的页面或规则'));}
+   search.addEventListener('input',renderList);renderList();
+   window.addEventListener('keydown',function(event){if(event.key==='Escape'){closeList();return;}if(event.target.matches('input,textarea'))return;if(event.key==='+'||event.key==='='){event.preventDefault();centerZoom(1.25);}if(event.key==='-'){event.preventDefault();centerZoom(.8);}if(event.key==='0'){event.preventDefault();fitAll();}});
+   window.addEventListener('resize',schedule);
+-  window.StateBoard={focusNode:focusNode,focusSection:focusSection,fitAll:fitAll,getState:function(){return{camera:Object.assign({},camera),selectedNode:selected,activeSection:activeSection,nodeCount:nodeMap.size,edgeCount:edgeGeometry.length,bounds:Object.assign({},bounds),nodes:Array.from(nodeMap.values()).map(function(n){return{id:n.id,x:n.x,y:n.y,width:n.width,height:n.height,type:n.type,screenId:n.screenId};}),edges:edgeGeometry,headHeight:HEAD};}};
++  window.StateBoard={focusNode:focusNode,focusRule:focusRule,focusSection:focusSection,fitAll:fitAll,getState:function(){return{camera:Object.assign({},camera),selectedNode:selected,activeSection:activeSection,nodeCount:nodeMap.size,edgeCount:edgeGeometry.length,annotationCount:annotations.length,bounds:Object.assign({},bounds),nodes:Array.from(nodeMap.values()).map(function(n){return{id:n.id,x:n.x,y:n.y,width:n.width,height:n.height,type:n.type,screenId:n.screenId};}),edges:edgeGeometry,headHeight:HEAD};}};
+   document.getElementById('empty').hidden=data.nodes.length>0;
+   var requested=new URLSearchParams(location.search).get('node');if(requested&&focusNode(requested)){}else if(data.initialView){fitRect(data.initialView,data.initialView.maxScale||.7);}else if(data.sections.length){var first=data.sections[0];setActiveSection(first.id);fitRect({x:first.x,y:first.y,width:Math.min(first.width,1900),height:Math.min(first.height,1300)},.7);}else fitAll();render();
+ })();
+diff --git a/combo-activity/index.html b/combo-activity/index.html
+index 8c9d860..1eb4535 100644
+--- a/combo-activity/index.html
++++ b/combo-activity/index.html
+@@ -3,34 +3,36 @@
+ <head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+-  <title>组合活动 · 页面状态连线图</title>
+-  <link rel="stylesheet" href="styles.css">
++  <title>组合活动 · 页面状态与规则标注</title>
++  <link rel="stylesheet" href="styles.css?v=20260910-007">
+ <style>.flow-link,.home-link{display:inline-flex;align-items:center;justify-content:center;padding:9px 12px;border:1px solid #d6d9df;border-radius:5px;color:#44566b;background:#fff;text-decoration:none;font-size:13px;white-space:nowrap}.flow-link:hover,.home-link:hover{background:#eef1f5}@media(max-width:760px){.flow-link,.home-link{padding:7px 8px;font-size:12px}}</style>
+ </head>
+ <body>
+   <header class="toolbar">
+-    <div class="brand"><span class="brand-mark" aria-hidden="true">⌘</span><div><h1>组合活动 · 页面状态连线图</h1><p>四组页面状态直接展示，沿箭头阅读</p></div></div>
++    <div class="brand"><span class="brand-mark" aria-hidden="true">⌘</span><div><h1>组合活动 · 页面状态与规则标注</h1><p>12 种页面状态 · 17 条评审规则 · 浅黄色为待确认</p></div></div>
++    <div class="document-links"><a class="flow-link" href="https://docs.qq.com/doc/DUENpdGtxTVdxUHJN" target="_blank" rel="noopener noreferrer">PRD ↗</a><a class="flow-link" href="https://docs.qq.com/sheet/DUG9hRFBXUkdERk5V" target="_blank" rel="noopener noreferrer">功能清单 ↗</a></div>
+     <nav id="section-nav" aria-label="流程片区"></nav>
+     <a class="home-link" href="../index.html">九月总导航</a>
+     <a class="flow-link" href="flows.html">业务流程图</a>
+     <button id="list-toggle" class="tool-button" aria-expanded="false" aria-controls="page-list">页面清单</button>
+   </header>
+-  <main id="viewport" tabindex="0" aria-label="无限画布，拖动平移，滚轮缩放">
+-    <div id="world"><div id="sections"></div><svg id="connections" xmlns="http://www.w3.org/2000/svg" aria-label="页面之间的跳转条件"></svg><div id="nodes"></div></div>
++  <main id="viewport" tabindex="0" aria-label="无限画布，滚轮或拖动平移，按住Ctrl或Command加滚轮缩放">
++    <div id="world"><div id="sections"></div><svg id="connections" xmlns="http://www.w3.org/2000/svg" aria-label="页面之间的跳转条件"></svg><div id="nodes"></div><div id="annotations" aria-label="页面旁规则说明"></div></div>
+     <div id="empty" hidden>页面状态正在准备中</div>
+   </main>
+   <aside id="page-list" hidden aria-label="页面清单">
+     <div class="list-head"><strong>查找页面</strong><button id="list-close" class="icon-button" aria-label="关闭清单">×</button></div>
+-    <label class="search-label"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索页面状态…" autocomplete="off"></label>
++    <label class="search-label"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索页面或规则编号 R01…" autocomplete="off"></label>
+     <div id="search-results"></div>
+   </aside>
+   <footer class="canvas-tools">
+-    <span class="canvas-hint">拖拽平移 · 滚轮缩放</span>
++    <span class="canvas-hint">滚轮 / 拖拽平移 · Ctrl / ⌘ + 滚轮缩放</span>
+     <div class="zoom-tools"><button id="fit-all" title="查看整张图">全图</button><button id="zoom-out" aria-label="缩小">−</button><button id="zoom-reset" title="以100%查看当前位置">100%</button><button id="zoom-in" aria-label="放大">＋</button></div>
+   </footer>
+   <div id="status" class="status" aria-live="polite"></div>
+   <script src="screen-manifest.js"></script>
+   <script src="data.js"></script>
+-  <script src="app.js"></script>
++  <script src="annotations.js?v=20260910-007"></script>
++  <script src="app.js?v=20260910-007"></script>
+ </body>
+ </html>
+diff --git a/combo-activity/styles.css b/combo-activity/styles.css
+index 6a7b4f7..005e167 100644
+--- a/combo-activity/styles.css
++++ b/combo-activity/styles.css
+@@ -1,2 +1,10 @@
+ :root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#292c31;background:#f1f2f4;font-synthesis:none}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}button,input{font:inherit}button{color:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #4377b8;outline-offset:3px}button{border:1px solid #d6d9df;background:#fff;border-radius:5px}button:hover{background:#f4f5f7}button:active{background:#e9edf2}.toolbar{height:86px;position:absolute;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:22px;padding:14px 24px;border-bottom:1px solid #d8dbe0;background:#ffffffed;box-shadow:0 1px 4px #1d252908}.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}.brand-mark{width:34px;height:34px;background:#30363d;color:white;border-radius:6px;display:grid;place-items:center;font-size:24px}.brand h1{font-size:17px;font-weight:650;margin:0 0 6px}.brand p{font-size:12px;color:#737b86;margin:0}#section-nav{display:flex;align-items:center;gap:4px;flex:1;min-width:0;overflow:auto;scrollbar-width:none}#section-nav::-webkit-scrollbar{display:none}#section-nav button{flex-shrink:0;border-color:transparent;background:transparent;padding:9px 11px;white-space:nowrap;font-size:13px;color:#616a76}#section-nav button.active{background:#eef1f5;color:#232b35;font-weight:650}#section-nav button:hover{background:#f3f4f6}.tool-button{padding:9px 12px;white-space:nowrap;font-size:13px}#viewport{position:absolute;inset:86px 0 0;overflow:hidden;cursor:grab;touch-action:none;background-image:radial-gradient(#cfd3da .85px,transparent .85px);background-size:20px 20px;outline:none}#viewport.dragging{cursor:grabbing}#world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;width:1px;height:1px;user-select:none}#sections,#nodes{position:absolute;inset:0;width:1px;height:1px}#sections{z-index:0}#connections{position:absolute;overflow:visible;left:0;top:0;z-index:1;pointer-events:none}#nodes{z-index:2}.board-section{position:absolute;border:1px solid #d7dbe0;background:#f9fafbbf;border-radius:4px;pointer-events:none}.section-caption{position:absolute;left:28px;right:28px;top:25px}.section-caption h2{font-size:27px;margin:0 0 10px;font-weight:650;letter-spacing:.4px}.section-caption p{font-size:16px;color:#747c87;margin:0;line-height:1.6}.state-node{position:absolute;margin:0;outline:1px solid #c3c8d0;background:white;box-shadow:0 3px 9px #1f27360b}.node-header{height:100px;padding:12px 14px;border-bottom:1px solid #e1e3e7;background:white;overflow:hidden}.node-header .node-code{color:#78808b;font-size:10px;letter-spacing:.4px;margin-bottom:4px;line-height:1}.node-header h3{margin:0 0 4px;font-size:17px;font-weight:650;line-height:1.3}.node-header p{font-size:12px;line-height:1.35;color:#717986;margin:0}.state-node img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-drag:none;background:#fff}.state-node.selected{outline:3px solid #65788f;box-shadow:0 0 0 9px #65788f1a}.state-node.decision{outline:0;box-shadow:none;background:transparent;display:flex;align-items:center;justify-content:center;text-align:center;padding:29px}.decision-shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:-1}.decision-shape polygon{fill:#fff;stroke:#626b76;stroke-width:1.5}.decision-content h3{font-size:18px;line-height:1.5;margin:0 0 7px;font-weight:600}.decision-content p{font-size:13px;line-height:1.5;color:#727985;margin:0}.state-node.note{background:#fffdf7;outline:1px solid #e1d8c5;box-shadow:none;padding:20px 24px}.note h3{font-size:19px;line-height:1.5;font-weight:600;margin:0 0 10px}.note p{font-size:15px;line-height:1.7;margin:0;color:#6d665d;white-space:pre-line}.state-node.note.emphasis h3,.state-node.note.emphasis p{color:#ad3f34}.image-missing{padding:40px 18px;color:#a44b3e;font-size:15px}.edge-path{fill:none;stroke:#5c6673;stroke-width:2.1;stroke-linejoin:round;stroke-linecap:round}.edge-path.detail{stroke:#7c8793;stroke-dasharray:7 6}.edge-path.return{stroke:#a85b4e;stroke-dasharray:9 6}.edge-label rect{fill:#f9fafb;stroke:#e3e5e9;stroke-width:.6;rx:3}.edge-label text{fill:#48505c;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:15px;text-anchor:middle;dominant-baseline:middle}.edge-label.return text{fill:#a35446}#page-list{position:absolute;right:18px;top:100px;bottom:88px;width:306px;border:1px solid #d7dce2;border-radius:8px;background:#fffffff5;box-shadow:0 10px 35px #20263320;z-index:25;overflow:hidden;display:flex;flex-direction:column}#page-list[hidden]{display:none}.list-head{height:55px;padding:12px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee}.list-head strong{font-size:15px}.icon-button{border:0;font-size:25px;background:transparent;width:32px;height:32px;line-height:1}.search-label{display:flex;gap:7px;align-items:center;margin:13px 12px 10px;padding:8px 10px;border:1px solid #d7dce3;border-radius:4px;color:#8c949e}.search-label input{width:100%;border:0;outline:none;font-size:13px;background:transparent;color:#303944}.search-label input:focus-visible{outline:none}#search-results{overflow:auto;flex:1;padding:0 8px 12px}.result-group-label{color:#7b828d;font-size:11px;padding:14px 9px 5px}.result-item{display:block;text-align:left;width:100%;background:transparent;border:0;border-radius:4px;padding:10px 9px;font-size:13px;line-height:1.45}.result-item small{display:block;color:#9299a2;font-size:11px;margin-top:3px}.no-results{color:#7a828d;padding:20px 10px;font-size:13px}.canvas-tools{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:22;display:flex;align-items:center;gap:15px;background:#fff;border:1px solid #d4d8df;border-radius:7px;box-shadow:0 3px 16px #31384113;padding:6px 7px 6px 15px;white-space:nowrap}.canvas-hint{font-size:12px;color:#79828d}.zoom-tools{display:flex;align-items:center;gap:2px}.zoom-tools button{height:34px;border:0;padding:0 10px;font-size:13px;border-radius:4px}#zoom-in,#zoom-out{font-size:18px;width:34px;padding:0}#zoom-reset{width:58px;font-variant-numeric:tabular-nums}.status{position:absolute;left:20px;bottom:26px;padding:7px 9px;border-radius:4px;font-size:11px;color:#78828e;background:#f9fafbe8;pointer-events:none;max-width:28vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#empty{position:absolute;inset:0;display:grid;place-items:center;color:#7f8791}#empty[hidden]{display:none}@media(max-width:1100px){.toolbar{gap:12px;padding:12px 16px}.brand-mark{display:none}.brand h1{font-size:15px}.brand p{font-size:11px}#section-nav button{padding:9px 8px;font-size:12px}.status{display:none}}@media(max-width:760px){.toolbar{height:116px;padding:12px 14px;flex-wrap:wrap;gap:8px}.brand{flex:1}.brand h1{font-size:14px}.brand p{font-size:11px}#section-nav{order:3;flex-basis:100%;height:33px}#section-nav button{padding:7px 9px}.tool-button{font-size:12px;padding:7px 9px}#viewport{top:116px}.canvas-tools{bottom:14px;padding:6px;gap:0}.canvas-hint{display:none}#page-list{top:128px;left:12px;right:12px;width:auto;bottom:76px}.section-caption h2{font-size:27px}}
+ .state-node.dialog{background:#fff}.dialog-surface{height:160px;padding:25px 25px 22px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#fff}.dialog-message{margin:0;color:#555;font-size:15px;line-height:1.7;text-align:center}.dialog-actions{width:100%;display:flex;gap:22px;justify-content:center}.dialog-action{width:125px;height:37px;display:flex;align-items:center;justify-content:center;border-radius:3px;border:1px solid #b9b9b9;font-size:13px;pointer-events:none}.dialog-action.secondary{color:#ba3c32;background:#fff}.dialog-action.primary{color:#fff;background:#c63c32;border-color:#c63c32}
++
++/* DFN-20260907-005: review notes stay outside original screenshots. */
++#annotations{position:absolute;inset:0;width:1px;height:1px;z-index:3}
++.rule-card{position:absolute;background:#fff;border:1px solid #cbd3df;border-left:4px solid #557291;border-radius:8px;padding:18px 18px 16px;box-shadow:0 3px 9px #253a4c0b;user-select:text}
++.rule-heading{display:flex;align-items:center;gap:10px;margin-bottom:12px}.rule-id{font-weight:750;font-size:14px;color:#355976;background:#edf3f8;border-radius:4px;padding:4px 6px}.rule-status{color:#7a8591;font-size:11px;line-height:1.5}
++.rule-card h3{margin:0 0 10px;font-size:18px;line-height:1.5;color:#263e54}.rule-text{font-size:15px;line-height:1.8;color:#48576a;margin:0}.rule-functions{font-size:11px;color:#8993a0;line-height:1.6;margin:12px 0 0}.rule-pending{font-size:12px;line-height:1.7;padding:9px 10px;margin:12px 0 0;background:#fff7dd;color:#92703f;border-radius:4px;border:1px solid #efdfaf}
++.toolbar{height:122px;flex-wrap:wrap;gap:8px 14px;padding:12px 24px}.brand{flex:1}.document-links{display:flex;gap:7px}#section-nav{order:4;flex-basis:100%;height:33px}#viewport{top:122px}#page-list{top:136px}.flow-link:focus-visible{outline:2px solid #4377b8;outline-offset:3px}
++@media(max-width:760px){.toolbar{height:155px;padding:10px 12px;gap:7px 8px}.brand{flex-basis:100%;height:38px}.brand h1{font-size:14px}.brand p{font-size:10px}.document-links{margin-right:auto}#section-nav{order:4;height:32px}.tool-button{padding:7px 8px}#viewport{top:155px}#page-list{top:166px}.canvas-tools{bottom:12px}}

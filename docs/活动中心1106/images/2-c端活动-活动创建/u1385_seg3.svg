@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" preserveAspectRatio="xMinYMid meet" viewBox="536 1970  18 16" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask fill="white" id="clip1262">
+      <path d="M 616.5 1984  L 653.5 1984  L 653.5 2016  L 616.5 2016  Z M 536 1966  L 746 1966  L 746 2021  L 536 2021  Z " fill-rule="evenodd" />
+    </mask>
+  </defs>
+  <path d="M 545.5 1976  L 545.5 1995  A 5 5 0 0 0 550.5 2000.5 L 732 2000.5  A 5 5 0 0 1 737.5 2005.5 L 737.5 2007  " stroke-width="1" stroke-dasharray="17,8" stroke="#d9001b" fill="none" mask="url(#clip1262)" />
+  <path d="M 545.5 1975  A 3 3 0 0 0 542.5 1978 A 3 3 0 0 0 545.5 1981 A 3 3 0 0 0 548.5 1978 A 3 3 0 0 0 545.5 1975 Z M 731.2 2006  L 737.5 2012  L 743.8 2006  L 731.2 2006  Z " fill-rule="nonzero" fill="#d9001b" stroke="none" mask="url(#clip1262)" />
+</svg>

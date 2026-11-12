@@ -1,0 +1,31 @@
+{
+  "sha": "a47ad10fd8576cb6e1d751fcad23ee13ae5fb62e",
+  "parents": [],
+  "author_time": "2026-09-07T11:38:31+08:00",
+  "time": "2026-09-07T11:38:31+08:00",
+  "subject": "Initialize public prototype repository",
+  "message": "Initialize public prototype repository",
+  "changed": "A\tREADME.md\n",
+  "stat": "1 file changed, 9 insertions(+)",
+  "files": [
+    "README.md"
+  ],
+  "html": [],
+  "version": "V001",
+  "folder": "V001_20260907_a47ad10",
+  "repo": "combo-activity-tiered-claim-prototype",
+  "rid": "R07",
+  "domain": "卡券中心 活动中心",
+  "title": "建立组合活动公开仓库",
+  "kind": "初始化",
+  "changes": [
+    "仅新增公开仓库README及范围说明。",
+    "此提交没有HTML原型，后续提交发布运行页面。"
+  ],
+  "review": "按初始化记录保留。",
+  "entry": null,
+  "offline": false,
+  "offline_changes": [],
+  "path": "02_GitHub原型/combo-activity-tiered-claim-prototype/V001_20260907_a47ad10",
+  "preview_path": "02_GitHub原型/combo-activity-tiered-claim-prototype/V001_20260907_a47ad10/原始文件/"
+}

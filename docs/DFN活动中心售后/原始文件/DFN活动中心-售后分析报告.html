@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFN活动中心-售后系统深度分析报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #1565c0;
+            --secondary: #7b1fa2;
+            --success: #2e7d32;
+            --warning: #e65100;
+            --danger: #c62828;
+            --info: #0277bd;
+            --dark: #263238;
+            --light: #f5f5f5;
+            --b端-color: #e1f5fe;
+            --c端-color: #f3e5f5;
+            --行为-color: #fff3e0;
+            --商城-color: #e8f5e9;
+            --组合-color: #fce4ec;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+        }
+        
+        /* 导航栏 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1565c0 0%, #0d47a1 100%);
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-header p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .nav-section {
+            margin-bottom: 15px;
+        }
+        
+        .nav-section-title {
+            padding: 8px 25px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 10px 25px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: white;
+        }
+        
+        .nav-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: #ffeb3b;
+        }
+        
+        .nav-item.sub {
+            padding-left: 40px;
+            font-size: 13px;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px 40px;
+            min-height: 100vh;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(21, 101, 192, 0.3);
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .page-header .meta {
+            margin-top: 20px;
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* 章节 */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        /* 卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .card-badge {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: auto;
+        }
+        
+        .card-content {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .card-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+        
+        .card-list li {
+            padding: 6px 0;
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .card-list li::before {
+            content: "•";
+            color: #1565c0;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        /* 流程图容器 */
+        .flowchart-container {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
+        
+        .flowchart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .flowchart-title::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            background: #1565c0;
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+        
+        /* 表格样式 */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+        
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .tag-blue { background: #e3f2fd; color: #1565c0; }
+        .tag-purple { background: #f3e5f5; color: #7b1fa2; }
+        .tag-orange { background: #fff3e0; color: #e65100; }
+        .tag-green { background: #e8f5e9; color: #2e7d32; }
+        .tag-pink { background: #fce4ec; color: #c2185b; }
+        
+        /* 分类标签 */
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .category-tab:hover {
+            transform: scale(1.02);
+        }
+        
+        .category-tab.active {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .category-tab.b端 { background: var(--b端-color); border-color: var(--primary); color: var(--primary); }
+        .category-tab.c端 { background: var(--c端-color); border-color: var(--secondary); color: var(--secondary); }
+        .category-tab.行为 { background: var(--行为-color); border-color: var(--warning); color: var(--warning); }
+        .category-tab.商城 { background: var(--商城-color); border-color: var(--success); color: var(--success); }
+        .category-tab.组合 { background: var(--组合-color); border-color: var(--danger); color: var(--danger); }
+        
+        /* 详情展开 */
+        .detail-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .detail-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 步骤条 */
+        .step-bar {
+            display: flex;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .step-bar::before {
+            content: "";
+            position: absolute;
+            top: 24px;
+            left: 40px;
+            right: 40px;
+            height: 3px;
+            background: #e2e8f0;
+        }
+        
+        .step-item {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 auto 15px;
+            color: #999;
+        }
+        
+        .step-item.active .step-number {
+            border-color: #1565c0;
+            background: #1565c0;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .step-item.active .step-label {
+            color: #1565c0;
+        }
+        
+        /* 流程步骤 */
+        .process-steps {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .process-steps::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+        }
+        
+        .process-step {
+            position: relative;
+            padding: 15px 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            margin-left: 20px;
+        }
+        
+        .process-step::before {
+            content: "";
+            position: absolute;
+            left: -29px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #1565c0;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #1565c0;
+        }
+        
+        .process-step-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .process-step-content {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 状态卡片 */
+        .status-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .status-item {
+            padding: 15px 25px;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .status-arrow {
+            font-size: 24px;
+            color: #1565c0;
+            margin: 0 5px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            .main-content {
+                margin-left: 240px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .step-bar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .step-bar::before {
+                display: none;
+            }
+        }
+        
+        /* Mermaid 样式覆盖 */
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* 统计卡片 */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-card:nth-child(2) { background: linear-gradient(135deg, #7b1fa2 0%, #4a148c 100%); }
+        .stat-card:nth-child(3) { background: linear-gradient(135deg, #e65100 0%, #bf360c 100%); }
+        .stat-card:nth-child(4) { background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); }
+        .stat-card:nth-child(5) { background: linear-gradient(135deg, #c2185b 0%, #880e4f 100%); }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity:0.9;
+        }
+        
+        /* 系统交互卡片 */
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .system-card {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .system-card h4 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .system-card ul {
+            list-style: none;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .system-card li {
+            padding: 5px 0;
+        }
+        
+        /* 对比表格 */
+        .compare-table th {
+            text-align: center;
+        }
+        
+        .compare-table td:nth-child(1) {
+            font-weight: 600;
+            background: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>DFN活动中心</h1>
+            <p>售后系统深度分析报告</p>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">概览</div>
+            <a href="#overview" class="nav-item active">系统总览</a>
+            <a href="#categories" class="nav-item">活动分类总览</a>
+            <a href="#stats" class="nav-item">数据统计</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">五大分类</div>
+            <a href="#b端" class="nav-item">📦 B端触发活动</a>
+            <a href="#c端" class="nav-item">🎯 C端活动</a>
+            <a href="#行为" class="nav-item">⚡ 行为触发</a>
+            <a href="#商城" class="nav-item">🛒 商城类</a>
+            <a href="#组合" class="nav-item">🎪 组合活动</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">核心流程</div>
+            <a href="#create" class="nav-item sub">活动创建流程</a>
+            <a href="#coupon" class="nav-item sub">卡券生命周期</a>
+            <a href="#system" class="nav-item sub">系统交互</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">附录</div>
+            <a href="#summary" class="nav-item">汇总表</a>
+            <a href="#compare" class="nav-item">对比分析</a>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 页面标题 -->
+        <div class="page-header" id="overview">
+            <h1>DFN活动中心-售后系统</h1>
+            <p>深度分析报告 | 活动分类与流程全景图</p>
+            <div class="meta">
+                <span>📅 更新日期：2024-12</span>
+                <span>🏢 品牌：东风日产/启辰/英菲尼迪</span>
+                <span>📋 活动类型：21+种</span>
+            </div>
+        </div>
+
+        <!-- 统计概览 -->
+        <div class="stat-grid" id="stats">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">活动大类</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">21+</div>
+                <div class="stat-label">具体活动类型</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">10+</div>
+                <div class="stat-label">行为触发场景</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">关联系统</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">C端渠道</div>
+            </div>
+        </div>
+
+        <!-- 活动分类总览 -->
+        <section class="section" id="categories">
+            <div class="section-header">
+                <div class="section-icon" style="background: #e3f2fd;">📊</div>
+                <div>
+                    <h2 class="section-title">活动分类总览</h2>
+                    <p class="section-subtitle">五大分类 · 21+种具体活动类型</p>
+                </div>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #e1f5fe; color: #1565c0;">📦</div>
+                        <span class="card-title">B端触发活动</span>
+                        <span class="card-badge">6种类型</span>
+                    </div>
+                    <div class="card-content">
+                        由系统后台定时批量向目标用户发放卡券，无需用户主动参与。
+                    </div>
+                    <ul class="card-list">
+                        <li>维保-后台统一推送</li>
+                        <li>续保-OEM套餐活动</li>
+                        <li>续保-CVT变速箱</li>
+                        <li>续保-超值购活动</li>
+                        <li>取送车-双月活动</li>
+                        <li>取送车-首单优惠(存量)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #f3e5f5; color: #7b1fa2;">🎯</div>
+                        <span class="card-title">C端主动参与</span>
+                        <span class="card-badge">4种类型</span>
+                    </div>
+                    <div class="card-content">
+                        用户主动进入活动页面领取卡券，需用户主动点击操作。
+                    </div>
+                    <ul class="card-list">
+                        <li>BIMC双月活动</li>
+                        <li>BIMC会员周活动</li>
+                        <li>BIMC单店机动券</li>
+                        <li>C端主动领取</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #fff3e0; color: #e65100;">⚡</div>
+                        <span class="card-title">用户行为触发</span>
+                        <span class="card-badge">5种类型</span>
+                    </div>
+                    <div class="card-content">
+                        基于用户在APP/E3S等系统的特定行为自动触发发券。
+                    </div>
+                    <ul class="card-list">
+                        <li>预约保养触发</li>
+                        <li>到店领券触发</li>
+                        <li>续保行为触发</li>
+                        <li>取送车首单(新车)</li>
+                        <li>积分倍增券</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #e8f5e9; color: #2e7d32;">🛒</div>
+                        <span class="card-title">商城类活动</span>
+                        <span class="card-badge">2种类型</span>
+                    </div>
+                    <div class="card-content">
+                        与商城系统联动的优惠活动，支持线上线下融合。
+                    </div>
+                    <ul class="card-list">
+                        <li>商城-售后活动</li>
+                        <li>商城-周边活动</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #fce4ec; color: #c2185b;">🎪</div>
+                        <span class="card-title">组合活动</span>
+                        <span class="card-badge">2种类型</span>
+                    </div>
+                    <div class="card-content">
+                        多个活动组合为一个聚合落地页，支持一键领取和抽奖。
+                    </div>
+                    <ul class="card-list">
+                        <li>组合活动(含抽奖)</li>
+                        <li>组合活动(不含抽奖)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 分类总览图 -->
+            <div class="flowchart-container">
+                <div class="flowchart-title">活动分类总览图</div>
+                <div class="mermaid">
+flowchart TB
+    subgraph 中心["DFN活动中心-售后 活动分类"]
+        direction TB
+        A0["📱 用户端<br/>APP/小程序/服务号"]
+    end
+    
+    subgraph 分类["五大活动分类"]
+        A1["📦 B端触发<br/>6种"]
+        A2["🎯 C端活动<br/>4种"]
+        A3["⚡ 行为触发<br/>5种"]
+        A4["🛒 商城类<br/>2种"]
+        A5["🎪 组合活动<br/>2种"]
+    end
+    
+    subgraph 核心["核心系统"]
+        C1["活动中心<br/>中台"]
+        C2["卡券中心"]
+    end
+    
+    subgraph 业务["业务系统"]
+        B1["E3S业务系统"]
+        B2["大数据平台"]
+        B3["售后DCC"]
+        B4["DMS店端"]
+        B5["商城系统"]
+    end
+    
+    A0 --> A1 & A2 & A3 & A4 & A5
+    A1 & A2 & A3 & A4 & A5 --> C1
+    C1 <--> C2
+    C1 --> B1 & B2 & B3 & B4 & B5
+    C2 --> A0
+    
+    style A1 fill:#e1f5fe,stroke:#1565c0,stroke-width:2px
+    style A2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style A3 fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style A4 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style A5 fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    style C1 fill:#e3f2fd,stroke:#1565c0
+    style C2 fill:#e8f5e9,stroke:#2e7d32
+                </div>
+            </div>
+        </section>
+
+        <!-- B端触发活动 -->
+        <section class="section" id="b端">
+            <div class="section-header">
+                <div class="section-icon" style="background: #e1f5fe;">📦</div>
+                <div>
+                    <h2 class="section-title">B端触发活动（后台统一推送）</h2>
+                    <p class="section-subtitle">由系统后台定时批量向目标用户发放卡券</p>
+                </div>
+            </div>
+            
+            <div class="category-tabs">
+                <span class="category-tab b端 active" onclick="showDetail('b端-detail')">详细说明</span>
+                <span class="category-tab b端" onclick="showFlow('b端-flow')">流程图</span>
+                <span class="category-tab b端" onclick="showTable('b端-table')">类型列表</span>
+            </div>
+            
+            <div id="b端-detail" class="detail-section active">
+                <p style="margin-bottom: 20px;">B端触发活动是<strong>由运营在后台配置活动规则</strong>，通过<strong>定时任务批量向目标用户发放卡券</strong>的活动类型。用户无需主动参与，系统会自动将卡券发放至用户卡包。</p>
+                
+                <h4 style="margin: 20px 0 15px; color: #1565c0;">核心特点</h4>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li>运营主导：运营在后台配置活动，无需用户操作</li>
+                    <li>批量发放：定时任务批量处理，数据量大</li>
+                    <li>精准营销：基于用户标签圈定目标人群</li>
+                    <li>支持预热：可配置预热时间提前发放</li>
+                    <li>卡券状态灵活：支持发放未激活/发放已激活两种模式</li>
+                </ul>
+                
+                <h4 style="margin: 25px 0 15px; color: #1565c0;">适用场景</h4>
+                <div class="card-grid">
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">续保活动</div>
+                        <div class="card-content">续保客户到期提醒，自动发放续保优惠</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">取送车活动</div>
+                        <div class="card-content">定期推出的取送车服务优惠</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">维保活动</div>
+                        <div class="card-content">维保客户关怀活动</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="b端-flow" class="detail-section">
+                <div class="flowchart-container">
+                    <div class="flowchart-title">B端触发活动-完整流程</div>
+                    <div class="mermaid">
+flowchart TB
+    subgraph 创建["活动创建阶段"]
+        B1["运营创建活动"]
+        B2["配置基础信息<br/>品牌/名称/时间/业务子版块"]
+        B3["关联卡券<br/>选择卡券ID/发放数量"]
+        B4["设置活动对象<br/>门店/车型/目标用户"]
+        B5{"卡券发放方式"}
+    end
+    
+    subgraph 发放["卡券发放阶段"]
+        B6["定时任务批量发放"]
+        B7["卡券中心创建记录"]
+        B8["推送消息通知用户"]
+    end
+    
+    subgraph 使用["用户使用阶段"]
+        B9{"卡券状态"}
+        B10["待激活用户行为触发"]
+        B11["直接待使用"]
+        B12["到店核销"]
+        B13["结算补贴"]
+    end
+    
+    B1 --> B2 --> B3 --> B4 --> B5
+    B5 -->|"发放未激活"| B6
+    B5 -->|"发放已激活"| B6
+    B6 --> B7 --> B8
+    B8 --> B9
+    B9 --> B10 --> B12
+    B9 --> B11 --> B12
+    B12 --> B13
+    
+    style B1 fill:#e1f5fe,stroke:#1565c0
+    style B9 fill:#fff3e0,stroke:#e65100
+    style B12 fill:#e8f5e9,stroke:#2e7d32
+    style B13 fill:#c8e6c9,stroke:#2e7d32
+                    </div>
+                </div>
+            </div>
+            
+            <div id="b端-table" class="detail-section">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>活动类型</th>
+                                <th>业务子版块</th>
+                                <th>卡券状态</th>
+                                <th>详细说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>维保-后台统一推送</td>
+                                <td><span class="tag tag-blue">维保活动</span></td>
+                                <td><span class="tag tag-orange">待激活/已激活</span></td>
+                                <td>标准维保卡券发放活动</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>续保-OEM套餐活动</td>
+                                <td><span class="tag tag-purple">续保活动</span></td>
+                                <td><span class="tag tag-orange">待激活</span></td>
+                                <td>续保客户赠送套餐权益</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>续保-CVT变速箱</td>
+                                <td><span class="tag tag-purple">续保活动</span></td>
+                                <td><span class="tag tag-orange">待激活</span></td>
+                                <td>CVT变速箱专项优惠</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>续保-超值购活动</td>
+                                <td><span class="tag tag-purple">续保活动</span></td>
+                                <td><span class="tag tag-orange">待激活</span></td>
+                                <td>超值购产品优惠</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>取送车-双月活动</td>
+                                <td><span class="tag tag-green">取送车活动</span></td>
+                                <td><span class="tag tag-orange">待激活/已激活</span></td>
+                                <td>定期取送车优惠</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>取送车-首单优惠存量</td>
+                                <td><span class="tag tag-green">取送车活动</span></td>
+                                <td><span class="tag tag-orange">待激活</span></td>
+                                <td>存量首单用户优惠</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- C端活动 -->
+        <section class="section" id="c端">
+            <div class="section-header">
+                <div class="section-icon" style="background: #f3e5f5;">🎯</div>
+                <div>
+                    <h2 class="section-title">C端主动参与活动</h2>
+                    <p class="section-subtitle">用户主动进入活动页面领取卡券</p>
+                </div>
+            </div>
+            
+            <div class="category-tabs">
+                <span class="category-tab c端 active" onclick="showDetail('c端-detail')">详细说明</span>
+                <span class="category-tab c端" onclick="showFlow('c端-flow')">流程图</span>
+                <span class="category-tab c端" onclick="showTable('c端-table')">类型列表</span>
+            </div>
+            
+            <div id="c端-detail" class="detail-section active">
+                <p style="margin-bottom: 20px;">C端主动参与活动是<strong>用户需主动进入活动页面点击领取卡券</strong>的活动类型。包括BIMC周期性活动、会员专属活动等。</p>
+                
+                <h4 style="margin: 20px 0 15px; color: #7b1fa2;">三种领取方式</h4>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: #f3e5f5; color: #7b1fa2;">1</div>
+                            <span class="card-title">逐一领取</span>
+                        </div>
+                        <div class="card-content">用户在C端界面，一张一张点击领取卡券</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: #f3e5f5; color: #7b1fa2;">2</div>
+                            <span class="card-title">一键领取</span>
+                        </div>
+                        <div class="card-content">用户点击一次按钮，一次性领取多张卡券</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: #f3e5f5; color: #7b1fa2;">3</div>
+                            <span class="card-title">自动领取</span>
+                        </div>
+                        <div class="card-content">满足条件自动发放到用户卡包</div>
+                    </div>
+                </div>
+                
+                <h4 style="margin: 25px 0 15px; color: #7b1fa2;">典型活动场景</h4>
+                <div class="card-grid">
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">BIMC双月活动</div>
+                        <div class="card-content">每两个月一次的会员大促活动，力度大、参与广</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">BIMC会员周</div>
+                        <div class="card-content">每周会员专属优惠，增强会员粘性</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">单店机动券</div>
+                        <div class="card-content">单店独立发起，灵活配置活动内容</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="c端-flow" class="detail-section">
+                <div class="flowchart-container">
+                    <div class="flowchart-title">C端活动-完整流程</div>
+                    <div class="mermaid">
+flowchart TB
+    subgraph 创建["活动创建"]
+        C1["运营创建活动"]
+        C2["关联卡券"]
+        C3["配置领取方式"]
+        C4["配置界面元素"]
+    end
+    
+    subgraph 领取["用户领取"]
+        C5{"领取方式"}
+        C6["逐一领取"]
+        C7["一键领取"]
+        C8["自动领取"]
+        C9["用户点击单张"]
+        C10["一键领取多张"]
+        C11["直接发放卡包"]
+        C12{校验互斥规则}
+        C13["领取成功"]
+        C14["互斥提示"]
+        C15["领券结果页"]
+        C16["引流跳转"]
+    end
+    
+    subgraph 使用["使用阶段"]
+        C17["到店使用"]
+        C18["核销卡券"]
+        C19["结算补贴"]
+    end
+    
+    C1 --> C2 --> C3 --> C4
+    C4 --> C5
+    C5 -->|"逐一"| C6
+    C5 -->|"一键"| C7
+    C5 -->|"自动"| C8
+    C6 --> C9 --> C12
+    C7 --> C10 --> C12
+    C12 -->|"通过"| C13
+    C12 -->|"互斥"| C14
+    C13 --> C15 --> C16
+    C8 --> C11
+    C11 --> C17
+    C16 --> C17
+    C17 --> C18 --> C19
+    
+    style C1 fill:#f3e5f5,stroke:#7b1fa2
+    style C13 fill:#e8f5e9,stroke:#2e7d32
+    style C17 fill:#e8f5e9,stroke:#2e7d32
+                    </div>
+                </div>
+            </div>
+            
+            <div id="c端-table" class="detail-section">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>活动类型</th>
+                                <th>领取方式</th>
+                                <th>详细说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>BIMC双月活动</td>
+                                <td><span class="tag tag-purple">逐一/一键</span></td>
+                                <td>每两个月一次的会员大促</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>BIMC会员周</td>
+                                <td><span class="tag tag-purple">逐一/一键</span></td>
+                                <td>每周会员专属优惠</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>BIMC单店机动券</td>
+                                <td><span class="tag tag-purple">逐一</span></td>
+                                <td>单店独立发起</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>C端主动领取</td>
+                                <td><span class="tag tag-purple">各点位</span></td>
+                                <td>各领券位露出供用户领取</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户行为触发 -->
+        <section class="section" id="行为">
+            <div class="section-header">
+                <div class="section-icon" style="background: #fff3e0;">⚡</div>
+                <div>
+                    <h2 class="section-title">用户行为触发活动</h2>
+                    <p class="section-subtitle">基于用户特定行为自动触发发券</p>
+                </div>
+            </div>
+            
+            <div class="category-tabs">
+                <span class="category-tab 行为 active" onclick="showDetail('行为-detail')">详细说明</span>
+                <span class="category-tab 行为" onclick="showFlow('行为-flow')">流程图</span>
+                <span class="category-tab 行为" onclick="showTable('行为-table')">触发场景</span>
+            </div>
+            
+            <div id="行为-detail" class="detail-section active">
+                <p style="margin-bottom: 20px;">用户行为触发活动是<strong>基于用户在APP/小程序/E3S系统的特定行为自动触发发券</strong>的活动类型。活动发布后，用户执行特定行为（如预约保养、续保签单）系统自动发放卡券。</p>
+                
+                <h4 style="margin: 20px 0 15px; color: #e65100;">触发行为类型</h4>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-title">📅 预约单</div>
+                        <div class="card-content">用户预约保养单后自动发放卡券</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🏪 到店</div>
+                        <div class="card-content">用户到店后自动发放卡券</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📋 续保签单</div>
+                        <div class="card-content">续保保单签单成功后发放</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🚗 交车</div>
+                        <div class="card-content">新车交付后自动发放取送车券</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🛒 商城下单</div>
+                        <div class="card-content">商城下单后自动发放优惠券</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">💰 套餐销售</div>
+                        <div class="card-content">购买保养套餐后发放卡券</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="行为-flow" class="detail-section">
+                <div class="flowchart-container">
+                    <div class="flowchart-title">用户行为触发-完整流程</div>
+                    <div class="mermaid">
+flowchart TB
+    subgraph 创建["活动创建"]
+        T1["运营创建活动"]
+        T2["选择行为触发场景"]
+        T3["关联卡券"]
+        T4["配置激活场景"]
+    end
+    
+    subgraph 触发["行为触发"]
+        T5["用户执行行为"]
+        T6["业务系统上报"]
+        T7["活动中心接收"]
+        T8{条件校验}
+    end
+    
+    subgraph 处理["卡券处理"]
+        T9{卡券状态}
+        T10["待激活-激活"]
+        T11["直接发放"]
+        T12["激活失败"]
+        T13["推送通知"]
+        T14["待使用"]
+    end
+    
+    subgraph 使用["使用核销"]
+        T15["到店使用"]
+        T16["核销结算"]
+    end
+    
+    T1 --> T2 --> T3 --> T4
+    T4 --> T5
+    T5 --> T6 --> T7 --> T8
+    T8 -->|"满足"| T9
+    T8 -->|"不满足"| T12
+    T9 -->|"待激活"| T10
+    T9 -->|"已激活"| T11
+    T10 --> T13
+    T11 --> T13
+    T13 --> T14 --> T15 --> T16
+    
+    style T1 fill:#fff3e0,stroke:#e65100
+    style T5 fill:#ffe0b2,stroke:#e65100
+    style T15 fill:#e8f5e9,stroke:#2e7d32
+                    </div>
+                </div>
+            </div>
+            
+            <div id="行为-table" class="detail-section">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>一级场景</th>
+                                <th>二级场景</th>
+                                <th>上报系统</th>
+                                <th>活动类型</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>预约单</td>
+                                <td>预约保养单</td>
+                                <td>APP/小程序</td>
+                                <td>预约保养触发</td>
+                            </tr>
+                            <tr>
+                                <td>到店</td>
+                                <td>到店领券</td>
+                                <td>E3S</td>
+                                <td>到店触发</td>
+                            </tr>
+                            <tr>
+                                <td>续保</td>
+                                <td>续保保单签单</td>
+                                <td>及易保</td>
+                                <td>续保行为触发</td>
+                            </tr>
+                            <tr>
+                                <td>续保</td>
+                                <td>E3S续保套餐销售</td>
+                                <td>E3S</td>
+                                <td>续保行为触发</td>
+                            </tr>
+                            <tr>
+                                <td>取送车</td>
+                                <td>E3S用户交车</td>
+                                <td>E3S</td>
+                                <td>取送车首单</td>
+                            </tr>
+                            <tr>
+                                <td>商城订单</td>
+                                <td>商城下单/购买</td>
+                                <td>商城</td>
+                                <td>商城触发</td>
+                            </tr>
+                            <tr>
+                                <td>套餐销售</td>
+                                <td>套餐购买</td>
+                                <td>E3S</td>
+                                <td>套餐销售触发</td>
+                            </tr>
+                            <tr>
+                                <td>C端行为</td>
+                                <td>我的优惠券激活</td>
+                                <td>APP/小程序</td>
+                                <td>手动激活</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 商城类活动 -->
+        <section class="section" id="商城">
+            <div class="section-header">
+                <div class="section-icon" style="background: #e8f5e9;">🛒</div>
+                <div>
+                    <h2 class="section-title">商城类活动</h2>
+                    <p class="section-subtitle">与商城系统联动的优惠活动</p>
+                </div>
+            </div>
+            
+            <div class="category-tabs">
+                <span class="category-tab 商城 active" onclick="showDetail('商城-detail')">详细说明</span>
+                <span class="category-tab 商城" onclick="showFlow('商城-flow')">流程图</span>
+            </div>
+            
+            <div id="商城-detail" class="detail-section active">
+                <p style="margin-bottom: 20px;">商城类活动是<strong>与商城系统联动的优惠活动</strong>，支持线上购物优惠和线下门店核销的融合场景。</p>
+                
+                <h4 style="margin: 20px 0 15px; color: #2e7d32;">商城专属配置</h4>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-title">业务归属</div>
+                        <div class="card-content">用于DNDC数据组统计，值由商城提供</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">PV补贴</div>
+                        <div class="card-content">是否PV补贴，用于数据统计标识</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">商城渠道</div>
+                        <div class="card-content">商城APP/小程序/官网</div>
+                    </div>
+                </div>
+                
+                <h4 style="margin: 25px 0 15px; color: #2e7d32;">领券点位配置</h4>
+                <div class="card-grid">
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">领券中心</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">预约有礼领券页</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">商城优惠券组件</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">商品详情页</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">保养推荐页</div>
+                    </div>
+                    <div class="card" style="background: #fff;">
+                        <div class="card-title">专营店发券页</div>
+                    </div>
+                </div>
+                
+                <h4 style="margin: 25px 0 15px; color: #2e7d32;">买赠活动特殊规则</h4>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li>最多可配置2张卡券</li>
+                    <li>配置1张时，激活场景必选</li>
+                    <li>配置2张时，至少1张激活场景必选</li>
+                    <li>主品、赠品必须在同一门店</li>
+                    <li>上报时需传专营店编码</li>
+                </ul>
+            </div>
+            
+            <div id="商城-flow" class="detail-section">
+                <div class="flowchart-container">
+                    <div class="flowchart-title">商城活动-完整流程</div>
+                    <div class="mermaid">
+flowchart TB
+    subgraph 创建["活动创建"]
+        M1["运营创建活动"]
+        M2["配置商城专属信息"]
+        M3{买赠活动?}
+        M4["配置主品+赠品"]
+        M5["标准卡券配置"]
+    end
+    
+    subgraph 配置["点位配置"]
+        M6["配置领券点位"]
+        M7["同步至商城系统"]
+    end
+    
+    subgraph 使用["用户使用"]
+        M8["用户进入商城"]
+        M9{领取方式}
+        M10["主动点击领券"]
+        M11["下单自动抵扣"]
+        M12{买赠校验}
+        M13["领取成功"]
+        M14["到店核销"]
+    end
+    
+    M1 --> M2 --> M3
+    M3 -->|"是"| M4
+    M3 -->|"否"| M5
+    M4 --> M6
+    M5 --> M6
+    M6 --> M7
+    M7 --> M8
+    M8 --> M9
+    M9 -->|"主动"| M10 --> M12
+    M9 -->|"自动"| M11
+    M12 --> M13 --> M14
+    M11 --> M14
+    
+    style M1 fill:#e8f5e9,stroke:#2e7d32
+    style M13 fill:#c8e6c9,stroke:#2e7d32
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 组合活动 -->
+        <section class="section" id="组合">
+            <div class="section-header">
+                <div class="section-icon" style="background: #fce4ec;">🎪</div>
+                <div>
+                    <h2 class="section-title">组合活动</h2>
+                    <p class="section-subtitle">多活动组合聚合落地页，支持一键领取</p>
+                </div>
+            </div>
+            
+            <div class="category-tabs">
+                <span class="category-tab 组合 active" onclick="showDetail('组合-detail')">详细说明</span>
+                <span class="category-tab 组合" onclick="showFlow('组合-flow')">流程图</span>
+            </div>
+            
+            <div id="组合-detail" class="detail-section active">
+                <p style="margin-bottom: 20px;">组合活动是<strong>将多个活动组合为一个聚合落地页</strong>的活动类型，用户可一键领取多个优惠券，也可包含抽奖环节增加趣味性。</p>
+                
+                <h4 style="margin: 20px 0 15px; color: #c2185b;">组合活动配置项</h4>
+<div class="card-grid">
+                    <div class="card">
+                        <div class="card-title">组合活动名称</div>
+                        <div class="card-content">定义组合活动的名称</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">活动时间</div>
+                        <div class="card-content">独立于子活动的组合页时间</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">参与活动</div>
+                        <div class="card-content">选择参与组合的多个子活动</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">抽奖配置</div>
+                        <div class="card-content">可选是否包含抽奖活动</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">KV图配置</div>
+                        <div class="card-content">政策页/按钮/规则图等</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">跳转链接</div>
+                        <div class="card-content">APP/小程序/服务号跳转</div>
+                    </div>
+                </div>
+                
+                <h4 style="margin: 25px 0 15px; color: #c2185b;">用户流程特点</h4>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li>一次进入，一次领取，多张卡券</li>
+                    <li>资格校验：登录+车主认证+人群包</li>
+                    <li>含抽奖：先抽奖，再发券</li>
+                    <li>不含抽奖：一键领取多券</li>
+                    <li>支持关联待激活券自动激活</li>
+                </ul>
+            </div>
+            
+            <div id="组合-flow" class="detail-section">
+                <div class="flowchart-container">
+                    <div class="flowchart-title">组合活动-完整流程</div>
+                    <div class="mermaid">
+flowchart TB
+    subgraph 创建["组合创建"]
+        H1["创建组合活动"]
+        H2["配置基础信息"]
+        H3{含抽奖?}
+        H4["配置抽奖活动"]
+        H5["选择子活动"]
+        H6["配置KV图"]
+    end
+    
+    subgraph 用户["用户流程"]
+        H7["扫码进入组合页"]
+        H8{资格校验}
+        H9["登录+认证+人群"]
+        H10{含抽奖?}
+        H11["参与抽奖"]
+        H12["一键领取"]
+        H13{待激活券?}
+        H14["激活卡券"]
+        H15["领取到卡包"]
+    end
+    
+    subgraph 使用["使用核销"]
+        H16["推送通知"]
+        H17["到店使用"]
+    end
+    
+    H1 --> H2 --> H3
+    H3 -->|"是"| H4
+    H3 -->|"否"| H5
+    H4 --> H5 --> H6
+    H6 --> H7
+    H7 --> H8
+    H9 --> H8
+    H8 -->|"通过"| H10
+    H10 -->|"是"| H11 --> H12
+    H10 -->|"否"| H12
+    H12 --> H13
+    H13 -->|"有"| H14
+    H13 -->|"无"| H15
+    H14 --> H16
+    H15 --> H16 --> H17
+    
+    style H1 fill:#fce4ec,stroke:#c2185b
+    style H12 fill:#f8bbd9,stroke:#c2185b
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 活动创建流程 -->
+        <section class="section" id="create">
+            <div class="section-header">
+                <div class="section-icon">📝</div>
+                <div>
+                    <h2 class="section-title">活动创建配置流程</h2>
+                    <p class="section-subtitle">Step1-Step4 完整配置步骤</p>
+                </div>
+            </div>
+            
+            <div class="step-bar">
+                <div class="step-item active">
+                    <div class="step-number">1</div>
+                    <div class="step-label">基础配置</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-label">关联卡券</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-label">活动对象</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-label">界面配置</div>
+                </div>
+            </div>
+            
+            <div class="flowchart-container">
+                <div class="flowchart-title">活动创建完整流程图</div>
+                <div class="mermaid">
+flowchart TB
+    subgraph Step1["Step1: 基础配置"]
+        S1_1["选择品牌"]
+        S1_2["填写活动名称"]
+        S1_3["设置活动时间"]
+        S1_4["选择业务子版块"]
+        S1_5["选择活动类型"]
+        S1_6["选择活动主体"]
+        S1_7["配置互斥规则"]
+    end
+    
+    subgraph Step2["Step2: 关联卡券"]
+        S2_1["选择卡券场景"]
+        S2_2["查询卡券ID"]
+        S2_3["配置卡券策略"]
+        S2_4["设置领取方式"]
+        S2_5["设置发放限制"]
+        S2_6["编辑车型/门店"]
+    end
+    
+    subgraph Step3["Step3: 活动对象"]
+        S3_1["设置目标用户"]
+        S3_2["导入用户清单"]
+        S3_3["关联人群包"]
+    end
+    
+    subgraph Step4["Step4: 界面配置(C端)"]
+        S4_1["配置专题页"]
+        S4_2["配置活动规则"]
+        S4_3["配置成功页"]
+    end
+    
+    S1_1 --> S1_2 --> S1_3 --> S1_4 --> S1_5 --> S1_6 --> S1_7
+    S1_7 --> Step2
+    S2_1 --> S2_2 --> S2_3 --> S2_4 --> S2_5 --> S2_6
+    S2_6 --> Step3
+    S3_1 --> S3_2 --> S3_3
+    S3_3 -->|"C端活动"| Step4
+    Step4 --> S4_1 --> S4_2 --> S4_3
+    
+    style Step1 fill:#e3f2fd,stroke:#1565c0
+    style Step2 fill:#f3e5f5,stroke:#7b1fa2
+    style Step3 fill:#fff3e0,stroke:#e65100
+    style Step4 fill:#e8f5e9,stroke:#2e7d32
+                </div>
+            </div>
+            
+            <div class="card-grid" style="margin-top: 25px;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #e3f2fd; color: #1565c0;">1</div>
+                        <span class="card-title">Step1 基础配置</span>
+                    </div>
+                    <ul class="card-list">
+                        <li>品牌：日产/启辰/英菲尼迪</li>
+                        <li>活动名称：1-30字符</li>
+                        <li>活动时间：起止日期</li>
+                        <li>业务子版块：维保/续保/取送车</li>
+                        <li>活动类型：B端/C端/行为触发</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #f3e5f5; color: #7b1fa2;">2</div>
+                        <span class="card-title">Step2 关联卡券</span>
+                    </div>
+                    <ul class="card-list">
+                        <li>卡券业务场景筛选</li>
+                        <li>卡券ID选择</li>
+                        <li>领取方式：自动/逐一/一键</li>
+                        <li>发放数量限制</li>
+                        <li>叠加/互斥策略</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #fff3e0; color: #e65100;">3</div>
+                        <span class="card-title">Step3 活动对象</span>
+                    </div>
+                    <ul class="card-list">
+                        <li>目标用户范围</li>
+                        <li>用户清单导入</li>
+                        <li>人群包关联</li>
+                        <li>活动属性：跟人/跟车</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #e8f5e9; color: #2e7d32;">4</div>
+                        <span class="card-title">Step4 界面配置</span>
+                    </div>
+                    <ul class="card-list">
+                        <li>专题页图片/链接</li>
+                        <li>活动规则文案</li>
+                        <li>领券成功页</li>
+                        <li>拦截页配置</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 卡券生命周期 -->
+        <section class="section" id="coupon">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <div>
+                    <h2 class="section-title">卡券全生命周期</h2>
+                    <p class="section-subtitle">状态流转与激活机制</p>
+                </div>
+            </div>
+            
+            <div class="status-flow">
+                <div class="status-item">
+                    <strong>创建</strong>
+                    <div style="font-size:12px;color:#666;">卡券中心配置</div>
+                </div>
+                <span class="status-arrow">→</span>
+                <div class="status-item" style="background:#fff3e0;">
+                    <strong>待发放</strong>
+                    <div style="font-size:12px;color:#666;">等待触发</div>
+                </div>
+                <span class="status-arrow">→</span>
+                <div class="status-item" style="background:#e3f2fd;">
+                    <strong>发放</strong>
+                    <div style="font-size:12px;color:#666;">已发放/待激活</div>
+                </div>
+                <span class="status-arrow">→</span>
+                <div class="status-item" style="background:#e8f5e9;">
+                    <strong>待使用</strong>
+                    <div style="font-size:12px;color:#666;">可用状态</div>
+                </div>
+                <span class="status-arrow">→</span>
+                <div class="status-item">
+                    <strong>已核销</strong>
+                    <div style="font-size:12px;color:#666;">已使用</div>
+                </div>
+            </div>
+            
+            <div class="flowchart-container">
+                <div class="flowchart-title">卡券状态流转图</div>
+                <div class="mermaid">
+flowchart TB
+    K1["卡券创建"] --> K2{触发方式}
+    K2 -->|"B端触发"| K3["后台统一发放"]
+    K2 -->|"C端领取"| K4["用户主动领取"]
+    K2 -->|"行为触发"| K5["行为触发发放"]
+    
+    K3 & K4 & K5 --> K6{发放状态}
+    K6 -->|"未激活"| K7["待激活"]
+    K6 -->|"已激活"| K8["待使用"]
+    
+    K7 --> K9{激活条件}
+    K9 -->|"满足"| K10["激活成功"]
+    K9 -->|"不满足"| K11["保持待激活"]
+    K10 --> K8
+    
+    K8 --> K12{使用条件}
+    K12 -->|"到店核销"| K13["已核销"]
+    K12 -->|"过期"| K14["已失效"]
+    K12 -->|"退保"| K14
+    
+    K13 --> K15["结算补贴"]
+    K14 --> K16["失效记录"]
+    
+    style K1 fill:#e3f2fd,stroke:#1565c0
+    style K7 fill:#fff3e0,stroke:#e65100
+    style K8 fill:#e8f5e9,stroke:#2e7d32
+    style K13 fill:#c8e6c9,stroke:#2e7d32
+    style K14 fill:#ffcdd2,stroke:#c62828
+                </div>
+            </div>
+            
+            <h4 style="margin: 25px 0 15px;">失效场景</h4>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>失效场景</th>
+                            <th>触发条件</th>
+                            <th>处理方式</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>续保退保</td>
+                            <td>续保保单取消</td>
+                            <td>标记卡券失效</td>
+                        </tr>
+                        <tr>
+                            <td>卡券过期</td>
+                            <td>超过有效期</td>
+                            <td>自动失效处理</td>
+                        </tr>
+                        <tr>
+                            <td>已核销</td>
+                            <td>卡券已使用</td>
+                            <td>标记已核销</td>
+                        </tr>
+                        <tr>
+                            <td>主动取消</td>
+                            <td>用户取消预约</td>
+                            <td>触发失效逻辑</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 系统交互 -->
+        <section class="section" id="system">
+            <div class="section-header">
+                <div class="section-icon">🔗</div>
+                <div>
+                    <h2 class="section-title">多系统交互全景</h2>
+                    <p class="section-subtitle">核心系统与业务系统交互关系</p>
+                </div>
+            </div>
+            
+            <div class="flowchart-container">
+                <div class="flowchart-title">系统交互全景图</div>
+                <div class="mermaid">
+flowchart TB
+    subgraph 用户端["用户端"]
+        U1["日产APP"]
+        U2["启辰APP"]
+        U3["日产小程序"]
+        U4["启辰小程序"]
+        U5["服务号"]
+    end
+    
+    subgraph 核心["核心系统"]
+        C1["活动中心<br/>(中台)"]
+        C2["卡券中心"]
+    end
+    
+    subgraph 业务["业务系统"]
+        B1["大数据平台"]
+        B2["精准营销平台"]
+        B3["售后DCC"]
+        B4["DMS店端"]
+        B5["E3S业务系统"]
+        B6["及易保系统"]
+        B7["商城系统"]
+    end
+    
+    subgraph 外部["外部系统"]
+        E1["VME财务系统"]
+        E2["CDP人群系统"]
+    end
+    
+    U1 & U2 & U3 & U4 & U5 -->|"领券/核销"| C2
+    C1 <-->|"活动+卡券配置"| C2
+    C1 -->|"查询用户标签"| B1
+    C1 -->|"圈定目标"| B2
+    B3 -->|"邀约用户"| U1 & U2 & U3 & U4
+    B5 -->|"行为上报"| C1
+    B5 -->|"发券请求"| C2
+    B6 -->|"续保上报"| C1
+    B7 -->|"商城订单"| C1
+    C2 -->|"核销记录"| B4
+    C2 -->|"结算申请"| E1
+    C1 -->|"活动统计"| B1 & B2 & B3
+    
+    style 用户端 fill:#e3f2fd,stroke:#1565c0
+    style 核心 fill:#e8f5e9,stroke:#2e7d32
+    style 业务 fill:#fff3e0,stroke:#e65100
+    style 外部 fill:#fce4ec,stroke:#c2185b
+                </div>
+            </div>
+            
+            <div class="system-grid">
+                <div class="system-card" style="background:#e3f2fd;">
+                    <h4>用户端</h4>
+                    <ul>
+                        <li>日产APP</li>
+                        <li>启辰APP</li>
+                        <li>日产小程序</li>
+                        <li>启辰小程序</li>
+                        <li>服务号</li>
+                    </ul>
+                </div>
+                <div class="system-card" style="background:#e8f5e9;">
+                    <h4>核心系统</h4>
+                    <ul>
+                        <li>活动中心(中台)</li>
+                        <li>卡券中心</li>
+                    </ul>
+                </div>
+                <div class="system-card" style="background:#fff3e0;">
+                    <h4>业务系统</h4>
+                    <ul>
+                        <li>大数据平台</li>
+                        <li>精准营销平台</li>
+                        <li>售后DCC</li>
+                        <li>DMS店端</li>
+                        <li>E3S业务系统</li>
+                        <li>及易保系统</li>
+                        <li>商城系统</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 汇总表 -->
+        <section class="section" id="summary">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <div>
+                    <h2 class="section-title">活动类型完整汇总</h2>
+                    <p class="section-subtitle">21+种具体活动类型一览</p>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>分类</th>
+                            <th>序号</th>
+                            <th>活动类型</th>
+                            <th>触发方式</th>
+                            <th>业务子版块</th>
+                            <th>奖品类型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="6"><span class="tag tag-blue">B端触发</span></td>
+                            <td>1</td>
+                            <td>维保-后台统一推送</td>
+                            <td>B端触发</td>
+                            <td>维保活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>续保-OEM套餐</td>
+                            <td>B端触发</td>
+                            <td>续保活动</td>
+                            <td>权益+卡券</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>续保-CVT变速箱</td>
+                            <td>B端触发</td>
+                            <td>续保活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>续保-超值购</td>
+                            <td>B端触发</td>
+                            <td>续保活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>取送车-双月活动</td>
+                            <td>B端触发</td>
+                            <td>取送车活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>取送车-首单优惠存量</td>
+                            <td>B端触发</td>
+                            <td>取送车活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4"><span class="tag tag-purple">C端活动</span></td>
+                            <td>7</td>
+                            <td>BIMC双月活动</td>
+                            <td>C端领取</td>
+                            <td>保客营销</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>BIMC会员周</td>
+                            <td>C端领取</td>
+                            <td>保客营销</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>BIMC单店机动券</td>
+                            <td>C端领取</td>
+                            <td>保客营销</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>C端主动领取</td>
+                            <td>C端领取</td>
+                            <td>保客营销</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="5"><span class="tag tag-orange">行为触发</span></td>
+                            <td>11</td>
+                            <td>预约保养触发</td>
+                            <td>行为触发</td>
+                            <td>维保活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>到店领券触发</td>
+                            <td>行为触发</td>
+                            <td>维保活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>续保行为触发</td>
+                            <td>行为触发</td>
+                            <td>续保活动</td>
+                            <td>权益+卡券</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>取送车首单新车</td>
+                            <td>行为触发</td>
+                            <td>取送车活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>积分倍增券</td>
+                            <td>行为触发</td>
+                            <td>维保活动</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><span class="tag tag-green">商城</span></td>
+                            <td>16</td>
+                            <td>商城-售后活动</td>
+                            <td>C端/自动</td>
+                            <td>商城</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>商城-周边活动</td>
+                            <td>C端/自动</td>
+                            <td>商城</td>
+                            <td>卡券</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><span class="tag tag-pink">组合</span></td>
+                            <td>18</td>
+                            <td>组合活动(含抽奖)</td>
+                            <td>C端领取</td>
+                            <td>组合</td>
+                            <td>多卡券+抽奖</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>组合活动不含抽奖</td>
+                            <td>C端领取</td>
+                            <td>组合</td>
+                            <td>多卡券</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 对比分析 -->
+        <section class="section" id="compare">
+            <div class="section-header">
+                <div class="section-icon">⚖️</div>
+                <div>
+                    <h2 class="section-title">三大触发模式对比</h2>
+                    <p class="section-subtitle">B端触发 vs C端活动 vs 用户行为触发</p>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th>对比维度</th>
+                            <th>B端触发</th>
+                            <th>C端活动</th>
+                            <th>用户行为触发</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>触发主体</td>
+                            <td>系统后台</td>
+                            <td>用户主动</td>
+                            <td>业务系统上报</td>
+                        </tr>
+                        <tr>
+                            <td>发券时机</td>
+                            <td>定时批量发放</td>
+                            <td>用户领取时</td>
+                            <td>行为触发时</td>
+                        </tr>
+                        <tr>
+                            <td>卡券状态</td>
+                            <td>待激活/已激活</td>
+                            <td>已激活</td>
+                            <td>待激活/已激活</td>
+                        </tr>
+                        <tr>
+                            <td>用户参与度</td>
+                            <td>低(被动接收)</td>
+                            <td>高(主动领取)</td>
+                            <td>中(行为触发)</td>
+                        </tr>
+                        <tr>
+                            <td>数据量</td>
+                            <td>大(批量)</td>
+                            <td>中(按需)</td>
+                            <td>中(实时)</td>
+                        </tr>
+                        <tr>
+                            <td>适用场景</td>
+                            <td>精准营销</td>
+                            <td>大促活动</td>
+                            <td>场景营销</td>
+                        </tr>
+                        <tr>
+                            <td>配置复杂度</td>
+                            <td>中</td>
+                            <td>高</td>
+                            <td>高</td>
+                        </tr>
+                        <tr>
+                            <td>运营成本</td>
+                            <td>低</td>
+                            <td>高</td>
+                            <td>中</td>
+                        </tr>
+                        <tr>
+                            <td>转化率</td>
+                            <td>取决于推送</td>
+                            <td>取决于活动</td>
+                            <td>取决于场景</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer style="text-align: center; padding: 30px; color: #666; font-size: 14px;">
+            <p>DFN活动中心-售后系统深度分析报告</p>
+            <p style="margin-top: 10px;">基于Axure原型文档整理 · 2024年12月</p>
+        </footer>
+    </main>
+
+    <script>
+        // 初始化Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // 导航点击效果
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 分类Tab切换
+        function showDetail(id) {
+            const parent = document.getElementById(id.split('-')[0]).parentElement;
+            parent.querySelectorAll('.detail-section').forEach(s => s.classList.remove('active'));
+            parent.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showFlow(id) {
+            const parent = document.getElementById(id.split('-')[0]).parentElement;
+            parent.querySelectorAll('.detail-section').forEach(s => s.classList.remove('active'));
+            parent.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showTable(id) {
+            const parent = document.getElementById(id.split('-')[0]).parentElement;
+            parent.querySelectorAll('.detail-section').forEach(s => s.classList.remove('active'));
+            parent.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // 滚动监听
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    navItems.forEach(item => item.classList.remove('active'));
+                    if (navItems[index]) {
+                        navItems[index].classList.add('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

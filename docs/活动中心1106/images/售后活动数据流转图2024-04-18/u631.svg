@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="51px" height="81px" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="9124" y1="2270" x2="9124" y2="2350" id="LinearGradient1159">
+      <stop id="Stop1160" stop-color="#ffffff" offset="0" />
+      <stop id="Stop1161" stop-color="#f2f2f2" offset="0" />
+      <stop id="Stop1162" stop-color="#e4e4e4" offset="1" />
+      <stop id="Stop1163" stop-color="#ffffff" offset="1" />
+    </linearGradient>
+  </defs>
+  <g transform="matrix(1 0 0 1 -9099 -2270 )">
+    <path d="M 9124 2270.5  C 9129.32 2270.5  9133.5 2274.68  9133.5 2280  C 9133.5 2285.32  9129.32 2289.5  9124 2289.5  C 9118.68 2289.5  9114.5 2285.32  9114.5 2280  C 9114.5 2274.68  9118.68 2270.5  9124 2270.5  Z " fill-rule="nonzero" fill="url(#LinearGradient1159)" stroke="none" />
+    <path d="M 9124 2270.5  C 9129.32 2270.5  9133.5 2274.68  9133.5 2280  C 9133.5 2285.32  9129.32 2289.5  9124 2289.5  C 9118.68 2289.5  9114.5 2285.32  9114.5 2280  C 9114.5 2274.68  9118.68 2270.5  9124 2270.5  Z " stroke-width="1" stroke="#797979" fill="none" />
+    <path d="M 9099 2300  L 9149 2300  M 9124 2290  L 9124 2325  M 9104 2350  L 9124 2325  M 9124 2325  L 9144 2350  " stroke-width="1" stroke="#797979" fill="none" />
+  </g>
+</svg>

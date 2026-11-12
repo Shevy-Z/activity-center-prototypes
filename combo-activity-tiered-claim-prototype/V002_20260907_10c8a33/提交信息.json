@@ -1,0 +1,58 @@
+{
+  "sha": "10c8a3316b02b776a2daa8e676853a11fb0cb134",
+  "parents": [
+    "a47ad10fd8576cb6e1d751fcad23ee13ae5fb62e"
+  ],
+  "author_time": "2026-09-07T11:40:16+08:00",
+  "time": "2026-09-07T11:40:16+08:00",
+  "subject": "Publish frozen 22-file static prototype",
+  "message": "Publish frozen 22-file static prototype",
+  "changed": "A\t.nojekyll\nA\tactivity.html\nA\tassets/css/app.css\nA\tassets/css/campaign.css\nA\tassets/css/catalog.css\nA\tassets/css/global.css\nA\tassets/css/original-layout.css\nA\tassets/favicon.svg\nA\tassets/images/combo-hero.png\nA\tassets/images/coupon-original.svg\nA\tassets/images/policy-ribbon.png\nA\tfavicon.ico\nA\tindex.html\nA\tjs/app.js\nA\tjs/catalog-data.js\nA\tjs/catalog.js\nA\tjs/common.js\nA\tjs/nav.js\nA\tjs/preview-boot.js\nA\tmock/data.js\nA\tmock/preview-scenes.js\n",
+  "stat": "21 files changed, 3198 insertions(+)",
+  "files": [
+    ".nojekyll",
+    "README.md",
+    "activity.html",
+    "assets/css/app.css",
+    "assets/css/campaign.css",
+    "assets/css/catalog.css",
+    "assets/css/global.css",
+    "assets/css/original-layout.css",
+    "assets/favicon.svg",
+    "assets/images/combo-hero.png",
+    "assets/images/coupon-original.svg",
+    "assets/images/policy-ribbon.png",
+    "favicon.ico",
+    "index.html",
+    "js/app.js",
+    "js/catalog-data.js",
+    "js/catalog.js",
+    "js/common.js",
+    "js/nav.js",
+    "js/preview-boot.js",
+    "mock/data.js",
+    "mock/preview-scenes.js"
+  ],
+  "html": [
+    "activity.html",
+    "index.html"
+  ],
+  "version": "V002",
+  "folder": "V002_20260907_10c8a33",
+  "repo": "combo-activity-tiered-claim-prototype",
+  "rid": "R07",
+  "domain": "卡券中心 活动中心",
+  "title": "发布组合活动分级领取交互原型",
+  "kind": "首次原型发布",
+  "changes": [
+    "上传冻结的静态页面、脚本、样式、图片与Mock数据，提供组合活动页面及预览入口。",
+    "用户侧演示不同准入身份、车辆绑定、普通券、分组选择、领取成功与失败等交互。",
+    "该批资源按冻结包发布；后续7953b81新增的是页面状态连线图和业务流程阅读方式，原业务页面继续保留。"
+  ],
+  "review": "核对准入、选择及一键领取反馈；其中模拟登录、绑车和发券均非真实服务。",
+  "entry": "index.html",
+  "offline": false,
+  "offline_changes": [],
+  "path": "02_GitHub原型/combo-activity-tiered-claim-prototype/V002_20260907_10c8a33",
+  "preview_path": "02_GitHub原型/combo-activity-tiered-claim-prototype/V002_20260907_10c8a33/原始文件/index.html"
+}

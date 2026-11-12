@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFN活动中心 - 脑图总结</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        
+        .header p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .summary-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .summary-card h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #667eea;
+        }
+        
+        .core-three {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .core-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .core-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .core-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 15px;
+        }
+        
+        .core-item:nth-child(1) .core-number { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .core-item:nth-child(2) .core-number { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .core-item:nth-child(3) .core-number { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        
+        .core-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .core-desc {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+        
+        .mindmap-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .mindmap-section h2 {
+            font-size: 24px;
+            color: #1a1a2e;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .mindmap-container {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+        }
+        
+        .mindmap-container svg {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .quick-guide {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .quick-guide h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #4facfe;
+        }
+        
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        
+        .flow-box {
+            background: linear-gradient(135deg, rgba(102,126,234,0.8), rgba(118,75,162,0.8));
+            padding: 20px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .flow-box:nth-child(even) {
+            background: linear-gradient(135deg, rgba(240,147,251,0.8), rgba(245,87,108,0.8));
+        }
+        
+        .flow-arrow {
+            font-size: 24px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .core-three {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 DFN活动中心-售后系统</h1>
+            <p>复杂系统的核心提炼 · 一张图搞懂全系统</p>
+        </div>
+        
+        <!-- 核心三问 -->
+        <div class="summary-card">
+            <h2>🎯 掌握这个系统，只需搞懂3个核心问题</h2>
+            <div class="core-three">
+                <div class="core-item">
+                    <div class="core-number">①</div>
+                    <div class="core-title">怎么发券？</div>
+                    <div class="core-desc">
+                        触发方式<br/>
+                        B端批量 / C端领取 / 行为触发
+                    </div>
+                </div>
+                <div class="core-item">
+                    <div class="core-number">②</div>
+                    <div class="core-title">什么场景？</div>
+                    <div class="core-desc">
+                        活动类型<br/>
+                        维保 / 续保 / 取送车 / 商城 / 组合
+                    </div>
+                </div>
+                <div class="core-item">
+                    <div class="core-number">③</div>
+                    <div class="core-title">怎么用券？</div>
+                    <div class="core-desc">
+                        卡券流程<br/>
+                        创建→发放→激活→核销
+                    </div>
+                </div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">活动大类</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">21+</div>
+                    <div class="stat-label">活动类型</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">关联系统</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">用户触点</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 脑图1：精简版 -->
+        <div class="mindmap-section">
+            <h2>🗺️ 系统脑图 - 精简版</h2>
+            <div class="mindmap-container">
+                <div class="mermaid">
+mindmap
+  root((DFN<br/>活动中心))
+    一句话理解
+      售后保客营销中台
+      发券给用户
+      用户到店用券
+      结算补贴给店
+    发券方式3种
+      B端触发
+        后台批量发放
+        用户被动接收
+        精准营销
+      C端领取
+        用户主动参与
+        领券点位露出
+        大促活动
+      行为触发
+        用户行为上报
+        自动触发发放
+        场景营销
+    活动场景5类
+      维保活动
+        套餐优惠
+        备件折扣
+        预约保养
+      续保活动
+        OEM套餐
+        CVT变速箱
+        超值购
+      取送车
+        双月活动
+        首单优惠
+      商城
+        售后
+        周边
+      组合
+        一键领取
+        抽奖活动
+    活动创建4步
+      基础配置
+        品牌/名称/时间
+        业务子版块
+        活动类型
+      关联卡券
+        卡券ID
+        领取方式
+        互斥配置
+      活动对象
+        门店/车型
+        目标用户
+      界面配置
+        专题页
+        规则文案
+    卡券流转6状态
+      创建
+      待发放
+      发放
+      待激活
+      待使用
+      已核销/失效
+    关联系统6个
+      E3S业务
+      大数据
+      售后DCC
+      DMS店端
+      及易保
+      商城
+    C端渠道5个
+      日产APP
+      启辰APP
+      小程序×2
+      服务号
+                </div>
+            </div>
+        </div>
+        
+        <!-- 脑图2：完整版 -->
+        <div class="mindmap-section">
+            <h2>🗺️ 系统脑图 - 完整版</h2>
+            <div class="mindmap-container">
+                <div class="mermaid">
+mindmap
+  root((DFN活动中心<br/>售后系统))
+    核心定位
+      保客营销中台
+      连接用户与业务系统
+      卡券全生命周期管理
+    三大核心问题
+      怎么发券(触发方式)
+        B端触发(后台批量)
+        C端领取(用户主动)
+        行为触发(系统上报)
+      什么场景(活动类型)
+        维保活动
+        续保活动
+        取送车活动
+        商城活动
+        组合活动
+      怎么用券(卡券流程)
+        创建
+        发放
+        激活
+        使用
+        核销
+    五大活动分类
+      B端触发活动
+        维保后台推送
+        续保OEM套餐
+        续保CVT变速箱
+        续保超值购
+        取送车双月
+        取送车首单存量
+      C端活动
+        BIMC双月
+        BIMC会员周
+        单店机动券
+        主动领取
+      行为触发
+        预约保养
+        到店领券
+        续保签单
+        交车触发
+        积分倍增
+      商城类
+        售后活动
+        周边活动
+      组合活动
+        含抽奖
+        不含抽奖
+    关联系统
+      核心系统
+        活动中心
+        卡券中心
+      业务系统
+        E3S业务系统
+        大数据平台
+        售后DCC
+        DMS店端
+        及易保
+        商城
+      外部系统
+        VME财务
+        CDP人群
+    用户触点
+      日产APP
+      启辰APP
+      日产小程序
+      启辰小程序
+      服务号
+    活动创建四步
+      Step1 基础配置
+      Step2 关联卡券
+      Step3 活动对象
+      Step4 界面配置
+    卡券状态流转
+      待发放
+      发放未激活
+      发放已激活
+      待激活
+      待使用
+      已核销
+      已失效
+                </div>
+            </div>
+        </div>
+        
+        <!-- 快速理解流程 -->
+        <div class="quick-guide">
+            <h2>⚡ 快速理解：业务全流程</h2>
+            <div class="flow-diagram">
+                <div class="flow-box">运营创建活动</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">配置卡券</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">选择触发方式</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">发放卡券</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">用户领券</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">到店核销</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">结算补贴</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#667eea',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#764ba2',
+                lineColor: '#a855f7',
+                secondaryColor: '#f093fb',
+                tertiaryColor: '#1a1a2e'
+            },
+            mindmap: {
+                padding: 20,
+                useMaxWidth: true
+            }
+        });
+    </script>
+</body>
+</html>
