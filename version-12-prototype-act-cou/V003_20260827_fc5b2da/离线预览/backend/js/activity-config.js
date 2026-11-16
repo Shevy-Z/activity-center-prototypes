@@ -192,8 +192,8 @@
       '<div class="activity-form-grid">' +
       formItem('<em>*</em>领券方式','<select data-activity-field="claimMode">' + options(['一键领取','手动领取','自动抽奖','自动领取'],form.claimMode) + '</select>',false,'动态二维码只承接用户可主动执行的领券或抽奖活动。') +
       formItem('门店来源','<select><option>活动统一配置</option><option>沿用卡券中心</option></select>') +
-      formItem('<em>*</em>适用门店',storeSelectionControl(form,locked),true,locked ? '活动生效后不可调整。' : '支持按组织树选择门店，也可下载模板后批量上传。') +
-      formItem('<em>*</em>允许分享角色',roleSelector(form,locked,'activity'),true,(locked ? '活动生效后不可调整。' : '候选角色读取服务助手；员工任一有效角色命中即可分享。') + ' 空值表示无人可分享。') +
+      formItem('适用门店',storeSelectionControl(form,locked),true,locked ? '活动生效后不可调整。' : '支持按组织树选择门店，也可下载模板后批量上传。') +
+      formItem('允许分享角色',roleSelector(form,locked,'activity'),true,(locked ? '活动生效后不可调整。' : '候选角色读取服务助手；员工任一有效角色命中即可分享。') + ' 空值表示无人可分享。') +
       '</div><div class="table-shell inline-table"><table class="data-table"><thead><tr><th>卡券模板ID</th><th>卡券名称</th><th>状态</th><th>适用范围</th><th>操作</th></tr></thead><tbody>' +
       form.coupons.map(function (coupon,index) { return '<tr><td>' + esc(form.couponIds[index] || '-') + '</td><td>' + esc(coupon) + '</td><td>' + status('已生效') + '</td><td>' + esc(form.storeScope) + '</td><td><a class="link-action">查看</a></td></tr>'; }).join('') +
       '</tbody></table></div></section>';
