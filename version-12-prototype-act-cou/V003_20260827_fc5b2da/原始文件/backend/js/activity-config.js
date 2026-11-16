@@ -21,6 +21,7 @@
     form: null,
     pendingId: null,
     accessDraft: null,
+    storeSelectionDraftCount: 0,
     posterForm: null,
     posterUploadUrl: ''
   };
@@ -56,7 +57,7 @@
     return {
       id: '系统生成', name: '', brand: '东风日产', business: '维保活动', activityType: '领券',
       trigger: 'C端主动领取', claimMode: '一键领取', level: '绑车级', status: '草稿',
-      time: '2026-08-01 至 2026-09-30', storeScope: '华南一区授权专营店',
+      time: '2026-08-01 至 2026-09-30', storeScope: '已选择0家专营店', storeCount: 0,
       couponIds: ['TPL-CP-10021'], coupons: ['基础保养抵扣券'], rights: ['免费车辆检测'],
       shareRoleCodes: [], shareRoleNames: [], mutexIds: [], mutexSubject: 'VIN', accessEnabled: '启用', checkpoints: defaultCheckpoints('领券'), shareTitle: ''
     };
@@ -68,6 +69,10 @@
     form.checkpoints = form.checkpoints || defaultCheckpoints(form.activityType);
     form.shareRoleCodes = form.shareRoleCodes || [];
     form.shareRoleNames = form.shareRoleNames || [];
+    if (typeof form.storeCount !== 'number') {
+      var storeCountMatch = String(form.storeScope || '').match(/(\d+)家/);
+      form.storeCount = storeCountMatch ? Number(storeCountMatch[1]) : (form.storeScope && form.storeScope !== '全部门店' ? 1 : 0);
+    }
     form.mutexSubject = accessSubject(form.level);
     if (mode === 'copy') {
       form.id = '系统生成';
@@ -152,6 +157,19 @@
     return '<div class="activity-form-item ' + (full ? 'full' : '') + '"><label>' + label + '</label><div class="activity-control">' + control + (note ? '<small>' + note + '</small>' : '') + '</div></div>';
   }
 
+  function storeSelectionLabel(form) {
+    return '已选择' + Number(form.storeCount || 0) + '家专营店';
+  }
+
+  function storeSelectionControl(form,locked) {
+    return '<div class="store-scope-control">' +
+      '<input class="store-count-input" value="' + esc(storeSelectionLabel(form)) + '" readonly>' +
+      '<button class="button primary" data-open-store-selector type="button"' + (locked ? ' disabled' : '') + '>选择门店</button>' +
+      '<button class="button primary" data-store-template-download type="button"' + (locked ? ' disabled' : '') + '><span class="store-action-icon">⇩</span>下载模板</button>' +
+      '<label class="button primary store-upload-button' + (locked ? ' disabled' : '') + '"><span class="store-action-icon">↥</span>上传文件<input data-store-file-upload type="file" accept=".xlsx,.xls,.csv"' + (locked ? ' disabled' : '') + '></label>' +
+      '</div>';
+  }
+
   function renderStep1(form) {
     var locked = form.status === '已启用';
     return '<section class="activity-form-section"><div class="form-section-head"><div><h2>Step1 基本信息</h2><p>维护活动主数据；投放关系由独立“活动分享配置”承接。</p></div>' + (locked ? '<span class="lock-badge">活动已启用 · 门店与角色已锁定</span>' : '') + '</div>' +
@@ -174,7 +192,7 @@
       '<div class="activity-form-grid">' +
       formItem('<em>*</em>领券方式','<select data-activity-field="claimMode">' + options(['一键领取','手动领取','自动抽奖','自动领取'],form.claimMode) + '</select>',false,'动态二维码只承接用户可主动执行的领券或抽奖活动。') +
       formItem('门店来源','<select><option>活动统一配置</option><option>沿用卡券中心</option></select>') +
-      formItem('<em>*</em>适用门店','<input value="' + esc(form.storeScope) + '"' + (locked ? ' disabled' : '') + '>',true,locked ? '活动生效后不可调整。' : '沿用原活动适用门店能力。') +
+      formItem('<em>*</em>适用门店',storeSelectionControl(form,locked),true,locked ? '活动生效后不可调整。' : '支持按组织树选择门店，也可下载模板后批量上传。') +
       formItem('<em>*</em>允许分享角色',roleSelector(form,locked,'activity'),true,(locked ? '活动生效后不可调整。' : '候选角色读取服务助手；员工任一有效角色命中即可分享。') + ' 空值表示无人可分享。') +
       '</div><div class="table-shell inline-table"><table class="data-table"><thead><tr><th>卡券模板ID</th><th>卡券名称</th><th>状态</th><th>适用范围</th><th>操作</th></tr></thead><tbody>' +
       form.coupons.map(function (coupon,index) { return '<tr><td>' + esc(form.couponIds[index] || '-') + '</td><td>' + esc(coupon) + '</td><td>' + status('已生效') + '</td><td>' + esc(form.storeScope) + '</td><td><a class="link-action">查看</a></td></tr>'; }).join('') +
@@ -662,6 +680,53 @@
     common.openModal('选择互斥活动', body, '<button class="button" data-close-modal type="button">取消</button><button class="button primary" data-confirm-mutex type="button">确认选择</button>', 'wide-modal');
   }
 
+  var beijingStores = [
+    ['北京东西石景山','B0161'],['北京鑫达润城怀柔','B0160'],['东风日产北京认证三店','Y9916'],
+    ['东风日产北京认证二店','Y9915'],['东风日产北京认证店','Y9904'],['广实北京店','Y9902'],
+    ['北京博瑞','B0158'],['北京博瑞（旧）','B0152'],['北京东风南方西三旗','B0157'],
+    ['北京君诚驰悦','B0155'],['及新车北京东日零售店','JSS16'],['北京汽车之家朝阳','B0153']
+  ];
+
+  function storeTreeCheckbox(label,count,level,extra) {
+    var checked = state.storeSelectionDraftCount >= 325;
+    return '<label class="store-tree-row level-' + level + '">' +
+      (extra && extra.branch ? '<span class="store-tree-arrow">⌄</span>' : '<span class="store-tree-spacer"></span>') +
+      '<input type="checkbox" data-store-choice' + (count > 1 ? ' data-store-group-count="' + count + '"' : '') + (checked ? ' checked' : '') + '>' +
+      '<span>' + esc(label) + (extra && extra.code ? '，门店编码：' + esc(extra.code) : '') + '</span></label>';
+  }
+
+  function storeSelectorBody() {
+    return '<div class="store-selector-search"><input data-store-search placeholder="输入关键词搜索"><button type="button" aria-label="搜索">⌕</button></div>' +
+      '<div class="store-tree" data-store-tree>' +
+      storeTreeCheckbox('东风日产-日产',325,0,{branch:true}) +
+      storeTreeCheckbox('全国',325,1,{branch:true}) +
+      storeTreeCheckbox('北京',14,2,{branch:true}) +
+      storeTreeCheckbox('北京',14,3,{branch:true}) +
+      beijingStores.map(function (store) { return storeTreeCheckbox(store[0],1,4,{code:store[1]}); }).join('') +
+      '</div>';
+  }
+
+  function updateStoreSelectorCount() {
+    var countNode = document.querySelector('[data-store-selected-count]');
+    if (countNode) countNode.textContent = String(state.storeSelectionDraftCount || 0);
+  }
+
+  function openStoreSelector() {
+    state.storeSelectionDraftCount = Number((state.form && state.form.storeCount) || 0);
+    var foot = '<div class="store-modal-count">已选择 <strong data-store-selected-count>' + state.storeSelectionDraftCount + '</strong> 家门店</div>' +
+      '<div class="store-modal-actions"><button class="button primary" data-confirm-store-selector type="button">确认</button><button class="button" data-close-modal type="button">取消</button></div>';
+    common.openModal('关联门店',storeSelectorBody(),foot,'store-selector-modal');
+  }
+
+  function downloadStoreTemplate() {
+    var csv = '\uFEFF门店名称,门店编码\n北京东西石景山,B0161\n北京鑫达润城怀柔,B0160\n';
+    var url = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+    var link = document.createElement('a');
+    link.href = url; link.download = '活动适用门店导入模板.csv';
+    document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+    common.showToast('门店导入模板已下载');
+  }
+
   function updateField(target) {
     if (!state.form) return;
     var field = target.getAttribute('data-activity-field');
@@ -854,6 +919,14 @@
       prepare('edit',target.getAttribute('data-detail-edit')); location.hash = 'activity-create'; return true;
     }
     if (event.target.closest('[data-back-list]')) { location.hash = 'activity-manage'; return true; }
+    if (event.target.closest('[data-open-store-selector]')) { openStoreSelector(); return true; }
+    if (event.target.closest('[data-store-template-download]')) { downloadStoreTemplate(); return true; }
+    if (event.target.closest('[data-confirm-store-selector]')) {
+      state.form.storeCount = Number(state.storeSelectionDraftCount || 0);
+      state.form.storeScope = storeSelectionLabel(state.form);
+      common.closeModal(); window.SAApp.render();
+      common.showToast('已关联' + state.form.storeCount + '家专营店'); return true;
+    }
     if ((target = event.target.closest('[data-form-step]'))) { state.step = Number(target.getAttribute('data-form-step')); window.SAApp.render(); return true; }
     if (event.target.closest('[data-form-next]')) { state.step = Math.min(4,state.step + 1); window.SAApp.render(); return true; }
     if (event.target.closest('[data-form-prev]')) { state.step = Math.max(1,state.step - 1); window.SAApp.render(); return true; }
@@ -920,6 +993,26 @@
   }
 
   function handleChange(event) {
+    if (event.target.matches('[data-store-choice]')) {
+      var groupCount = Number(event.target.getAttribute('data-store-group-count') || 0);
+      if (groupCount > 1) {
+        state.storeSelectionDraftCount = event.target.checked ? groupCount : 0;
+        Array.prototype.forEach.call(document.querySelectorAll('[data-store-choice]'),function (node) { node.checked = event.target.checked; });
+      } else {
+        var checkedLeaves = document.querySelectorAll('[data-store-choice]:checked:not([data-store-group-count])').length;
+        state.storeSelectionDraftCount = checkedLeaves;
+        Array.prototype.forEach.call(document.querySelectorAll('[data-store-choice][data-store-group-count]'),function (node) { node.checked = false; });
+      }
+      updateStoreSelectorCount(); return;
+    }
+    if (event.target.matches('[data-store-file-upload]')) {
+      var storeFile = event.target.files && event.target.files[0];
+      if (!storeFile) return;
+      state.form.storeCount = 325;
+      state.form.storeScope = storeSelectionLabel(state.form);
+      window.SAApp.render();
+      common.showToast('已解析“' + storeFile.name + '”，成功关联325家专营店'); return;
+    }
     if (event.target.matches('[data-share-role="activity"]')) {
       syncRoleSelection(state.form,'activity');
       window.SAApp.render(); return;

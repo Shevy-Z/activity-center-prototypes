@@ -214,6 +214,14 @@ body.sit-ui { min-width: 1180px; overflow: hidden; background: #fff; }
 .activity-control input:focus, .activity-control select:focus, .activity-control textarea:focus { border-color: #7fb5e5; }
 .activity-control input:disabled, .activity-control select:disabled { color: #7f8a95; background: #f4f6f8; }
 .activity-control small { display: block; margin-top: 6px; color: #8b95a0; }
+.store-scope-control { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.activity-control .store-count-input { width: 178px; flex: 0 0 178px; background: #fff; }
+.store-scope-control .button { min-width: 88px; height: 34px; padding: 0 16px; }
+.store-scope-control .button:nth-of-type(2), .store-upload-button { min-width: 110px; }
+.store-action-icon { margin-right: 7px; font-size: 15px; }
+.store-upload-button { position: relative; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.store-upload-button input { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+.store-upload-button.disabled { cursor: not-allowed; opacity: .55; }
 .radio-card-group { display: grid; grid-template-columns: repeat(2,minmax(260px,1fr)); gap: 12px; }
 .radio-card { min-height: 72px; padding: 12px 14px; display: grid; grid-template-columns: 18px 1fr; gap: 3px 8px; align-items: start; border: 1px solid #dfe5ea; cursor: pointer; }
 .radio-card.checked { border-color: #70abe0; background: #f4f9fe; box-shadow: inset 3px 0 0 var(--sit-blue); }
@@ -268,6 +276,29 @@ body.sit-ui { min-width: 1180px; overflow: hidden; background: #fff; }
 .business-modal.wide-modal { width: 780px; }
 .business-modal.compact-modal { width: 520px; }
 .business-modal.access-config-modal { width: min(640px,calc(100vw - 32px)); max-height: calc(100vh - 48px); }
+.business-modal.store-selector-modal { width: min(980px,calc(100vw - 32px)); height: min(608px,calc(100vh - 24px)); max-height: none; }
+.store-selector-modal .business-modal-head { min-height: 56px; padding: 0 24px; color: #2d333a; background: #fff; border-bottom: 1px solid #e8ebee; }
+.store-selector-modal .business-modal-head h2 { font-size: 18px; font-weight: 600; }
+.store-selector-modal .business-modal-head .drawer-close { color: #77818b; }
+.store-selector-modal .business-modal-body { height: calc(100% - 112px); max-height: none; padding: 24px; }
+.store-selector-modal .business-modal-foot { min-height: 56px; padding: 10px 16px 10px 24px; justify-content: space-between; background: #fff; }
+.store-selector-search { height: 34px; display: flex; margin-bottom: 10px; }
+.store-selector-search input { flex: 1; min-width: 0; padding: 0 12px; color: #49535d; border: 1px solid #d9dde1; outline: 0; }
+.store-selector-search input:focus { border-color: #68aeea; }
+.store-selector-search button { width: 34px; color: #7c8791; background: #fff; border: 1px solid #d9dde1; border-left: 0; font-size: 20px; }
+.store-tree { height: calc(100% - 44px); padding: 2px 0 12px; overflow: auto; color: #2f3439; }
+.store-tree-row { min-height: 28px; display: flex; align-items: center; gap: 9px; white-space: nowrap; cursor: pointer; }
+.store-tree-row:hover { background: #f5f9fd; }
+.store-tree-row input { width: 16px; height: 16px; margin: 0; accent-color: var(--sit-blue); }
+.store-tree-arrow, .store-tree-spacer { width: 15px; flex: 0 0 15px; color: #333; text-align: center; font-size: 12px; }
+.store-tree-row.level-1 { padding-left: 24px; }
+.store-tree-row.level-2 { padding-left: 48px; }
+.store-tree-row.level-3 { padding-left: 72px; }
+.store-tree-row.level-4 { padding-left: 96px; }
+.store-modal-count { color: #424a52; }
+.store-modal-count strong { color: #1d8fe1; font-size: 16px; }
+.store-modal-actions { display: flex; gap: 18px; }
+.store-modal-actions .button { min-width: 64px; height: 34px; }
 .business-modal-head { min-height: 48px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; color: #fff; background: #20344e; }
 .business-modal-head h2 { margin: 0; font-size: 15px; font-weight: 500; }
 .business-modal-body { max-height: calc(78vh - 108px); padding: 18px; overflow-y: auto; }
