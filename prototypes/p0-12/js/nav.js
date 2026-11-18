@@ -29,6 +29,8 @@
   }
 
   function highlight() {
+    var documentLink = document.querySelector('.sidebar-doc');
+    if (documentLink) documentLink.hidden = currentPage === 'sa-pool';
     Array.prototype.forEach.call(document.querySelectorAll('.nav-link'), function (link) {
       link.classList.toggle('active', link.getAttribute('data-page') === currentPage);
     });

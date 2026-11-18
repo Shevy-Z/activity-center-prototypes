@@ -11,6 +11,7 @@ body { overflow-x: hidden; }
 .nav-link:hover, .nav-link.active { color: #fff; background: rgba(64,158,255,.18); border-left-color: #409eff; }
 .nav-icon { width: 18px; text-align: center; }
 .sidebar-doc { position: absolute; left: 22px; bottom: 26px; color: #9fb0c1; font-size: 12px; }
+.sa-pool-help { font-size: 13px; white-space: nowrap; }
 .app-main { flex: 1; min-width: 0; padding: 0; background: #f1f4f8; }
 .page-loading, .empty-page { padding: 50px; color: #7d8795; }
 .placeholder-page { margin: 70px auto; max-width: 760px; padding: 42px; background: #fff; border: 1px solid #e5e9ef; }

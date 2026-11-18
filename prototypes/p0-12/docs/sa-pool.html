@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SA 活动池校验 · 功能说明</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f3f5f8;color:#273142;font:14px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    main{max-width:1120px;margin:24px auto;padding:34px;background:#fff;border:1px solid #e2e6ec}
+    a{color:#337ecc;text-decoration:none}
+    a:hover{text-decoration:underline}
+    a:focus-visible{outline:3px solid #409eff;outline-offset:4px}
+    h1{margin:16px 0 8px;font-size:26px}
+    h2{margin:28px 0 12px;padding-left:10px;border-left:4px solid #409eff;font-size:18px}
+    p{color:#596579}
+    .lead{padding:14px;background:#eef7ff;border-left:3px solid #409eff}
+    .formula{padding:16px;background:#f5f9ff;border:1px dashed #b9d6f3;color:#337ecc;font-weight:600}
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{padding:11px;text-align:left;vertical-align:top;border:1px solid #e3e7ed}
+    th{background:#f5f7fa;color:#4f5a6a}
+    .home-button{position:fixed;right:20px;bottom:20px;padding:10px 16px;border-radius:999px;background:#315efb;color:#fff;font-weight:600;box-shadow:0 8px 24px rgba(49,94,251,.25)}
+    @media(max-width:700px){main{margin:0;padding:22px 14px 90px;border:0}h1{font-size:23px}th,td{padding:9px}table{min-width:560px}}
+  </style>
+</head>
+<body>
+  <main>
+    <a href="../index.html#sa-pool">← 返回 SA 活动池校验</a>
+    <h1>SA 活动池校验 · 功能说明</h1>
+    <p class="lead">模拟 SA 生成动态二维码前的活动选择页，验证不同门店的 SA 可以查看和分享哪些活动。</p>
+
+    <h2>活动池筛选规则</h2>
+    <p class="formula">SA 投放配置有效 ∩ 活动已启用 ∩（活动适用于全部门店，或 SA 所属门店命中指定门店）＝ 可查看、可分享</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th scope="col">活动情况</th><th scope="col">SA 正常视图</th><th scope="col">规则校验视图</th></tr></thead>
+      <tbody>
+        <tr><td>已启用且投放配置有效，适用于全部门店</td><td>展示活动，可生成并分享</td><td>展示活动和全部门店的判断原因</td></tr>
+        <tr><td>已启用且投放配置有效，SA 所属门店命中指定范围</td><td>展示活动，可生成并分享</td><td>展示活动和门店命中原因</td></tr>
+        <tr><td>已启用且投放配置有效，SA 所属门店未命中</td><td>隐藏活动</td><td>展示过滤原因，“不可分享”按钮禁用</td></tr>
+        <tr><td>活动未启用或 SA 投放配置无效</td><td>排除在候选池外</td><td>排除在候选池外</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>页面操作</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th scope="col">入口</th><th scope="col">操作与反馈</th></tr></thead>
+      <tbody>
+        <tr><td>选择 SA 身份</td><td>切换不同门店的 SA，刷新当前所属门店、统计和活动列表。当前原型按单一所属门店演示。</td></tr>
+        <tr><td>SA 正常视图 / 规则校验视图</td><td>正常视图展示当前 SA 可见活动。规则校验视图展示全部候选活动及门店命中或过滤原因。</td></tr>
+        <tr><td>查看范围</td><td>打开当前活动的门店范围弹窗。全部门店显示默认范围，指定门店显示可用门店的编码与名称。</td></tr>
+        <tr><td>生成并分享</td><td>可分享活动打开二维码分享预览，展示来源 SA 和来源门店。点击“复制分享链接”给出演示反馈。</td></tr>
+        <tr><td>返回配置适用门店 / 去配置适用门店</td><td>跳转到活动适用门店配置页。</td></tr>
+        <tr><td>功能说明</td><td>页面右上方打开当前 SA 活动池校验的功能说明。</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>统计与空状态</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th scope="col">指标</th><th scope="col">口径</th></tr></thead>
+      <tbody>
+        <tr><td>当前 SA 门店</td><td>显示所选 SA 所属门店的编码与城市。</td></tr>
+        <tr><td>SA 投放候选</td><td>已启用且 SA 投放配置有效的活动数量。</td></tr>
+        <tr><td>当前可见</td><td>候选活动中适用于全部门店，或当前 SA 所属门店命中的活动数量。</td></tr>
+        <tr><td>门店过滤</td><td>SA 投放候选数量减去当前可见数量。</td></tr>
+        <tr><td>无可展示活动</td><td>显示“当前没有可分享活动”，提示检查 SA 投放配置、活动状态和适用门店。</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>门店范围与分享预览</h2>
+    <p>活动需要进入独立的 SA 投放配置。活动未指定门店或指定门店集合为空时按全部门店判断，配置指定门店后按当前 SA 所属门店匹配。</p>
+    <p>当前原型使用 Mock 数据，二维码和复制分享链接均为演示反馈。</p>
+  </main>
+  <a class="home-button" href="https://shevy-z.github.io/activity-center-prototypes/index.html" data-activity-home-button aria-label="返回活动中心原型首页">← 返回首页</a>
+</body>
+</html>
