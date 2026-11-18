@@ -3,6 +3,8 @@
 
   var config = null;
   var currentPage = '';
+  var employeeSidebar = new URLSearchParams(location.search).get('sidebar') === 'employee-sharing';
+  var backendURL = new URL('../../version-12-prototype-act-cou/V003_20260827_fc5b2da/离线预览/backend/index.html', location.href);
 
   function buildTree(items) {
     return '<div class="sidebar-brand"><strong>NISSAN</strong><span>新零售营销系统</span></div>' +
@@ -18,6 +20,18 @@
   function renderNav() {
     var nav = document.getElementById('main-nav');
     if (!nav || !config) return;
+    if (employeeSidebar) {
+      nav.classList.add('employee-sharing-sidebar');
+      document.querySelector('.app-layout').classList.add('employee-sharing-layout');
+      window.EmployeeSharingSidebar = {
+        backendHref: backendURL.href,
+        poolHref: location.href
+      };
+      var script = document.createElement('script');
+      script.src = new URL('js/nav.js?v=20261118-shared-sidebar', backendURL).href;
+      document.head.appendChild(script);
+      return;
+    }
     nav.innerHTML = buildTree(config.menu || []);
     Array.prototype.forEach.call(nav.querySelectorAll('[data-page]'), function (link) {
       link.addEventListener('click', function (event) {
@@ -29,6 +43,10 @@
   }
 
   function highlight() {
+    if (employeeSidebar) {
+      if (window.SANav) window.SANav.setActive('sa-pool');
+      return;
+    }
     var documentLink = document.querySelector('.sidebar-doc');
     if (documentLink) documentLink.hidden = currentPage === 'sa-pool';
     Array.prototype.forEach.call(document.querySelectorAll('.nav-link'), function (link) {

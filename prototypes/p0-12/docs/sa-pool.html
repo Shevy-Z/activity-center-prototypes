@@ -26,7 +26,7 @@
 </head>
 <body>
   <main>
-    <a href="../index.html#sa-pool">← 返回 SA 活动池校验</a>
+    <a href="../index.html#sa-pool" id="sa-pool-back">← 返回 SA 活动池校验</a>
     <h1>SA 活动池校验 · 功能说明</h1>
     <p class="lead">模拟 SA 生成动态二维码前的活动选择页，验证不同门店的 SA 可以查看和分享哪些活动。</p>
 
@@ -72,5 +72,10 @@
     <p>当前原型使用 Mock 数据，二维码和复制分享链接均为演示反馈。</p>
   </main>
   <a class="home-button" href="https://shevy-z.github.io/activity-center-prototypes/index.html" data-activity-home-button aria-label="返回活动中心原型首页">← 返回首页</a>
+  <script>
+    if (new URLSearchParams(location.search).get('sidebar') === 'employee-sharing') {
+      document.getElementById('sa-pool-back').href = '../index.html?sidebar=employee-sharing#sa-pool';
+    }
+  </script>
 </body>
 </html>

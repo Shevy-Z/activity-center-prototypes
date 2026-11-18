@@ -12,6 +12,55 @@ body { overflow-x: hidden; }
 .nav-icon { width: 18px; text-align: center; }
 .sidebar-doc { position: absolute; left: 22px; bottom: 26px; color: #9fb0c1; font-size: 12px; }
 .sa-pool-help { font-size: 13px; white-space: nowrap; }
+/* Match the employee-sharing backend navigation when opened from its sidebar. */
+.app-layout.employee-sharing-layout { padding-left: 210px; }
+#main-nav.employee-sharing-sidebar {
+  --nav-bg: #1d2c3f;
+  --nav-deep: #172436;
+  --nav-text: #c6d0dc;
+  --nav-muted: #8290a0;
+  font: 12px/1.5 "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+}
+#main-nav.employee-sharing-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 100;
+  width: 210px;
+  overflow-y: auto;
+  color: var(--nav-text);
+  background: var(--nav-bg);
+}
+#main-nav.employee-sharing-sidebar .brand-row { height: 58px; padding: 0 14px; display: flex; align-items: center; gap: 10px; color: #fff; background: var(--nav-deep); border-bottom: 1px solid rgba(255,255,255,.06); }
+#main-nav.employee-sharing-sidebar .brand-row img { width: 34px; height: 31px; object-fit: contain; }
+#main-nav.employee-sharing-sidebar .brand-row strong { font-size: 14px; font-weight: 500; }
+#main-nav.employee-sharing-sidebar .nav-section-label { padding: 16px 15px 6px; color: #768698; font-size: 11px; }
+#main-nav.employee-sharing-sidebar .nav-group-title, #main-nav.employee-sharing-sidebar .nav-link {
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 16px;
+  display: flex;
+  gap: 0;
+  align-items: center;
+  color: var(--nav-text);
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  text-align: left;
+}
+#main-nav.employee-sharing-sidebar .nav-group-title { color: #fff; font: inherit; font-weight: 600; }
+#main-nav.employee-sharing-sidebar .nav-group-title::after { content: "⌄"; margin-left: auto; color: var(--nav-muted); }
+#main-nav.employee-sharing-sidebar .nav-sub { padding-bottom: 5px; background: rgba(7,15,25,.2); }
+#main-nav.employee-sharing-sidebar .nav-sub .nav-link { min-height: 34px; padding-left: 34px; font-size: 12px; }
+#main-nav.employee-sharing-sidebar .nav-link:hover, #main-nav.employee-sharing-sidebar .nav-group-title:hover { color: #fff; background: rgba(255,255,255,.06); }
+#main-nav.employee-sharing-sidebar .nav-link.active { color: #fff; background: #3d6ff1; border-left-color: #fff; }
+#main-nav.employee-sharing-sidebar .nav-dot { width: 5px; height: 5px; margin-right: 9px; border-radius: 50%; background: currentColor; opacity: .78; }
+@media (min-width: 761px) and (max-width: 1360px) {
+  .app-layout.employee-sharing-layout { padding-left: 188px; }
+  #main-nav.employee-sharing-sidebar { width: 188px; }
+}
+@media (max-width: 760px) {
+  .app-layout.employee-sharing-layout { padding-left: 0; }
+}
 .app-main { flex: 1; min-width: 0; padding: 0; background: #f1f4f8; }
 .page-loading, .empty-page { padding: 50px; color: #7d8795; }
 .placeholder-page { margin: 70px auto; max-width: 760px; padding: 42px; background: #fff; border: 1px solid #e5e9ef; }
