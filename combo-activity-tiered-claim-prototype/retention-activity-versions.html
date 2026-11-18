@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>保客活动创建 · 准入联动 · 版本记录</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f7f8fa;color:#1e293b;font:15px/1.8 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    a{color:#175aa5;text-decoration:none}
+    a:hover{text-decoration:underline}
+    a:focus-visible{outline:3px solid #76a5dd;outline-offset:3px}
+    header{background:#fff;border-bottom:1px solid #dce2e9}
+    .header-inner,main{max-width:1204px;margin:auto;padding:26px 22px}
+    h1{margin:0 0 10px;font-size:28px;line-height:1.4}
+    h2{margin:30px 0 12px;font-size:21px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 20px}
+    .btn{padding:8px 14px;border:1px solid #b9c9dd;border-radius:5px;background:#fff}
+    .primary{color:#fff;background:#175aa5;border-color:#175aa5}
+    .meta{margin:0;color:#64748b;font-size:13px}
+    .table-wrap{overflow:auto;border:1px solid #d9dfe7;background:#fff}
+    table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+    th,td{padding:12px;text-align:left;vertical-align:top;border-bottom:1px solid #d9dfe7}
+    th{background:#eaf0f6;font-weight:600}
+    th:first-child,td:first-child{white-space:nowrap}
+    time{white-space:nowrap}
+    tbody tr:last-child td{border-bottom:0}
+    code{font-family:ui-monospace,SFMono-Regular,monospace}
+    main{padding-bottom:100px}
+    .home-button{position:fixed;right:20px;bottom:20px;padding:10px 16px;border-radius:999px;background:#315efb;color:#fff;font-weight:600;box-shadow:0 8px 24px rgba(49,94,251,.25)}
+    @media(max-width:700px){.header-inner,main{padding:22px 14px}h1{font-size:23px}main{padding-bottom:100px}th,td{padding:10px}}
+  </style>
+</head>
+<body>
+  <header><div class="header-inner"><h1>保客活动创建 · 准入联动 · 版本记录</h1><a href="../index.html">← 返回活动中心相关原型</a></div></header>
+  <main>
+    <div class="actions"><a class="btn primary" href="V008_20260910_5170372/原始文件/retention-activity/index.html">打开当前原型</a></div>
+    <p class="meta">当前原型位于 V008 交接目录，历史记录按本模块的实际变更列示。最近整理于 2026-11-18。</p>
+    <section id="post-handoff-updates" aria-label="交接后更新记录">
+      <h2>交接后更新记录</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th scope="col" style="width:110px">更新日期</th><th scope="col">更新内容</th><th scope="col" style="width:170px">发布提交 / 入口</th></tr></thead>
+        <tbody>
+          <tr data-update="split-records"><td>2026-11-18</td><td>首页“保客活动创建 · 准入联动”的“版本记录”入口调整为当前独立记录页，按本原型实际变更展示历史与交接后更新。</td><td><a href="../index.html">原型首页</a></td></tr>
+          <tr><td>2026-11-16</td><td>发布副本的原型子页面增加“返回首页”按钮。</td><td><a href="https://github.com/Shevy-Z/activity-center-prototypes/commit/468da28"><code>468da28</code></a></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <section id="original-versions" aria-label="原始交接版本">
+      <h2>原始交接版本</h2>
+      <div class="table-wrap"><table>
+        <colgroup><col style="width:70px"><col style="width:180px"><col><col style="width:120px"><col style="width:110px"></colgroup>
+        <thead><tr><th scope="col">版本</th><th scope="col">提交时间</th><th scope="col">本原型变化</th><th scope="col">原型 / 说明</th><th scope="col">原始提交</th></tr></thead>
+        <tbody>
+          <tr data-version="V008"><td>V008</td><td><time datetime="2026-09-10T17:30:00+08:00">2026-09-10 17:30</time></td><td>明确由活动中心后端执行号码级候选卡券过滤；所有场景仅保留领取规则为用户的券，BIMC新、维修保养新额外要求核销方式恰为线上核销。同步修订规则、需求说明、验收点和流程。</td><td><a href="V008_20260910_5170372/原始文件/retention-activity/index.html">打开该版本</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/5170372363c8465180b14d3e7213a0c36f6e4058"><code>5170372</code></a></td></tr>
+          <tr data-version="V007"><td>V007</td><td><time datetime="2026-09-10T15:09:16+08:00">2026-09-10 15:09</time></td><td>补充保客活动关联卡券的号码级限制标注及样式，说明领取规则和核销方式条件。</td><td><a href="V007_20260910_7662c47/原始文件/retention-activity/index.html">打开该版本</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/7662c472f698fce155aa1620c419c926312c2e13"><code>7662c47</code></a></td></tr>
+          <tr data-version="V004"><td>V004</td><td><time datetime="2026-09-10T11:41:13+08:00">2026-09-10 11:41</time></td><td>首次加入保客活动创建与准入联动原型，前置准入配置，演示号码级、活动属性、用户标识与关联卡券选择联动，并提供评审文档和流程。</td><td><a href="V004_20260910_be1c998/原始文件/retention-activity/index.html">打开该版本</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/be1c9982d11cf87d96195be761427bbad51e4e22"><code>be1c998</code></a></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+  </main>
+  <a class="home-button" href="https://shevy-z.github.io/activity-center-prototypes/index.html" data-activity-home-button aria-label="返回活动中心原型首页">← 返回首页</a>
+</body>
+</html>

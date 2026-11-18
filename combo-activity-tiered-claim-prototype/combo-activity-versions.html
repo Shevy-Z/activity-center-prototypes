@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>组合活动分级领取 · 版本记录</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f7f8fa;color:#1e293b;font:15px/1.8 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    a{color:#175aa5;text-decoration:none}
+    a:hover{text-decoration:underline}
+    a:focus-visible{outline:3px solid #76a5dd;outline-offset:3px}
+    header{background:#fff;border-bottom:1px solid #dce2e9}
+    .header-inner,main{max-width:1204px;margin:auto;padding:26px 22px}
+    h1{margin:0 0 10px;font-size:28px;line-height:1.4}
+    h2{margin:30px 0 12px;font-size:21px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 20px}
+    .btn{padding:8px 14px;border:1px solid #b9c9dd;border-radius:5px;background:#fff}
+    .primary{color:#fff;background:#175aa5;border-color:#175aa5}
+    .meta{margin:0;color:#64748b;font-size:13px}
+    .table-wrap{overflow:auto;border:1px solid #d9dfe7;background:#fff}
+    table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+    th,td{padding:12px;text-align:left;vertical-align:top;border-bottom:1px solid #d9dfe7}
+    th{background:#eaf0f6;font-weight:600}
+    th:first-child,td:first-child{white-space:nowrap}
+    time{white-space:nowrap}
+    tbody tr:last-child td{border-bottom:0}
+    code{font-family:ui-monospace,SFMono-Regular,monospace}
+    main{padding-bottom:100px}
+    .home-button{position:fixed;right:20px;bottom:20px;padding:10px 16px;border-radius:999px;background:#315efb;color:#fff;font-weight:600;box-shadow:0 8px 24px rgba(49,94,251,.25)}
+    @media(max-width:700px){.header-inner,main{padding:22px 14px}h1{font-size:23px}main{padding-bottom:100px}th,td{padding:10px}}
+  </style>
+</head>
+<body>
+  <header><div class="header-inner"><h1>组合活动分级领取 · 版本记录</h1><a href="../index.html">← 返回活动中心相关原型</a></div></header>
+  <main>
+    <div class="actions"><a class="btn primary" href="V008_20260910_5170372/原始文件/combo-activity/index.html">打开当前原型</a></div>
+    <p class="meta">当前原型位于 V008 交接目录，历史记录按本模块的实际变更列示。最近整理于 2026-11-18。</p>
+    <section id="post-handoff-updates" aria-label="交接后更新记录">
+      <h2>交接后更新记录</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th scope="col" style="width:110px">更新日期</th><th scope="col">更新内容</th><th scope="col" style="width:170px">发布提交 / 入口</th></tr></thead>
+        <tbody>
+          <tr data-update="split-records"><td>2026-11-18</td><td>首页“组合活动分级领取”的“版本记录”入口调整为当前独立记录页，按本原型实际变更展示历史与交接后更新。</td><td><a href="../index.html">原型首页</a></td></tr>
+          <tr><td>2026-11-18</td><td>保留“认证后可领取”“绑车后可领取”标题，下方分别显示“完成车主认证，解锁更多活动优惠”“完成爱车绑定，解锁更多活动优惠”，并显示“*优惠券仅示意，请以卡包实际到账为准”。覆盖部分领取、仅需认证和等级不足状态。</td><td><a href="https://github.com/Shevy-Z/activity-center-prototypes/commit/98d12dd"><code>98d12dd</code></a>（最终修正）<br><a href="https://github.com/Shevy-Z/activity-center-prototypes/commit/c8725ca"><code>c8725ca</code></a>（首次调整）</td></tr>
+          <tr><td>2026-11-16</td><td>发布副本的原型子页面增加“返回首页”按钮。</td><td><a href="https://github.com/Shevy-Z/activity-center-prototypes/commit/468da28"><code>468da28</code></a></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <section id="original-versions" aria-label="原始交接版本">
+      <h2>原始交接版本</h2>
+      <div class="table-wrap"><table>
+        <colgroup><col style="width:70px"><col style="width:180px"><col><col style="width:120px"><col style="width:110px"></colgroup>
+        <thead><tr><th scope="col">版本</th><th scope="col">提交时间</th><th scope="col">本原型变化</th><th scope="col">原型 / 说明</th><th scope="col">原始提交</th></tr></thead>
+        <tbody>
+          <tr data-version="V006"><td>V006</td><td><time datetime="2026-09-10T14:08:00+08:00">2026-09-10 14:08</time></td><td>修复窄屏状态图工具栏及资源版本引用。</td><td><a href="V006_20260910_9179263/原始文件/combo-activity/index.html">打开该版本</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/91792636494b5f4bb40fce388e1594c23b9c1bd4"><code>9179263</code></a></td></tr>
+          <tr data-version="V005"><td>V005</td><td><time datetime="2026-09-10T14:04:51+08:00">2026-09-10 14:04</time></td><td>增加规则标注面板、标注数据和样式，说明页面状态、准入、领取结果及业务连线。</td><td><a href="V005_20260910_28a7e3e/原始文件/combo-activity/index.html">打开该版本</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/28a7e3ecccd6f57934300e764ba3b2d00d645c0c"><code>28a7e3e</code></a></td></tr>
+          <tr data-version="V004"><td>V004</td><td><time datetime="2026-09-10T11:41:13+08:00">2026-09-10 11:41</time></td><td>将组合活动状态图迁入 combo-activity 独立目录。</td><td><a href="V004_20260910_be1c998/原始文件/combo-activity/index.html">打开该版本</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/be1c9982d11cf87d96195be761427bbad51e4e22"><code>be1c998</code></a></td></tr>
+          <tr data-version="V003"><td>V003</td><td><time datetime="2026-09-07T15:13:55+08:00">2026-09-07 15:13</time></td><td>新增四组 12 个页面状态、状态连线画布和三张业务流程图，支持拖拽、缩放和定位。</td><td><a href="V003_20260907_7953b81/原始文件/index.html">打开该版本</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/7953b81d834a0167cababd49c486f921def913e9"><code>7953b81</code></a></td></tr>
+          <tr data-version="V002"><td>V002</td><td><time datetime="2026-09-07T11:40:16+08:00">2026-09-07 11:40</time></td><td>首次发布组合活动分级领取交互原型，演示准入、车辆绑定、卡券选择与领取结果。</td><td><a href="V002_20260907_10c8a33/原始文件/index.html">打开该版本</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/10c8a3316b02b776a2daa8e676853a11fb0cb134"><code>10c8a33</code></a></td></tr>
+          <tr data-version="V001"><td>V001</td><td><time datetime="2026-09-07T11:38:31+08:00">2026-09-07 11:38</time></td><td>建立公开仓库及范围说明。</td><td><a href="V001_20260907_a47ad10/原始文件/README.md">初始化说明</a></td><td><a href="https://github.com/huanghaofa/combo-activity-tiered-claim-prototype/commit/a47ad10fd8576cb6e1d751fcad23ee13ae5fb62e"><code>a47ad10</code></a></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+  </main>
+  <a class="home-button" href="https://shevy-z.github.io/activity-center-prototypes/index.html" data-activity-home-button aria-label="返回活动中心原型首页">← 返回首页</a>
+</body>
+</html>
