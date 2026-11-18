@@ -1,5 +1,11 @@
 # 变更记录
 
+## 2026-11-18
+
+- 首页“组合活动与 SIT 基线”的业务时序入口移入“组合活动分级领取”模块，目标仍为 `sequences/p0-13.html`。
+- 原型入口移至首页下方文档区，按钮名称为“组合活动与 SIT 基线”，点击打开 `prototypes/p0-13/index.html`。
+- 首页移除“组合活动与 SIT 基线”模块卡片。发布提交为 [c100f80](https://github.com/Shevy-Z/activity-center-prototypes/commit/c100f80)。
+
 ## 2026-07-16
 
 - 创建独立项目 `SIT现状基线原型_20260716`，未修改既有 9 月版本原型。
