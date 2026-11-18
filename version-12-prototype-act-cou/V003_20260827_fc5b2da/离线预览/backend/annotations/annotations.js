@@ -1,6 +1,12 @@
 window.AnnotationData = {
   'activity-create': [{
     id: 1,
+    target: '[data-anno="activity-store-scope"]',
+    title: '适用门店功能说明',
+    href: 'docs/activity-store.html',
+    position: {placement:'top-right',offsetX:-12,offsetY:8}
+  }, {
+    id: 2,
     target: '.role-checkbox-grid',
     title: '普通活动允许分享角色',
     position: {placement:'top-right',offsetX:-12,offsetY:8},

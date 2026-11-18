@@ -162,7 +162,7 @@
   }
 
   function storeSelectionControl(form,locked) {
-    return '<div class="store-scope-control">' +
+    return '<div class="store-scope-control" data-anno="activity-store-scope">' +
       '<input class="store-count-input" value="' + esc(storeSelectionLabel(form)) + '" readonly>' +
       '<button class="button primary" data-open-store-selector type="button"' + (locked ? ' disabled' : '') + '>选择门店</button>' +
       '<button class="button primary" data-store-template-download type="button"' + (locked ? ' disabled' : '') + '><span class="store-action-icon">⇩</span>下载模板</button>' +

@@ -144,6 +144,10 @@
       marker.title = anno.title || '';
       marker.addEventListener('click', function (event) {
         event.stopPropagation();
+        if (anno.href) {
+          window.location.href = anno.href;
+          return;
+        }
         openPopup(anno, marker);
       });
       overlay.appendChild(marker);
