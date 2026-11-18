@@ -11,7 +11,13 @@
       '<div class="nav-section-label">功能导航</div>' + config.menu.map(function (item) {
         if (item.passive) return '<div class="nav-link"><span class="nav-dot"></span>' + item.label + '</div>';
         return '<div class="nav-group"><button class="nav-group-title" type="button">' + item.label + '</button><div class="nav-sub">' +
-          (item.children || []).map(function (child) { return '<a class="nav-link" data-route="' + child.route + '" href="#' + child.route + '"><span class="nav-dot"></span>' + child.label + '</a>'; }).join('') +
+          (item.children || []).map(function (child) {
+            var link = '<a class="nav-link" data-route="' + child.route + '" href="#' + child.route + '"><span class="nav-dot"></span>' + child.label + '</a>';
+            if (child.route === 'activity-overview') {
+              link += '<a class="nav-link" href="../../../../prototypes/p0-12/index.html#sa-pool"><span class="nav-dot"></span>SA 活动池校验</a>';
+            }
+            return link;
+          }).join('') +
           '</div></div>';
       }).join('');
   }
