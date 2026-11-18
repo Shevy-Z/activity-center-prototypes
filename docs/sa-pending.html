@@ -15,6 +15,13 @@
     .header-inner,main{max-width:1120px;margin:auto;padding:26px 24px}
     .header-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
     h1{margin:0;font-size:28px}
+    html{scroll-behavior:smooth}
+    .module-nav{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px}
+    .module-nav a{padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    .module{margin-bottom:38px;scroll-margin-top:24px}
+    .module-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+    .module-heading h2{margin:0;font-size:21px}
+    .module-heading a{font-size:14px;white-space:nowrap}
     .source{margin:0 0 20px;color:var(--muted);font-size:14px}
     .table-wrap{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 8px 22px rgba(32,52,89,.05)}
     table{width:100%;border-collapse:collapse}
@@ -31,9 +38,44 @@
 <body>
   <header><div class="header-inner"><h1>SA待确认</h1><a href="../index.html">活动中心相关原型</a></div></header>
   <main>
+    <nav class="module-nav" aria-label="待确认问题模块">
+      <a href="#employee-sharing">员工分享与二次运营</a>
+      <a href="#store-claim">一店一码一键领取</a>
+      <a href="#store-scope">活动适用门店与 SA 分享范围</a>
+    </nav>
+    <section id="employee-sharing" class="module" aria-labelledby="employee-sharing-title">
+      <div class="module-heading"><h2 id="employee-sharing-title">员工分享与二次运营</h2><a href="../version-12-prototype-act-cou/V003_20260827_fc5b2da/离线预览/index.html">打开原型</a></div>
+      <p class="source">根据当前 V003 原型中的待确认项归并整理。<a href="../version-12-prototype-act-cou/V003_20260827_fc5b2da/离线预览/backend/docs/interaction.html">后台功能说明</a> · <a href="../version-12-prototype-act-cou/V003_20260827_fc5b2da/离线预览/mobile/docs/interaction.html">移动端功能说明</a> · <a href="../version-12-prototype-act-cou/V003_20260827_fc5b2da/离线预览/docs/interaction.html">评审导航</a></p>
+      <div class="table-wrap">
+        <table aria-label="员工分享与二次运营待确认问题">
+          <thead><tr><th scope="col">编号</th><th scope="col">待确认问题</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>海报默认规则采用全局配置还是按活动配置？</td></tr>
+            <tr><td>2</td><td>可维护的海报模板数量及限制。</td></tr>
+            <tr><td>3</td><td>海报规则的保存、发布、生效流程及版本管理机制。</td></tr>
+            <tr><td>4</td><td>海报背景图的正式文件格式、像素尺寸、文件大小及审核限制。</td></tr>
+            <tr><td>5</td><td>同一客户多张卡券的正式聚合、排序和分页规则。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section id="store-claim" class="module" aria-labelledby="store-claim-title">
+      <div class="module-heading"><h2 id="store-claim-title">一店一码一键领取</h2><a href="../prototypes/p0-09/index.html">打开原型</a></div>
+      <p class="source">来自该原型业务时序图中的“待确认”。<a href="../sequences/p0-09.html">查看问题来源</a></p>
+      <div class="table-wrap">
+        <table aria-label="一店一码一键领取待确认问题">
+          <thead><tr><th scope="col">编号</th><th scope="col">待确认问题</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>正式车辆绑定页面地址，以及绑定成功后自动回跳还是手动返回。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section id="store-scope" class="module" aria-labelledby="store-scope-title">
+      <div class="module-heading"><h2 id="store-scope-title">活动适用门店与 SA 分享范围</h2><a href="../prototypes/p0-12/index.html">打开原型</a></div>
     <p class="source">以下 7 项问题来自《活动适用门店与 SA 分享范围》的“待确认问题”。<a href="https://huanghaofa.github.io/version-11-prototype/prototypes/p0-12/docs/interaction.html">查看原文</a></p>
     <div class="table-wrap">
-      <table aria-label="SA待确认问题">
+      <table aria-label="活动适用门店与 SA 分享范围待确认问题">
         <thead><tr><th scope="col">编号</th><th scope="col">待确认问题</th></tr></thead>
         <tbody>
           <tr><td>O-001</td><td>已启用活动修改门店范围的审核、生效时点和可扩大/缩小限制。</td></tr>
@@ -46,6 +88,7 @@
         </tbody>
       </table>
     </div>
+    </section>
   </main>
   <a class="home-button" href="https://shevy-z.github.io/activity-center-prototypes/index.html" data-activity-home-button aria-label="返回活动中心原型首页">← 返回首页</a>
 </body>
