@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SA待确认 · 活动中心相关原型</title>
+  <style>
+    :root{--ink:#172033;--muted:#64748b;--line:#dbe3ef;--brand:#315efb;--bg:#f5f7fb}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    a:focus-visible{outline:3px solid var(--brand);outline-offset:4px}
+    header{background:#fff;border-bottom:1px solid var(--line)}
+    .header-inner,main{max-width:1120px;margin:auto;padding:26px 24px}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    h1{margin:0;font-size:28px}
+    .source{margin:0 0 20px;color:var(--muted);font-size:14px}
+    .table-wrap{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 8px 22px rgba(32,52,89,.05)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:18px 20px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+    th{background:#edf1ff;font-weight:600}
+    th:first-child,td:first-child{width:110px;white-space:nowrap}
+    td:first-child{color:var(--brand);font-weight:600}
+    tbody tr:last-child td{border-bottom:0}
+    .home-button{position:fixed;right:20px;bottom:20px;z-index:10;padding:10px 16px;border-radius:999px;background:var(--brand);color:#fff;font-weight:600;box-shadow:0 8px 24px rgba(49,94,251,.25)}
+    main{padding-bottom:100px}
+    @media(max-width:600px){.header-inner,main{padding:20px 16px}h1{font-size:24px}main{padding-bottom:100px}th,td{padding:14px 12px}th:first-child,td:first-child{width:80px}}
+  </style>
+</head>
+<body>
+  <header><div class="header-inner"><h1>SA待确认</h1><a href="../index.html">活动中心相关原型</a></div></header>
+  <main>
+    <p class="source">以下 7 项问题来自《活动适用门店与 SA 分享范围》的“待确认问题”。<a href="https://huanghaofa.github.io/version-11-prototype/prototypes/p0-12/docs/interaction.html">查看原文</a></p>
+    <div class="table-wrap">
+      <table aria-label="SA待确认问题">
+        <thead><tr><th scope="col">编号</th><th scope="col">待确认问题</th></tr></thead>
+        <tbody>
+          <tr><td>O-001</td><td>已启用活动修改门店范围的审核、生效时点和可扩大/缩小限制。</td></tr>
+          <tr><td>O-002</td><td>SA 被移出范围后，已生成未失效二维码是否继续可用。</td></tr>
+          <tr><td>O-003</td><td>SA 多门店/区域归属采用任一命中、主门店还是授权门店集合。</td></tr>
+          <tr><td>O-004</td><td>门店主数据、营业状态及 SA—门店归属的权威系统。</td></tr>
+          <tr><td>O-005</td><td>活动适用门店是否还限制 C 端用户访问和参与。</td></tr>
+          <tr><td>O-006</td><td>活动门店超出卡券适用/核销门店时的警告或阻断策略。</td></tr>
+          <tr><td>O-007</td><td>历史续保活动门店字段迁移与空值转换方案。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <a class="home-button" href="https://shevy-z.github.io/activity-center-prototypes/index.html" data-activity-home-button aria-label="返回活动中心原型首页">← 返回首页</a>
+</body>
+</html>
+
