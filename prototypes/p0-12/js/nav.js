@@ -32,6 +32,7 @@
     var documentLink = document.querySelector('.sidebar-doc');
     if (documentLink) documentLink.hidden = currentPage === 'sa-pool';
     Array.prototype.forEach.call(document.querySelectorAll('.nav-link'), function (link) {
+      link.parentElement.hidden = currentPage === 'sa-pool' && link.getAttribute('data-page') !== 'sa-pool';
       link.classList.toggle('active', link.getAttribute('data-page') === currentPage);
     });
   }
