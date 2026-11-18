@@ -39,7 +39,8 @@
       prompt.append(
         icon,
         el('span', 'upgrade-prompt-count', '2 个专享活动 · 待解锁'),
-        el('strong', 'upgrade-prompt-title', isAuth
+        el('strong', 'upgrade-prompt-title', isAuth ? '认证后可领取' : '绑车后可领取'),
+        el('p', 'upgrade-prompt-description', isAuth
           ? '完成车主认证，解锁更多活动优惠'
           : '完成爱车绑定，解锁更多活动优惠'),
         el('span', 'upgrade-prompt-action', isAuth ? '去认证' : '去绑车'),
