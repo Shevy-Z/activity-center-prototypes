@@ -19,7 +19,35 @@
   function union(rects){if(!rects.length)return{x:0,y:0,width:1500,height:900};var x=Math.min.apply(null,rects.map(function(r){return r.x;})),y=Math.min.apply(null,rects.map(function(r){return r.y;}));return{x:x,y:y,width:Math.max.apply(null,rects.map(function(r){return r.x+r.width;}))-x,height:Math.max.apply(null,rects.map(function(r){return r.y+r.height;}))-y};}
   data.nodes.forEach(function(raw){var n=Object.assign({},raw,{height:nodeHeight(raw)});nodeMap.set(n.id,n);});
   data.sections.forEach(function(section){sectionMap.set(section.id,section);var box=el('section','board-section');box.dataset.sectionId=section.id;box.style.cssText='left:'+section.x+'px;top:'+section.y+'px;width:'+section.width+'px;height:'+section.height+'px';var caption=el('div','section-caption');caption.append(el('h2','',section.title),el('p','',section.subtitle||''));box.append(caption);sectionHost.append(box);var button=el('button','',section.shortTitle||section.title);button.dataset.sectionId=section.id;button.addEventListener('click',function(){focusSection(section.id);});nav.append(button);});
-  nodeMap.forEach(function(n){var card=el('article','state-node '+n.type+(n.emphasis?' emphasis':''));card.dataset.nodeId=n.id;card.style.cssText='left:'+n.x+'px;top:'+n.y+'px;width:'+n.width+'px;height:'+n.height+'px';card.setAttribute('aria-label',n.title);if(n.type==='screen'||n.type==='dialog'){var header=el('div','node-header');header.append(el('div','node-code',pageGroup(n)),el('h3','',n.title),el('p','',n.description||''));card.append(header);if(n.type==='dialog'){var surface=el('div','dialog-surface');surface.append(el('p','dialog-message','您尚未登录，请登录后参与活动'));var actions=el('div','dialog-actions');actions.append(el('span','dialog-action secondary','取消'),el('span','dialog-action primary','去登录'));surface.append(actions);card.append(surface);}else{var m=manifest[n.screenId];if(m){var img=el('img');img.src=m.src;img.alt=n.title;img.draggable=false;img.width=m.width;img.height=m.height;img.decoding='async';card.append(img);}else{card.append(el('div','image-missing','该页面截图待补充'));}}}else if(n.type==='decision'){var diamond=sEl('svg',{class:'decision-shape',viewBox:'0 0 '+n.width+' '+n.height,'aria-hidden':'true'});diamond.append(sEl('polygon',{points:(n.width/2)+',0 '+n.width+','+(n.height/2)+' '+(n.width/2)+','+n.height+' 0,'+(n.height/2)}));var copy=el('div','decision-content');copy.append(el('h3','',n.title),el('p','',n.description||''));card.append(diamond,copy);}else{card.append(el('h3','',n.title),el('p','',n.description||''));}nodesHost.append(card);n.element=card;});
+  nodeMap.forEach(function(n){var card=el('article','state-node '+n.type+(n.emphasis?' emphasis':''));card.dataset.nodeId=n.id;card.style.cssText='left:'+n.x+'px;top:'+n.y+'px;width:'+n.width+'px;height:'+n.height+'px';card.setAttribute('aria-label',n.title);if(n.type==='screen'||n.type==='dialog'){var header=el('div','node-header');header.append(el('div','node-code',pageGroup(n)),el('h3','',n.title),el('p','',n.description||''));card.append(header);if(n.type==='dialog'){var surface=el('div','dialog-surface');surface.append(el('p','dialog-message','您尚未登录，请登录后参与活动'));var actions=el('div','dialog-actions');actions.append(el('span','dialog-action secondary','取消'),el('span','dialog-action primary','去登录'));surface.append(actions);card.append(surface);}else{var m=manifest[n.screenId];if(m){var img=el('img');img.src=m.src;img.alt=n.title;img.draggable=false;img.width=m.width;img.height=m.height;img.decoding='async';card.append(img);appendUpgradePrompts(card,n,m);}else{card.append(el('div','image-missing','该页面截图待补充'));}}}else if(n.type==='decision'){var diamond=sEl('svg',{class:'decision-shape',viewBox:'0 0 '+n.width+' '+n.height,'aria-hidden':'true'});diamond.append(sEl('polygon',{points:(n.width/2)+',0 '+n.width+','+(n.height/2)+' '+(n.width/2)+','+n.height+' 0,'+(n.height/2)}));var copy=el('div','decision-content');copy.append(el('h3','',n.title),el('p','',n.description||''));card.append(diamond,copy);}else{card.append(el('h3','',n.title),el('p','',n.description||''));}nodesHost.append(card);n.element=card;});
+  // Prompt coordinates use the screenshots' 390px logical width.
+  function appendUpgradePrompts(card, node, screen) {
+    var prompts = {
+      'number-partial': [{ kind: 'auth', top: 598 }, { kind: 'bind', top: 1082 }],
+      'bound-folded': [{ kind: 'auth', top: 428 }],
+      'all-locked': [{ kind: 'auth', top: 263 }, { kind: 'bind', top: 748 }]
+    };
+    var scale = node.width / screen.width;
+    (prompts[node.screenId] || []).forEach(function (item) {
+      var isAuth = item.kind === 'auth';
+      var prompt = el('div', 'upgrade-prompt ' + item.kind);
+      prompt.style.left = 13 * scale + 'px';
+      prompt.style.top = HEAD + item.top * scale + 'px';
+      prompt.style.transform = 'scale(' + scale + ')';
+      var icon = el('span', 'upgrade-prompt-icon', isAuth ? '✓' : '+');
+      icon.setAttribute('aria-hidden', 'true');
+      prompt.append(
+        icon,
+        el('span', 'upgrade-prompt-count', '2 个专享活动 · 待解锁'),
+        el('strong', 'upgrade-prompt-title', isAuth
+          ? '完成车主认证，解锁更多活动优惠'
+          : '完成爱车绑定，解锁更多活动优惠'),
+        el('span', 'upgrade-prompt-action', isAuth ? '去认证' : '去绑车'),
+        el('p', 'upgrade-prompt-note', '*优惠券仅示意，请以卡包实际到账为准')
+      );
+      card.append(prompt);
+    });
+  }
   function anchor(n,side,ratio){ratio=typeof ratio==='number'?ratio:.5;var r=rectOf(n);if(side==='left')return{x:r.x,y:r.y+r.height*ratio};if(side==='top')return{x:r.x+r.width*ratio,y:r.y};if(side==='bottom')return{x:r.x+r.width*ratio,y:r.y+r.height};return{x:r.x+r.width,y:r.y+r.height*ratio};}
   var annotations=data.annotations||[],annotationHost=document.getElementById('annotations');
   annotations.forEach(function(a){var card=el('aside','rule-card');card.dataset.ruleId=a.id;card.dataset.nodeId=a.nodeId;card.style.cssText='left:'+a.x+'px;top:'+a.y+'px;width:'+a.width+'px';var heading=el('div','rule-heading');heading.append(el('span','rule-id',a.id),el('span','rule-status',a.status));card.append(heading,el('h3','',a.title),el('p','rule-text',a.text),el('p','rule-functions','功能清单 '+a.functions));if(a.pending)card.append(el('p','rule-pending','待确认 · '+a.pending));annotationHost.append(card);a.element=card;});

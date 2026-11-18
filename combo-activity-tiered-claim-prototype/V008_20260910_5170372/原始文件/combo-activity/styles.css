@@ -8,3 +8,72 @@
 .rule-card h3{margin:0 0 10px;font-size:18px;line-height:1.5;color:#263e54}.rule-text{font-size:15px;line-height:1.8;color:#48576a;margin:0}.rule-functions{font-size:11px;color:#8993a0;line-height:1.6;margin:12px 0 0}.rule-pending{font-size:12px;line-height:1.7;padding:9px 10px;margin:12px 0 0;background:#fff7dd;color:#92703f;border-radius:4px;border:1px solid #efdfaf}
 .toolbar{height:122px;flex-wrap:wrap;gap:8px 14px;padding:12px 24px}.brand{flex:1}.document-links{display:flex;gap:7px}#section-nav{order:4;flex-basis:100%;height:33px}#viewport{top:122px}#page-list{top:136px}.flow-link:focus-visible{outline:2px solid #4377b8;outline-offset:3px}
 @media(max-width:760px){.toolbar{height:170px;padding:10px 12px;gap:7px 8px}.brand{flex-basis:100%;height:38px}.brand h1{font-size:14px}.brand p{font-size:10px}.document-links{margin-right:auto}#section-nav{order:4;height:32px}.tool-button{padding:7px 8px}#viewport{top:170px}#page-list{top:181px}.canvas-tools{bottom:12px}}
+
+/* Editable upgrade prompts aligned with the result-page screenshots. */
+.upgrade-prompt {
+  position: absolute;
+  width: 364px;
+  height: 126px;
+  border-radius: 10px 10px 0 0;
+  background: #f6eae0;
+  color: #795431;
+  transform-origin: top left;
+  pointer-events: none;
+}
+.upgrade-prompt.bind { background: #f6edde; }
+.upgrade-prompt-icon {
+  position: absolute;
+  left: 13px;
+  top: 24px;
+  width: 29px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ca9b7d;
+  border-radius: 8px;
+  background: #fff5e9;
+  color: #b77b54;
+  font-size: 20px;
+}
+.upgrade-prompt-count {
+  position: absolute;
+  left: 51px;
+  top: 18px;
+  color: #b0895c;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.upgrade-prompt-title {
+  position: absolute;
+  left: 51px;
+  top: 38px;
+  width: 226px;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.upgrade-prompt-action {
+  position: absolute;
+  right: 13px;
+  top: 33px;
+  width: 60px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: #a65d40;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+.upgrade-prompt.bind .upgrade-prompt-action { background: #a57b48; }
+.upgrade-prompt-note {
+  position: absolute;
+  left: 13px;
+  top: 98px;
+  margin: 0;
+  color: #886e56;
+  font-size: 11px;
+  line-height: 18px;
+}
