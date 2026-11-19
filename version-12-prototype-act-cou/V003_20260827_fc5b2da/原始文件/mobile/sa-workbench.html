@@ -11,6 +11,7 @@
     .canvas{min-height:100vh;display:grid;place-items:center;padding:24px}
     .workbench{position:relative;width:390px;max-width:100%;container-type:inline-size;background:#f5f6fa;box-shadow:0 18px 45px rgba(28,34,41,.18)}
     .workbench-image{display:block;width:100%;height:auto}
+    .employee-name{position:absolute;left:14%;top:12.4%;width:16%;height:3.1%;display:flex;align-items:center;background:linear-gradient(to right,#eff4f9,rgba(239,244,249,0)),linear-gradient(to bottom,#e5edf7,#edf0f9);color:#1e2227;font-size:5.13cqw;font-weight:600;line-height:1;letter-spacing:.1cqw}
     .activity-entry{position:absolute;left:64.7%;top:23.5%;width:29.3%;height:7.1%;display:flex;flex-direction:column;align-items:center;gap:3.7cqw;padding:0;color:#898b89;text-decoration:none;-webkit-tap-highlight-color:transparent;border-radius:8px}
     .activity-entry svg{display:block;flex:none;width:6.65cqw;height:6.65cqw;color:#111310}
     .activity-entry span{font-size:3.1cqw;line-height:1.4;white-space:nowrap}
@@ -25,7 +26,8 @@
   <div class="canvas">
     <main class="workbench">
       <h1 class="sr-only">售后服务助手工作台</h1>
-      <img class="workbench-image" src="assets/images/sa-workbench.jpg" width="1170" height="2532" alt="售后服务助手工作台。Hi，郑小妹，服务顾问。欢迎使用东风日产售后服务助手。快捷入口：权益核销、商城订单。底部导航：工作台、我的。">
+      <img class="workbench-image" src="assets/images/sa-workbench.jpg" width="1170" height="2532" alt="售后服务助手工作台。Hi，周凯，服务顾问。欢迎使用东风日产售后服务助手。快捷入口：权益核销、商城订单。底部导航：工作台、我的。">
+      <span class="employee-name" aria-hidden="true">周凯</span>
       <a class="activity-entry" href="index.html#sa-select" aria-label="一人一码">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="2" y="2" width="6" height="6" rx=".7"/>
