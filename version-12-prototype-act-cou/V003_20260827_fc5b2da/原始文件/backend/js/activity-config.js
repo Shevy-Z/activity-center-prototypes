@@ -223,20 +223,37 @@
       '<div class="config-card" data-anno="mutex-reuse"><div class="config-card-head"><div><h3>互斥活动</h3><p>复用原“选择互斥活动”能力</p></div><button class="button" data-select-mutex type="button"' + (mutexDisabled ? ' disabled' : '') + '>选择互斥活动</button></div><div class="selected-chip-list">' + selectedMutex(form) + '</div><div class="subject-summary"><span>互斥主体口径</span><strong>' + (mutexDisabled ? '-' : esc(form.mutexSubject)) + '</strong><small>' + (mutexDisabled ? '请先启用准入并配置等级' : '由准入等级自动确定，不单独配置') + '</small></div></div></div></section>';
   }
 
+  function shareIconUpload(form, field, platform) {
+    return '<div class="activity-share-icon-row"><label class="activity-share-upload">' +
+      '<input type="file" data-activity-share-icon="' + field + '" accept="image/jpeg,image/png,image/gif" aria-label="上传' + platform + '分享图标">' +
+      (form[field] ? '<img src="' + esc(form[field]) + '" alt="' + platform + '分享图标预览">' : '<span class="activity-share-upload-plus" aria-hidden="true">＋</span>') +
+      '<span class="activity-share-platform">' + platform + '</span></label>' +
+      '<div class="activity-share-upload-help">1:1<br>点击图片区域，选择需要上传的图片，<br>图片文件大小不超过2M，支持图片格式：JPG/PNG/GIF</div></div>';
+  }
+
+  function shareSeoField(form, label, field, placeholder, required, note) {
+    return formItem((required ? '<em>*</em>' : '') + label + '：',
+      '<input data-activity-field="' + field + '" aria-label="' + label + '"' + (required ? ' required' : '') +
+      ' value="' + esc(form[field] || '') + '" placeholder="' + placeholder + '">',true,note);
+  }
+
   function renderStep4(form) {
-    return '<section class="activity-form-section"><div class="form-section-head"><div><h2>Step4 分享与SEO</h2><p>本步骤仍用于C端页面素材，不承担活动投放配置。</p></div></div>' +
-      '<div class="rule-alert neutral"><strong>注意：</strong>这里的“分享”仅指活动页面标题、描述和图片素材，与“活动分享配置”无关。</div>' +
-      '<div class="activity-form-grid">' +
-      formItem('分享标题','<input data-activity-field="shareTitle" value="' + esc(form.shareTitle || form.name) + '" placeholder="请输入分享标题">',true) +
-      formItem('分享描述','<textarea rows="3">活动详情及参与说明，以活动规则为准。</textarea>',true) +
-      formItem('WAP/APP分享图标','<button class="upload-box" type="button">＋ 上传图片</button>') +
-      formItem('小程序分享图标','<button class="upload-box" type="button">＋ 上传图片</button>') +
-      formItem('SEO标题','<input value="' + esc(form.name) + '">') +
-      formItem('SEO关键词','<input value="保客活动,车主权益">') +
+    return '<section class="activity-form-section activity-share-seo"><div class="activity-form-grid">' +
+      shareSeoField(form,'分享标题','shareTitle','请输入分享标题',true) +
+      shareSeoField(form,'分享描述','shareDescription','请输入分享描述',true) +
+      formItem('分享图标：','<div class="activity-share-icons">' + shareIconUpload(form,'shareWapIcon','WAP/APP') +
+        shareIconUpload(form,'shareMiniIcon','小程序') + '</div>',true) +
+      shareSeoField(form,'SEO标题','seoTitle','请输入标题') +
+      shareSeoField(form,'SEO关键词','seoKeywords','请输入关键词',false,'多个关键字使用英文逗号分隔') +
+      shareSeoField(form,'SEO描述','seoDescription','请输入描述') +
       '</div></section>';
   }
 
   function formFooter(form) {
+    if (state.step === 4) return '<div class="activity-form-footer activity-share-seo-footer">' +
+      '<button class="button primary" data-save-draft type="button">保存草稿</button>' +
+      '<button class="button primary" data-submit-activity type="button">下一步</button>' +
+      '<button class="button primary" data-back-list type="button">取消</button></div>';
     return '<div class="activity-form-footer"><button class="button" data-back-list type="button">返回列表</button><div>' +
       (state.step > 1 ? '<button class="button" data-form-prev type="button">上一步</button>' : '') +
       '<button class="button" data-save-draft type="button">保存草稿</button>' +
@@ -732,6 +749,7 @@
     var field = target.getAttribute('data-activity-field');
     if (!field) return;
     state.form[field] = target.value;
+    if (['shareTitle','shareDescription','seoTitle','seoKeywords','seoDescription'].indexOf(field) >= 0) return;
     if (field === 'activityType') {
       state.form.claimMode = target.value === '抽奖' ? '自动抽奖' : '一键领取';
       state.form.checkpoints = defaultCheckpoints(target.value);
@@ -932,6 +950,13 @@
     if (event.target.closest('[data-form-prev]')) { state.step = Math.max(1,state.step - 1); window.SAApp.render(); return true; }
     if (event.target.closest('[data-save-draft]')) { persistForm('草稿'); common.showToast('原型演示：草稿已保存'); return true; }
     if (event.target.closest('[data-submit-activity]')) {
+      if (!String(state.form.shareTitle || '').trim() || !String(state.form.shareDescription || '').trim()) {
+        common.showToast('请填写分享标题和分享描述');
+        var missingShareField = !String(state.form.shareTitle || '').trim() ? 'shareTitle' : 'shareDescription';
+        var missingShareInput = document.querySelector('[data-activity-field="' + missingShareField + '"]');
+        if (missingShareInput) missingShareInput.focus();
+        return true;
+      }
       if (state.form.status === '已启用') { persistForm('已启用'); common.showToast('原型演示：可编辑配置已保存，锁定字段未变更'); }
       else openEnable(state.form);
       return true;
@@ -993,6 +1018,35 @@
   }
 
   function handleChange(event) {
+    if (event.target.matches('[data-activity-share-icon]')) {
+      var iconInput = event.target;
+      var iconFile = iconInput.files && iconInput.files[0];
+      if (!iconFile || !state.form) return;
+      if (!/\.(jpe?g|png|gif)$/i.test(iconFile.name) || ['image/jpeg','image/png','image/gif'].indexOf(iconFile.type) < 0) {
+        iconInput.value = ''; common.showToast('仅支持 JPG/PNG/GIF 图片'); return;
+      }
+      if (iconFile.size > 2 * 1024 * 1024) {
+        iconInput.value = ''; common.showToast('图片文件大小不能超过2M'); return;
+      }
+      var iconForm = state.form;
+      var iconField = iconInput.getAttribute('data-activity-share-icon');
+      var iconReader = new FileReader();
+      iconReader.onerror = function () { iconInput.value = ''; common.showToast('图片读取失败，请重新选择'); };
+      iconReader.onload = function () {
+        var iconImage = new Image();
+        iconImage.onerror = function () { iconInput.value = ''; common.showToast('图片无法读取，请重新选择'); };
+        iconImage.onload = function () {
+          if (state.form !== iconForm) return;
+          if (iconImage.naturalWidth !== iconImage.naturalHeight) {
+            iconInput.value = ''; common.showToast('请上传1:1的正方形图片'); return;
+          }
+          iconForm[iconField] = String(iconReader.result);
+          window.SAApp.render(); common.showToast('分享图标已载入');
+        };
+        iconImage.src = String(iconReader.result);
+      };
+      iconReader.readAsDataURL(iconFile); return;
+    }
     if (event.target.matches('[data-store-choice]')) {
       var groupCount = Number(event.target.getAttribute('data-store-group-count') || 0);
       if (groupCount > 1) {

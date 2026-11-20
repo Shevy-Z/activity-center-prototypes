@@ -518,3 +518,27 @@ body.sit-ui { min-width: 1180px; overflow: hidden; background: #fff; }
   .app-layout { height: auto; margin: 0; padding: 0; }
   .app-main { overflow: visible; }
 }
+
+/* Activity sharing and SEO fields. */
+.activity-share-seo .activity-form-grid { grid-template-columns: minmax(0,1fr); padding: 30px 36px; gap: 24px; }
+.activity-share-seo .activity-form-item { grid-template-columns: 126px minmax(0,1fr); }
+.activity-share-seo .activity-form-item > label { color: #262626; }
+.activity-share-seo .activity-control input { height: 34px; border-color: #d9d9d9; border-radius: 2px; }
+.activity-share-seo .activity-control input::placeholder { color: #bfbfbf; }
+.activity-share-seo .activity-control small { color: #8c8c8c; }
+.activity-share-icons { display: grid; gap: 52px; margin-bottom: 32px; }
+.activity-share-icon-row { display: flex; align-items: flex-end; gap: 10px; }
+.activity-share-upload { position: relative; display: grid; place-items: center; flex: 0 0 108px; width: 108px; height: 108px; border: 1px dashed #d9d9d9; background: #fafafa; cursor: pointer; overflow: hidden; }
+.activity-share-upload:focus-within { outline: 2px solid #1890ff; outline-offset: 2px; }
+.activity-share-upload input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; padding: 0; min-height: 0; }
+.activity-share-upload-plus { color: #999; font-size: 44px; font-weight: 200; line-height: 1; }
+.activity-share-upload img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.activity-share-platform { position: absolute; top: 1px; right: 0; padding: 1px 4px; color: #fff; background: #000; border-radius: 2px 2px 0 0; font-size: 11px; line-height: 16px; }
+.activity-share-upload-help { color: #bfbfbf; line-height: 1.6; }
+.activity-share-seo-footer { position: static; justify-content: center; gap: 10px; border-top: 0; box-shadow: none; padding: 0 20px 30px; }
+.activity-share-seo-footer .button { background: #1890ff; border-color: #1890ff; min-width: 68px; border-radius: 2px; }
+.activity-share-seo-footer .button:hover { background: #40a9ff; border-color: #40a9ff; }
+@media (max-width: 850px) {
+  .activity-share-seo .activity-form-grid { padding: 24px 16px; }
+  .activity-share-icon-row { flex-wrap: wrap; }
+}
