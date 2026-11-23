@@ -593,7 +593,7 @@
   document.addEventListener('click', function (event) {
     var reportTarget;
     if (window.ActivityConfigPages) window.ActivityConfigPages.handleClick(event);
-    if (event.target.closest('#globalSpecButton')) location.href = 'docs/interaction.html';
+    if (event.target.closest('#globalSpecButton')) window.EmployeePageSpec.open();
     if (event.target.closest('[data-open-report-activity-selector]')) { openReportActivitySelector(); return; }
     if ((reportTarget = event.target.closest('[data-report-activity-tab]'))) {
       reportActivityFilter.tab = reportTarget.getAttribute('data-report-activity-tab');

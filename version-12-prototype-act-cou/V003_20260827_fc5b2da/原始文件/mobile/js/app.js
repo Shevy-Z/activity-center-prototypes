@@ -235,7 +235,7 @@
     document.body.classList.toggle('sa-blue-context', blueTheme);
     return '<div class="mobile-page' + (blueTheme ? ' sa-blue-theme' : '') + '">' +
       '<div class="mobile-status"><img src="assets/images/mobile-statusbar.png" alt="手机状态栏"></div>' +
-      '<header class="mobile-header' + withAction + '"><button class="header-icon" data-back type="button" aria-label="返回"><img src="assets/images/back.png" alt=""></button><h1>' + esc(title) + '</h1>' + (headerAction || '<span class="header-placeholder"></span>') + '</header>' +
+      '<header class="mobile-header' + withAction + '"><button class="header-icon" data-back type="button" aria-label="返回"><img src="assets/images/back.png" alt=""></button><h1>' + esc(title) + '</h1>' + '<div class="employee-header-actions">' + (headerAction || '') + '<button class="employee-page-spec-button" data-page-spec type="button">功能说明</button></div>' + '</header>' +
       body + (footer || '') + '</div>';
   }
 

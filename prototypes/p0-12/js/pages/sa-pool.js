@@ -41,7 +41,7 @@
     var helpHref = 'docs/sa-pool.html' + (window.EmployeeSharingSidebar ? '?sidebar=employee-sharing' : '');
     return '<div class="workspace sa-workspace">' +
       '<header class="topbar"><div class="mobile-brand"><strong>NISSAN</strong><span>SA 动态二维码</span></div>' +
-      '<div class="topbar-user"><span>消息</span><i></i><strong>活动运营员</strong><a class="sa-pool-help" href="' + helpHref + '">功能说明</a></div></header>' +
+      '<div class="topbar-user"><span>消息</span><i></i><strong>活动运营员</strong><a class="sa-pool-help" data-page-spec href="' + helpHref + '">功能说明</a></div></header>' +
       '<div class="breadcrumb">后台管理 <span>/</span> 活动中心 <span>/</span> SA 动态二维码</div>' +
       '<div class="module-tabs"><button>SA 活动配置</button><button class="is-active">SA 活动池校验</button><button>SA 活动报表</button></div>' + content + '</div>';
   }

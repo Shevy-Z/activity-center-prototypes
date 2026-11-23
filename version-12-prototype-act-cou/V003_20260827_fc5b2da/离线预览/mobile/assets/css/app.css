@@ -589,3 +589,7 @@ body.sa-blue-context { --brand: #2f80c5; --brand-dark: #24679d; --brand-soft: #e
   .report-page-scroll { padding-bottom: 20px; }
   .invalid-card { margin-top: 24px; }
 }
+.mobile-header,.mobile-header.with-action { grid-template-columns:40px minmax(0,1fr) auto; }
+.employee-header-actions { display:flex;flex-direction:column;align-items:flex-end;justify-content:center;min-width:58px; }
+.employee-header-actions .header-text-action { min-height:20px;font-size:11px; }
+.employee-page-spec-button { min-height:22px;padding:2px 0 2px 8px;background:none;color:#3567a0;font-size:11px;border:0;cursor:pointer; }
