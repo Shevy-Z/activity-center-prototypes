@@ -14,7 +14,7 @@
       id:c.limit===2?'R18':'R19',nodeId:c.id,x:c.x+370,y:4380,width:310,
       title:c.limit===2?'VIN限领2张 · B可领取':'VIN限领1张 · B提交超限',
       text:c.limit===2
-        ? 'A与B绑定同一VIN。A已领1张，B本人未领，因此B入口显示“立即领取”。点击时校验VIN累计1/2，发放1张成功，累计变为2/2。只有B成功领券后才显示“查看卡券”。'
+        ? 'A与B绑定同一VIN。A已领1张，B本人未领，因此B入口显示“立即领取”。点击时校验VIN累计1/2，发放1张成功，累计变为2/2。成功后显示“查看卡券”，仅保留按钮展示，不响应点击、不展开卡包。'
         : 'A与B绑定同一VIN。A已领1张，B本人未领，因此B入口仍显示“立即领取”。点击时校验VIN累计1/1，领取失败，不发券、不增加次数，toast：“该VIN已在其他手机号领取卡券，超过限领次数”。',
       functions:'本次新增 · 同VIN跨手机号领取',status:'2026-11-26 用户确认',pending:''
     });
@@ -34,7 +34,6 @@
       '<div class="vin-result-summary"><span class="vin-result-symbol" aria-hidden="true">券</span><div><h4 data-vin-heading>专属优惠待领取</h4><p data-vin-summary>完成快捷绑车，领取后可在卡包查看</p></div></div>'+
       '<div class="vin-vehicle"><span>当前用户：B用户 · 139****0002</span><strong>已绑定车辆 · '+vin+'</strong><small>通过快捷绑车进入 · 绑车级</small></div>'+
       '<section class="vin-coupon-section"><h4>车主专享养护礼</h4><div class="vin-coupon"><div><strong>50<small>元</small></strong><b>车辆养护优惠券</b><span>满300元可用</span></div><button data-vin-claim type="button">立即领取</button></div></section>'+
-      '<div class="vin-bag" data-vin-bag hidden><strong>B用户的卡包</strong><p>车辆养护优惠券 · 50元</p><span>本次领取1张，归属B用户</span></div>'+
       '<p class="vin-customer-hint">优惠券仅示意，请以卡包实际到账为准</p>'+
       '<div class="vin-case-toast" role="status" aria-live="polite" hidden></div></section>'+
       '<section class="vin-review"><h4>场景核对</h4><p>A用户已绑车并领取1张；B用户绑定同一VIN，本人尚未领取。</p>'+
@@ -52,6 +51,7 @@
     function render(){
       var count=userCount();
       button.textContent=count?'查看卡券':'立即领取';
+      button.disabled=!!count;
       surface.querySelector('[data-vin-heading]').textContent=count?'领取成功':'专属优惠待领取';
       surface.querySelector('[data-vin-summary]').textContent=count?'好礼已放入您的卡包，本次到账1张卡券':'完成快捷绑车，领取后可在卡包查看';
       surface.querySelector('[data-vin-user-count]').textContent=count+'张';
@@ -59,12 +59,12 @@
       card.dataset.vinCount=String(vinCount());card.dataset.currentUserCount=String(count);
     }
     button.addEventListener('click',function(){
-      if(userCount()){surface.querySelector('[data-vin-bag]').hidden=false;feedback('已打开B用户的卡包');return;}
+      if(userCount())return;
       if(vinCount()+1>node.vinLimit){feedback('该VIN已在其他手机号领取卡券，超过限领次数',true);return;}
       records.push({user:currentUser,vin:vin,count:1});render();feedback('领取成功，1张卡券已放入您的卡包');
     });
     surface.querySelector('[data-vin-reset]').addEventListener('click',function(){
-      records=[{user:'A',vin:vin,count:1}];clearTimeout(timer);toast.hidden=true;surface.querySelector('[data-vin-bag]').hidden=true;render();
+      records=[{user:'A',vin:vin,count:1}];clearTimeout(timer);toast.hidden=true;render();
     });
     surface.querySelector('[data-vin-other]').addEventListener('click',function(){window.StateBoard.focusNode(node.vinLimit===2?'vin-limit-one':'vin-limit-two');});
     render();
